@@ -38,22 +38,15 @@ public class FxPrinter extends Application {
         final TextField urlTextField = new TextField();
         final Button printButton = new Button("Print");
         //web 浏览器
-//        final WebView webPage = new WebView();
-//        final WebEngine webEngine = webPage.getEngine();
-//        webPage.setOnMouseClicked(event -> System.out.println(event));
-//        webPage.setVisible(true);
-        HBox hbox = new HBox();
-        hbox.getChildren().addAll(
-                //urlTextField,
-                printButton);
-        BorderPane borderPane = new BorderPane();
-        borderPane.setTop(hbox);
-        InputStream imageData = new ByteArrayInputStream((
-                "<svg width=\"842\" height=\"595\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
+        final WebView webPage = new WebView();
+        final WebEngine webEngine = webPage.getEngine();
+        webPage.setVisible(true);
+        webEngine.loadContent(
+                "<svg width=\"210mm\" height=\"297mm\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
                         " <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->\n" +
                         " <g>\n" +
                         "  <title>background</title>\n" +
-                        "  <rect fill=\"#ffffff\" id=\"canvas_background\" height=\"1487\" width=\"2105\" y=\"-1\" x=\"-1\"/>\n" +
+                        "  <rect fill=\"#ffffff\" id=\"canvas_background\" height=\"597\" width=\"844\" y=\"-1\" x=\"-1\"/>\n" +
                         "  <g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n" +
                         "   <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n" +
                         "  </g>\n" +
@@ -64,13 +57,15 @@ public class FxPrinter extends Application {
                         "  <text stroke=\"#000\" transform=\"matrix(1,0,0,0.9259259104728699,0,0.037037044763565063) \" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"24\" id=\"svg_2\" y=\"41.94\" x=\"25.5\" stroke-width=\"0\" fill=\"#000000\">姓名</text>\n" +
                         "  <text xml:space=\"preserve\" text-anchor=\"start\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"24\" id=\"svg_3\" y=\"36.5\" x=\"98.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">${name}</text>\n" +
                         " </g>\n" +
-                        "</svg>").getBytes());
-
-        Image image = new Image(imageData);
-        ImageView imageView = new ImageView(image);
-        imageView.setId("TestImage");
-        // borderPane.setCenter(imageView);
-        Scene scene = new Scene(borderPane, 844, 597);
+                        "</svg>");
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(
+                //urlTextField,
+                printButton);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(hbox);
+        borderPane.setCenter(webPage);
+        Scene scene = new Scene(borderPane, 800, 600);
         primaryStage.setTitle("Print Demo");
         primaryStage.setScene(scene);
 
@@ -83,13 +78,13 @@ public class FxPrinter extends Application {
         printActionProperty.bind(pageLoadedProperty.and(printButtonClickedProperty));
 
         // WebEngine updates flag when finished loading web page.
-//        webEngine.getLoadWorker()
-//                .stateProperty()
-//                .addListener((obsValue, oldState, newState) -> {
-//                    if (newState == State.SUCCEEDED) {
-//                        pageLoadedProperty.set(true);
-//                    }
-//                });
+        webEngine.getLoadWorker()
+                .stateProperty()
+                .addListener((obsValue, oldState, newState) -> {
+                    if (newState == State.SUCCEEDED) {
+                        pageLoadedProperty.set(true);
+                    }
+                });
 
         // When user enters a url and hits the enter key.
         urlTextField.setOnAction(aEvent -> {
@@ -100,14 +95,17 @@ public class FxPrinter extends Application {
 
         // When the user clicks the print button the webview node is printed
         printButton.setOnAction(aEvent -> {
-            printButtonClickedProperty.set(true);
-            print(imageView);
+            //  printButtonClickedProperty.set(true);
+            PrinterJob job = PrinterJob.createPrinterJob();
+            job.showPrintDialog(primaryStage.getOwner());
+            webEngine.print(job);
+           // print(webPage);
         });
 
         // Once the print action hears a true go print the WebView node.
         printActionProperty.addListener((obsValue, oldState, newState) -> {
             if (newState) {
-               // print(webPage);
+                // print(webPage);
             }
         });
 
@@ -125,10 +123,12 @@ public class FxPrinter extends Application {
         PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
         double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
         double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
-        node.getTransforms().add(new Scale(scaleX, scaleY));
+        //node.getTransforms().add(new Scale(scaleX, scaleY));
         PrinterJob job = PrinterJob.createPrinterJob();
+        job.setPrinter(printer);
         if (job != null) {
-            job.showPrintDialog(primaryStage);
+            job.showPrintDialog(primaryStage.getOwner());
+
             boolean success = job.printPage(node);
             if (success) {
                 job.endJob();
