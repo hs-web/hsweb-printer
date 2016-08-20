@@ -33,4 +33,12 @@ public class PrintResultDTO {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "PrintResultDTO{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
