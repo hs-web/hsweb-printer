@@ -120,15 +120,17 @@ public class LabelPrintable implements BasePrintable {
     }
 
     private static LableIndex getLableInde(String x){
-        if (x.indexOf("<") == -1) {
-            return null;
-        }
+
 
         LableIndex lableIndex = new LableIndex();
         int upIndex=0;
         while (true) {
             int _index = x.indexOf("<");
             int _lasIndex = x.indexOf(">");
+
+            if (_index == -1||_lasIndex==-1) {
+                return null;
+            }
 
             String x2 = x.substring(_index + 1, _lasIndex);
 
