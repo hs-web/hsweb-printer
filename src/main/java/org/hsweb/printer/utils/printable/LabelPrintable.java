@@ -119,41 +119,54 @@ public class LabelPrintable implements BasePrintable {
 
     }
 
-    private static LableIndex getLableInde(int upIndex,String x){
-        int _index=x.indexOf("<");
-        int _lasIndex=x.indexOf(">");
-        if(_index==-1) {
+    private static LableIndex getLableInde(String x){
+        if (x.indexOf("<") == -1) {
             return null;
         }
 
-        String x2=x.substring(_index+1,_lasIndex);
-        int _index2=x2.lastIndexOf("<");
-        _index=_index2!=-1?_lasIndex-_index2:_index;
+        LableIndex lableIndex = new LableIndex();
+        int upIndex=0;
+        while (true) {
+            int _index = x.indexOf("<");
+            int _lasIndex = x.indexOf(">");
 
-        LableIndex lableIndex=new LableIndex();
-        lableIndex.setIndex(upIndex+_index);
-        lableIndex.setLastIndex(upIndex+_lasIndex);
-        lableIndex.setStart(true);
-        lableIndex.setLable(x2);
-        if(x2.indexOf("/")==0){
-            lableIndex.setLable(x2.substring(1));
-            lableIndex.setStart(false);
+            String x2 = x.substring(_index + 1, _lasIndex);
+
+            int _index2 = x2.lastIndexOf("<");
+            if(_index2!=-1) {
+                _index = _index2 != -1 ? _lasIndex - _index2 : _index;
+                x2 = x.substring(_index + 1, _lasIndex);
+            }
+
+            if (!set.contains(x2)) {
+                upIndex=upIndex+_lasIndex + 1;
+                x= x.substring(_lasIndex + 1);
+                continue;
+            }
+
+            lableIndex.setIndex(upIndex + _index);
+            lableIndex.setLastIndex(upIndex + _lasIndex);
+            lableIndex.setStart(true);
+            lableIndex.setLable(x2);
+            if (x2.indexOf("/") == 0) {
+                lableIndex.setLable(x2.substring(1));
+                lableIndex.setStart(false);
+            }
+            return lableIndex;
         }
 
-        if(!set.contains(lableIndex.getLable())){
-            return getLableInde(_lasIndex+1,x.substring(_lasIndex+1));
-        }
-        return lableIndex;
     }
     private static void print(String x){
-        LableIndex lableInde = getLableInde(0, x);
-        if(lableInde!=null){
+        while (true){
+            LableIndex lableInde = getLableInde(x);
+            if(lableInde==null){
+                System.out.println(x);
+                break;
+            }
+
             String substring = x.substring(0, lableInde.getIndex());
             System.out.println(substring);
-
-            print(x.substring(lableInde.getLastIndex()+1));
-        }else {
-            System.out.println(x);
+            x=x.substring(lableInde.getLastIndex()+1);
         }
     }
 
