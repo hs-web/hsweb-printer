@@ -1,9 +1,23 @@
 package org.hsweb.printer.utils.printable;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -161,15 +175,31 @@ public class LabelPrintable implements BasePrintable {
 
     }
     private void print(String x){
+        List<String> lableList=new ArrayList<String>();
         while (true){
+            if(x==null||x.length()==0){
+                return;
+            }
             LableIndex lableInde = getLableInde(x);
             if(lableInde==null){
-                System.out.println(x);
-                break;
+                System.out.println("最后打印正常体"+x);
+                return;
             }
 
+
+
             String substring = x.substring(0, lableInde.getIndex());
-            System.out.println(substring);
+
+            String s =lableList.size()>0?lableList.get(0):null;
+
+            System.out.println("打印"+(s==null?"正常":s)+"体"+ substring);
+
+            if(lableInde.getStart()){
+                lableList.add(0,lableInde.getLable());
+            }else {
+                lableList.remove(0);
+            }
+
             x=x.substring(lableInde.getLastIndex()+1);
         }
     }
@@ -226,10 +256,68 @@ public class LabelPrintable implements BasePrintable {
         }
     }
 
-    public static void main(String[] args) {
-        String x="1231231<B>XXXX</B>XXXXX<G>XXXXX</G>XXXXXX<GB>XCCCCC</GB>CCCCC";
+   /* public static void main(String[] args) {
+        //String x="1231231<B>XXXX</B>XXXXX<G>XXXXX</G>XXXXXX<GB>XCCCCC</GB>CCCCC";
+        String x="1231231<B>XXXXXXXXX<G>XXXXXXXXXXX<GB>XCCCCC</GB>xxxx</G>CCCCC</B>";
+
+
         new LabelPrintable(null,0,"").print(x);
+    }*/
+
+    public static void main(String[] args){
+        InputStream in=new ByteArrayInputStream(("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +"\n"+
+                "<xmla><xxxx>" +"\n  xxxxxx"+
+
+                "<B>" +"\n"+
+                "XXXXXX\nXXX" +"\n"+
+                "<G>XXXXXXXXXXX" +"\n"+
+                "<GB>" +"\n"+
+                "XCCCCC" +"\n"+
+                "</GB>" +"\n"+
+                "xxxx" +"\n"+
+                "</G>" +"\n"+
+                "CCCCC" +"\n"+
+                "</B>xxx" +"\n"+
+                "</xxxx></xmla>").getBytes());
+     try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(in);
+            NodeList users = document.getChildNodes();
+        // System.out.println(document.getTextContent());
+            for (int i = 0; i < users.getLength(); i++) {
+                Node user = users.item(i);
+                NodeList userInfo = user.getChildNodes();
+
+                for (int j = 0; j < userInfo.getLength(); j++) {
+                    Node node = userInfo.item(j);
+                    NodeList userMeta = node.getChildNodes();
+
+                    for (int k = 0; k < userMeta.getLength(); k++) {
+                        if(userMeta.item(k).getNodeName() == "#text")
+                            System.out.println(userMeta.item(k).getNodeName()
+                                    + ":" + userMeta.item(k).getTextContent());
+                        if(userMeta.item(k).getNodeName() != "#text")
+                            System.out.println(userMeta.item(k).getNodeName()
+                                    + ":" + userMeta.item(k).getTextContent());
+                    }
+
+                    System.out.println();
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 }
 
