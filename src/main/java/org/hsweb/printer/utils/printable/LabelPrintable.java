@@ -140,6 +140,12 @@ public class LabelPrintable implements BasePrintable {
                 x2 = x.substring(_index + 1, _lasIndex);
             }
 
+            lableIndex.setStart(true);
+            if (x2.indexOf("/") == 0) {
+                x2=x2.substring(1);
+                lableIndex.setStart(false);
+            }
+
             if (!set.contains(x2)) {
                 upIndex=upIndex+_lasIndex + 1;
                 x= x.substring(_lasIndex + 1);
@@ -148,12 +154,8 @@ public class LabelPrintable implements BasePrintable {
 
             lableIndex.setIndex(upIndex + _index);
             lableIndex.setLastIndex(upIndex + _lasIndex);
-            lableIndex.setStart(true);
             lableIndex.setLable(x2);
-            if (x2.indexOf("/") == 0) {
-                lableIndex.setLable(x2.substring(1));
-                lableIndex.setStart(false);
-            }
+
             return lableIndex;
         }
 
