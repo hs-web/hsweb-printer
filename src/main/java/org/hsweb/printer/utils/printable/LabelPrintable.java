@@ -119,7 +119,7 @@ public class LabelPrintable implements BasePrintable {
 
     }
 
-    private static LableIndex getLableInde(String x){
+    private LableIndex getLableInde(String x){
 
 
         LableIndex lableIndex = new LableIndex();
@@ -160,7 +160,7 @@ public class LabelPrintable implements BasePrintable {
         }
 
     }
-    private static void print(String x){
+    private void print(String x){
         while (true){
             LableIndex lableInde = getLableInde(x);
             if(lableInde==null){
@@ -175,60 +175,61 @@ public class LabelPrintable implements BasePrintable {
     }
 
 
+
+
+    class LableIndex{
+        private Integer index;
+        private Integer lastIndex;
+        private String lable;
+        private Boolean start;
+
+        public Integer getIndex() {
+            return index;
+        }
+
+        public void setIndex(Integer index) {
+            this.index = index;
+        }
+
+        public Integer getLastIndex() {
+            return lastIndex;
+        }
+
+        public void setLastIndex(Integer lastIndex) {
+            this.lastIndex = lastIndex;
+        }
+
+        public String getLable() {
+            return lable;
+        }
+
+        public void setLable(String lable) {
+            this.lable = lable;
+        }
+
+        public Boolean getStart() {
+            return start;
+        }
+
+        public void setStart(Boolean start) {
+            this.start = start;
+        }
+
+        @Override
+        public String toString() {
+            return "LableIndex{" +
+                    "index=" + index +
+                    ", lastIndex=" + lastIndex +
+                    ", lable='" + lable + '\'' +
+                    ", start=" + start +
+                    '}';
+        }
+    }
+
     public static void main(String[] args) {
         String x="1231231<B>XXXX</B>XXXXX<G>XXXXX</G>XXXXXX<GB>XCCCCC</GB>CCCCC";
-        print(x);
+        new LabelPrintable(null,0,"").print(x);
     }
-
-
-    String x2="1231231<B>XXXXXXXXX<G>XXXXXXXXXXX<GB>XCCCCC</GB>CCCCC</G>XXX</B>XXX";
 
 }
-class LableIndex{
-    private Integer index;
-    private Integer lastIndex;
-    private String lable;
-    private Boolean start;
 
-    public Integer getIndex() {
-        return index;
-    }
-
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
-
-    public Integer getLastIndex() {
-        return lastIndex;
-    }
-
-    public void setLastIndex(Integer lastIndex) {
-        this.lastIndex = lastIndex;
-    }
-
-    public String getLable() {
-        return lable;
-    }
-
-    public void setLable(String lable) {
-        this.lable = lable;
-    }
-
-    public Boolean getStart() {
-        return start;
-    }
-
-    public void setStart(Boolean start) {
-        this.start = start;
-    }
-
-    @Override
-    public String toString() {
-        return "LableIndex{" +
-                "index=" + index +
-                ", lastIndex=" + lastIndex +
-                ", lable='" + lable + '\'' +
-                ", start=" + start +
-                '}';
-    }
-}
