@@ -13,8 +13,8 @@ public class LablePrinter {
         printInputDTO.setPrinterName("打印机名称 找不到用默认打印机");
         printInputDTO.setPrintDocName("测试打印");
         printInputDTO.setPageWidth(200d);
-        printInputDTO.setPrintText("<G>11111111111111111111111111111111111111111111111111111111111111111111111111111</G><G>菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜</G>\n<GB>2</GB>\n3\n<B>4</B><qrcod>xxxxx</qrcod>");
-
+        //printInputDTO.setPrintText("<G>11111111111111111111111111111111111111111111111111111111111111111111111111111</G><G>菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜</G>\n<GB>2</GB>\n3\n<B>4</B><QR>xxxxx</QR>");
+        printInputDTO.setPrintText("XXXX<B><G>111111</G>XXXXXXXXX</B>");
         PrintResultDTO printResultVo = PrintUtil.print(printInputDTO);
         System.out.println(printResultVo);
 

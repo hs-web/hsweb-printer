@@ -17,5 +17,12 @@ import java.awt.*;
  * Created by xiongchuang on 2016/8/23 .
  */
 public interface LablePrintLine {
+    void setX(int x);
+
+    void setY(int y);
+    int getX();
+
+    int getY();
+
     void print(int xpadding,int ypadding,Graphics2D g2);
 }
