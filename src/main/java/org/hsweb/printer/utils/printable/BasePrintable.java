@@ -47,7 +47,7 @@ public interface BasePrintable extends Printable {
      * @return
      */
     default double getXpadding(){
-        return 5;
+        return 3;
     }
 
     /**
