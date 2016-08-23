@@ -32,9 +32,10 @@ public class LablePrintLineQrcode implements LablePrintLine{
         this.y = y;
         this.size = size;
         this.qrcodeString = qrcodeString;
+        image();
     }
 
-    private void imag(){
+    private void image(){
         this.bufferedImage=SemacodeTool.toBufferedImage(qrcodeString,size);
     }
 
