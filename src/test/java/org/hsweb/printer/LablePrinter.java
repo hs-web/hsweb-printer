@@ -18,6 +18,8 @@ public class LablePrinter {
         PrintResultDTO printResultVo = PrintUtil.print(printInputDTO);
         System.out.println(printResultVo);
 
+       /* System.out.println("菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜".length());*/
+
       /*  String s="d你";
         System.out.println(length(s));*/
     }
