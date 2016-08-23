@@ -40,7 +40,7 @@ public interface BasePrintable extends Printable {
      * 纸张高度
      * @return
      */
-    double gehHeight();
+    double getHeight();
 
     /**
      * 纸张左边距

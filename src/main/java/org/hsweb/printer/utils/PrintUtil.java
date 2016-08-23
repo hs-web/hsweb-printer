@@ -83,8 +83,8 @@ public class PrintUtil {
 
         //    通过Paper设置页面的空白边距和可打印区域。必须与实际打印纸张大小相符。
         Paper p = new Paper();
-        p.setSize(basePrintable.getWidth(),basePrintable.gehHeight());//纸张大小
-        p.setImageableArea(basePrintable.getXpadding(),basePrintable.getYpadding(), basePrintable.getWidth(),basePrintable.gehHeight());//A4(595 X 842)设置打印区域，其实0，0应该是72，72，因为A4纸的默认X,Y边距是72
+        p.setSize(basePrintable.getWidth(),basePrintable.getHeight());//纸张大小
+        p.setImageableArea(basePrintable.getXpadding(),basePrintable.getYpadding(), basePrintable.getWidth(),basePrintable.getHeight());//A4(595 X 842)设置打印区域，其实0，0应该是72，72，因为A4纸的默认X,Y边距是72
 
         //    设置成竖打
         PageFormat pf = new PageFormat();
