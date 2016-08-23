@@ -30,8 +30,8 @@ public class LablePrintLineString implements LablePrintLine{
     }
 
     @Override
-    public void print(Graphics2D g2){
+    public void print(int xpadding,int ypadding,Graphics2D g2){
         g2.setFont(this.font);
-        g2.drawString(this.printString, this.x, this.y);
+        g2.drawString(this.printString,xpadding+ this.x, ypadding+this.y);
     }
 }

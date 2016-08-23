@@ -35,12 +35,10 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
     private double width;
     String printString;
-    private int height=5;
-    private int xpadding;
+    private int height=0;
 
 
-    public LablePrint(int xpadding,double width, String printString) {
-        this.xpadding=xpadding;
+    public LablePrint(double width, String printString) {
         this.width = width;
         this.printString = printString;
         init();
@@ -57,8 +55,12 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     }
     private int getLayoutHeight(int height){
         int tempHeight=this.height;
+        if(super.size()==0){
+            this.height+=height;
+            tempHeight=this.height;
+        }
         this.height+=height;
-        return this.height;
+        return tempHeight;
     }
 
     private void nodeList(NodeList childNodes){
@@ -66,12 +68,16 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             Node item = childNodes.item(i);
             if("#text".equals(item.getNodeName())){
                 String nodeValue = item.getNodeValue();
-                String[] split = nodeValue.split("\n");
+                if(nodeValue.indexOf("\n")!=nodeValue.lastIndexOf("\n")){
+                    nodeValue=nodeValue.replaceAll("\n","\n \n");
+                }
+
+                String[] split =nodeValue.split("\n");
                 Font font = lableFontMap.get(item.getParentNode().getNodeName());
-               // for (String s : split) {
-                    LablePrintLineString lablePrintLineString=new LablePrintLineString(xpadding,this.getLayoutHeight((int)Math.ceil(font.getSize2D())),font, nodeValue);
+                for (String s : split) {
+                    LablePrintLineString lablePrintLineString=new LablePrintLineString(0,this.getLayoutHeight((int)Math.ceil(font.getSize2D())),font, s);
                     add(lablePrintLineString);
-                //}
+                }
             }else if("qrcod".equals(item.getNodeName())){
                 int v = (int)(width * 0.16);
                 int size=(int)width-v*2;
@@ -114,7 +120,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     public static void main(String[] args) {
         String s="<G>1</G><GB>2\n</GB>\n3\n<B>4\n</B>";
 
-        LablePrint lablePrintLines=new LablePrint(5,200,s);
+        LablePrint lablePrintLines=new LablePrint(200,s);
     }
 
 

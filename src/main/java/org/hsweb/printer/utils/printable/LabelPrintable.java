@@ -23,7 +23,7 @@ public class LabelPrintable implements BasePrintable {
 
     public LabelPrintable(String printName, double width, String printString) {
         this.printName = printName;
-        this.lablePrint = new LablePrint((int)getXpadding(),width, printString);
+        this.lablePrint = new LablePrint(width, printString);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LabelPrintable implements BasePrintable {
 
     @Override
     public double getHeight() {
-        return lablePrint.getHeight();
+        return lablePrint.getHeight()+getYpadding()*4;
     }
 
     @Override
@@ -52,9 +52,9 @@ public class LabelPrintable implements BasePrintable {
         g2.setColor(fontColor);
 
         for (LablePrintLine lablePrintLine : lablePrint) {
-            lablePrintLine.print(g2);
+            lablePrintLine.print((int)Math.ceil(getXpadding()),(int)Math.ceil(getYpadding()*2),g2);
         }
-
+        //graphics.drawString(" ",0,(int)getHeight());
         return PAGE_EXISTS;
     }
 

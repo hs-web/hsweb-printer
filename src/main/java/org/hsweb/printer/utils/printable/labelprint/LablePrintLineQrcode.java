@@ -40,7 +40,7 @@ public class LablePrintLineQrcode implements LablePrintLine{
     }
 
     @Override
-    public void print(Graphics2D g2){
-        g2.drawImage(bufferedImage,x,y,size,size,null);
+    public void print(int xpadding,int ypadding,Graphics2D g2){
+        g2.drawImage(bufferedImage,x,ypadding+y,size,size,null);
     }
 }
