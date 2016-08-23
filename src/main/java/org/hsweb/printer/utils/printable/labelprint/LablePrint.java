@@ -3,15 +3,11 @@ package org.hsweb.printer.utils.printable.labelprint;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,18 +35,73 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
     private double width;
     String printString;
-    private int height;
+    private int height=5;
+    private int xpadding;
 
 
-    public LablePrint(double width, String printString) {
+    public LablePrint(int xpadding,double width, String printString) {
+        this.xpadding=xpadding;
         this.width = width;
         this.printString = printString;
         init();
     }
 
     private void init() {
+        Node root=getRootNode(printString);
+        if(root==null){
+            ////todo 2016/8/23 13:40 熊闯 打印出錯呢
+        }
 
+        NodeList childNodes = root.getChildNodes();
+        nodeList(childNodes);
     }
+    private int getLayoutHeight(int height){
+        int tempHeight=this.height;
+        this.height+=height;
+        return this.height;
+    }
+
+    private void nodeList(NodeList childNodes){
+        for (int i=0;i<childNodes.getLength();i++) {
+            Node item = childNodes.item(i);
+            if("#text".equals(item.getNodeName())){
+                String nodeValue = item.getNodeValue();
+                String[] split = nodeValue.split("\n");
+                Font font = lableFontMap.get(item.getParentNode().getNodeName());
+               // for (String s : split) {
+                    LablePrintLineString lablePrintLineString=new LablePrintLineString(xpadding,this.getLayoutHeight((int)Math.ceil(font.getSize2D())),font, nodeValue);
+                    add(lablePrintLineString);
+                //}
+            }else if("qrcod".equals(item.getNodeName())){
+                int v = (int)(width * 0.16);
+                int size=(int)width-v*2;
+                LablePrintLineQrcode lablePrintLineQrcode=new LablePrintLineQrcode(v,this.getLayoutHeight(size),size,item.getTextContent());
+                add(lablePrintLineQrcode);
+            }else {
+                this.nodeList(item.getChildNodes());
+            }
+        }
+    }
+
+    private Node getRootNode(String printString){
+        Node node=null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(getDocumentInputStream(printString));
+            NodeList lableprint = document.getElementsByTagName("lableprint");
+            node=lableprint.item(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return node;
+    }
+    private InputStream getDocumentInputStream(String printString){
+       String document="<?xml version=\"1.0\" encoding=\"utf-8\" ?><lableprint>%s</lableprint>";
+        return new ByteArrayInputStream(String.format(document,printString).getBytes());
+    }
+
+
 
     public double getWidth() {
         return width;
@@ -60,10 +111,14 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         return height;
     }
 
-
-
-
     public static void main(String[] args) {
+        String s="<G>1</G><GB>2\n</GB>\n3\n<B>4\n</B>";
+
+        LablePrint lablePrintLines=new LablePrint(5,200,s);
+    }
+
+
+   /* public static void main(String[] args) {
         InputStream in = new ByteArrayInputStream(("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
                 "<xxxx>\n" +
                 "    xxxx1\n" +
@@ -77,9 +132,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 "    xxxxxx5\n" +
                 "</xxxx>").getBytes());
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(in);
+
             NodeList users = document.getChildNodes();
             // System.out.println(document.getTextContent());
             for (int i = 0; i < users.getLength(); i++) {
@@ -100,11 +153,9 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
                     for (int k = 0; k < userMeta.getLength(); k++) {
                         if (userMeta.item(k).getNodeName() == "#text")
-                            System.out.println(userMeta.item(k).getNodeName()
-                                    + ":" + userMeta.item(k).getTextContent());
+                            System.out.println(userMeta.item(k).getNodeName()+":" + userMeta.item(k).getTextContent());
                         if (userMeta.item(k).getNodeName() != "#text")
-                            System.out.println(userMeta.item(k).getNodeName()
-                                    + ":" + userMeta.item(k).getTextContent());
+                            System.out.println(userMeta.item(k).getNodeName()+ ":" + userMeta.item(k).getTextContent());
                     }
 
                     System.out.println();
@@ -120,7 +171,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 }

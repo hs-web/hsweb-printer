@@ -23,7 +23,7 @@ public class LabelPrintable implements BasePrintable {
 
     public LabelPrintable(String printName, double width, String printString) {
         this.printName = printName;
-        this.lablePrint = new LablePrint(width, printString);
+        this.lablePrint = new LablePrint((int)getXpadding(),width, printString);
     }
 
     @Override
