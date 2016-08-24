@@ -21,15 +21,13 @@ import java.awt.image.BufferedImage;
  */
 public class LablePrintLineQrcode implements LablePrintLine{
     private int x;
-    private int y;
     private int size;
     private String qrcodeString;
 
     private BufferedImage bufferedImage;
 
-    public LablePrintLineQrcode(int x, int y, int size, String qrcodeString) {
+    public LablePrintLineQrcode(int x, int size, String qrcodeString) {
         this.x = x;
-        this.y = y;
         this.size = size;
         this.qrcodeString = qrcodeString;
         image();
@@ -39,25 +37,14 @@ public class LablePrintLineQrcode implements LablePrintLine{
         this.bufferedImage=SemacodeTool.toBufferedImage(qrcodeString,size);
     }
 
+
     @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-    @Override
-    public void setY(int y) {
-        this.y = y;
-    }
-    @Override
-    public int getX() {
-        return x;
-    }
-    @Override
-    public int getY() {
-        return y;
+    public float getHeight() {
+        return size+size*0.4f;
     }
 
     @Override
-    public void print(int xpadding,int ypadding,Graphics2D g2){
-        g2.drawImage(bufferedImage,x,ypadding+y,size,size,null);
+    public void print(float xpadding,float y,Graphics2D g2){
+        g2.drawImage(bufferedImage,x,(int)(y+size*0.2f),size,size,null);
     }
 }

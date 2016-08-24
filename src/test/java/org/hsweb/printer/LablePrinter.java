@@ -9,14 +9,25 @@ import org.hsweb.printer.utils.PrintUtil;
  */
 public class LablePrinter {
     public static void main(String[] args) {
+        Long xx=System.currentTimeMillis();
+        StringBuilder s=new StringBuilder();
+        for(int i=0;i<20;i++){
+            s.append("<B>").append(i).append("</B>").append("\n");
+           // s.append(i).append("\n");
+        }
+
         PrintInputDTO printInputDTO=new PrintInputDTO();
         printInputDTO.setPrinterName("打印机名称 找不到用默认打印机");
         printInputDTO.setPrintDocName("测试打印");
-        printInputDTO.setPageWidth(200d);
-        //printInputDTO.setPrintText("<G>11111111111111111111111111111111111111111111111111111111111111111111111111111</G><G>菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜</G>\n<GB>2</GB>\n3\n<B>4</B><QR>xxxxx</QR>");
-        printInputDTO.setPrintText("X11111111111111111111111111111111111111111XXX\n<B>1111111111111111111111111111111111111111111</B>\n222222222222222222\n<G>1232</G>\n<QR>xx</QR>");
-        PrintResultDTO printResultVo = PrintUtil.print(printInputDTO);
-        System.out.println(printResultVo);
+        printInputDTO.setPageWidth(195d);
+        //printInputDTO.setPrintText("<G>11111111111111111111111111111111111111111111111111111111111111111111111111111</G><G>菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜</G>\n<GB>2</GB>\n3\n<B>4</B>\n<QR>xxxxx</QR>");
+       // printInputDTO.setPrintText(s.toString());
+       printInputDTO.setPrintText("xcc<B>xxxx<G>xx</G>xxxxx<G>xx</G>x<GB>xxx</GB>x</B>x");
+        for (int ii=0;ii<5;ii++) {
+            PrintResultDTO printResultVo = PrintUtil.print(printInputDTO);
+            System.out.println(printResultVo);
+        }
+        System.out.println(System.currentTimeMillis()-xx);
 
        /* System.out.println("菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜".length());*/
 

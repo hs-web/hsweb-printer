@@ -2,6 +2,7 @@ package org.hsweb.printer.utils.printable;
 
 import org.hsweb.printer.utils.printable.labelprint.LablePrint;
 import org.hsweb.printer.utils.printable.labelprint.LablePrintLine;
+import org.hsweb.printer.utils.printable.labelprint.LablePrintLineQrcode;
 
 import java.awt.*;
 import java.awt.print.PageFormat;
@@ -38,7 +39,7 @@ public class LabelPrintable implements BasePrintable {
 
     @Override
     public double getHeight() {
-        return lablePrint.getHeight()+getYpadding()*4;
+        return lablePrint.getHeight()+lablePrint.get(0).getHeight()+getYpadding()*2;
     }
 
     @Override
@@ -51,8 +52,14 @@ public class LabelPrintable implements BasePrintable {
         Graphics2D g2 = (Graphics2D) graphics;
         g2.setColor(fontColor);
 
+        float height=(float) getYpadding()+lablePrint.get(0).getHeight();
         for (LablePrintLine lablePrintLine : lablePrint) {
-            lablePrintLine.print((int)Math.ceil(getXpadding()),(int)Math.ceil(getYpadding()*2),g2);
+            float tempheight=height;
+            height+=lablePrintLine.getHeight();
+            if(!lablePrintLine.getClass().equals(LablePrintLineQrcode.class)){
+                tempheight=height;
+            }
+            lablePrintLine.print((float)getXpadding(),tempheight,g2);
         }
         //graphics.drawString(" ",0,(int)getHeight());
         return PAGE_EXISTS;
