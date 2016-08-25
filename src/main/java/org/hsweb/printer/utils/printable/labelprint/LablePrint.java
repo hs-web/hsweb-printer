@@ -34,6 +34,18 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             return FontUtil.deriveFont(Font.PLAIN, 12);
         }
     };
+    private List<String> fonts=new ArrayList<String>(){
+        @Override
+        public String get(int index) {
+            if(size()==0){
+                return "";
+            }
+
+
+            return super.get(index);
+        }
+    };
+
     private List<String> align=new ArrayList<String>(){
         @Override
         public String get(int index) {
@@ -111,6 +123,14 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                             align.remove(0);
                             lastLablePrintLineString=null;
                         }break;
+                    case "B":
+                    case "GB":
+                    case "G":
+                        {
+                            fonts.add(0,item.getNodeName());
+                            this.nodeList(item.getChildNodes());
+                            fonts.remove(0);
+                        }break;
                     default: this.nodeList(item.getChildNodes());
                 }
                /* if("C".equals(item.getNodeName())){
@@ -135,7 +155,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
 
     private void stringNode( Node item ){
-        Font font = lableFontMap.get(item.getParentNode().getNodeName());
+        Font font = lableFontMap.get(fonts.get(0));
         int maxText =((int)Math.floor(width / font.getSize2D()))*2;
 
         String[] split =getPrintStringArray(item);
