@@ -11,22 +11,31 @@
 
 package org.hsweb.printer.frame;
 
+import org.hsweb.printer.server.PrinterHttpServer;
 import org.hsweb.printer.utils.FontUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.net.URL;
 
 /**
  * Created by xiongchuang on 2016/8/25 .
  */
 public class PrintJFrame extends JFrame {
-
+    private PrinterHttpServer printerHttpServer =null;
     public PrintJFrame() throws HeadlessException {
         super("打印服务");
         initJFrame();
         initSystemTray();
+
+        try {
+            printerHttpServer=new PrinterHttpServer();
+            printerHttpServer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initJFrame() {
@@ -93,7 +102,8 @@ public class PrintJFrame extends JFrame {
          * 窗口活动
          */
         public void windowActivated(WindowEvent e) {
-            JLabel jLabel=new JLabel("修修修");
+            JLabel jLabel=new JLabel("打印服务状态："+(printerHttpServer==null||!printerHttpServer.getState()?"未开启":"开启中"));
+
             printJFrame.add(jLabel);
         }
 
