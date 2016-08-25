@@ -25,21 +25,32 @@ public class LablePrintLineString implements LablePrintLine{
 
     private float nextX=0;
 
+    private String align;
+    private float width;
+
     private List<PrintLineStringVo> printLineStringVos=new ArrayList<PrintLineStringVo>();
 
     int i=0;
-    public LablePrintLineString() {
+    public LablePrintLineString(String align,float width) {
+        this.align=align;
+        this.width=width;
     }
 
-    public LablePrintLineString(float x) {
+    public LablePrintLineString(String align,float width,float x) {
+        this.align=align;
+        this.width=width;
         this.nextX=x;
     }
 
-    public LablePrintLineString(Font font, String printString) {
+    public LablePrintLineString(String align,float width,Font font, String printString) {
+        this.align=align;
+        this.width=width;
         this.add(font,printString);
     }
-    public LablePrintLineString(float x,Font font, String printString) {
+    public LablePrintLineString(float x,float width,String align,Font font, String printString) {
         this.nextX=x;
+        this.align=align;
+        this.width=width;
         this.add(font,printString);
     }
     public void add(Font font, String printString){
@@ -66,9 +77,18 @@ public class LablePrintLineString implements LablePrintLine{
         return maxFontSize2D;
     }
 
+    private float getLeft(){
+        if("R".equals(align)){
+            return width-nextX;
+        }else if("C".equals(align)){
+            return (width-nextX)/2;
+        }
+        return 0;
+    }
+
     @Override
     public void print(float xpadding,float y,Graphics2D g2){
-        float printX=xpadding;
+        float printX=xpadding+getLeft();
         for (PrintLineStringVo printLineStringVo : printLineStringVos) {
             g2.setFont(printLineStringVo.getFont());
 

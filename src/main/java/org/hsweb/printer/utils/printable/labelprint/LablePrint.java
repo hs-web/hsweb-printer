@@ -34,6 +34,17 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             return FontUtil.deriveFont(Font.PLAIN, 12);
         }
     };
+    private List<String> align=new ArrayList<String>(){
+        @Override
+        public String get(int index) {
+            if(size()==0){
+                return "L";
+            }
+
+
+            return super.get(index);
+        }
+    };
 
 
     private double width;
@@ -85,11 +96,27 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             Node item = childNodes.item(i);
             if("#text".equals(item.getNodeName())){
                 this.stringNode(item);
-            }else if("QR".equals(item.getNodeName())){
+            }else if("QR".equals(item.getNodeName())) {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
             }else {
+                if("C".equals(item.getNodeName())){
+                    lastLablePrintLineString=null;
+                    align.add(0,"C");
+                }else if("R".equals(item.getNodeName())){
+                    lastLablePrintLineString=null;
+                    align.add(0,"R");
+                }
+
                 this.nodeList(item.getChildNodes());
+
+                if("C".equals(item.getNodeName())){
+                    lastLablePrintLineString=null;
+                    align.remove(0);
+                }else if("R".equals(item.getNodeName())){
+                    lastLablePrintLineString=null;
+                    align.remove(0);
+                }
             }
         }
     }
@@ -102,7 +129,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         String[] split =getPrintStringArray(item);
         for (String s : split) {
             if("".equals(s)||"\n".equals(s)||"<BR>".equals(s)){
-                lastLablePrintLineString=new LablePrintLineString(font,"");
+                lastLablePrintLineString=new LablePrintLineString(align.get(0),(float) width,font,"");
                 add(lastLablePrintLineString);
                 continue;
             }
@@ -125,7 +152,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 if(i==0&&lastLablePrintLineString!=null){
                     lablePrintLineString = lastLablePrintLineString;
                 }else {
-                    lablePrintLineString=new LablePrintLineString();
+                    lablePrintLineString=new LablePrintLineString(align.get(0),(float) width);
                     add(lablePrintLineString);
                 }
 
