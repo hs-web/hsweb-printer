@@ -101,8 +101,8 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 this.qrcodNode(item);
             }else {
                 switch (item.getNodeName()){
-                    case "C":;
-                    case "R":;
+                    case "C":
+                    case "R":
                     case "L":
                         {
                             lastLablePrintLineString=null;
