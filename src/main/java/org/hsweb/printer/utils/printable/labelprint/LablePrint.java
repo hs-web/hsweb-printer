@@ -11,10 +11,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class LablePrint extends ArrayList<LablePrintLine> {
 
@@ -34,6 +32,24 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             return FontUtil.deriveFont(Font.PLAIN, 12);
         }
     };
+
+    private Set<String> fontLables=new HashSet<String>(){
+        {
+            add("B");
+            add("G");
+            add("GB");
+        }
+    };
+
+    private Set<String> alignLables=new HashSet<String>(){
+        {
+            add("L");
+            add("R");
+            add("C");
+        }
+    };
+
+
     private List<String> fonts=new ArrayList<String>(){
         @Override
         public String get(int index) {
@@ -112,51 +128,22 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
             }else {
-                boolean ralign=false;
-                boolean rfont=false;
 
-                switch (item.getNodeName()){
-                    case "C":
-                    case "R":
-                    case "L":{
-                        ralign=true;
-                        lastLablePrintLineString=null;
-                        align.add(0,item.getNodeName());
-                    }break;
-                    case "B":
-                    case "GB":
-                    case "G":{
-                        rfont=true;
-                        fonts.add(0,item.getNodeName());
-                    }break;
+                if(alignLables.contains(item.getNodeName())){
+                    lastLablePrintLineString=null;
+                    align.add(0,item.getNodeName());
+                }else if(fontLables.contains(item.getNodeName())){
+                    fonts.add(0,item.getNodeName());
                 }
 
                 this.nodeList(item.getChildNodes());
 
-                if(ralign){
+                if(alignLables.contains(item.getNodeName())){
                     align.remove(0);
                     lastLablePrintLineString=null;
-                }
-                if(rfont){
+                }else if(fontLables.contains(item.getNodeName())){
                     fonts.remove(0);
                 }
-
-               /* if("C".equals(item.getNodeName())){
-
-                }else if("R".equals(item.getNodeName())){
-                    lastLablePrintLineString=null;
-                    align.add(0,"R");
-                }
-
-                this.nodeList(item.getChildNodes())
-
-                if("C".equals(item.getNodeName())){
-                    lastLablePrintLineString=null;
-                    align.remove(0);
-                }else if("R".equals(item.getNodeName())){
-                    lastLablePrintLineString=null;
-                    align.remove(0);
-                }*/
             }
         }
     }
