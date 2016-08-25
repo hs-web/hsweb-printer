@@ -104,6 +104,22 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     }
 
     private InputStream getDocumentInputStream(String printString){
+        String leftReplace="xia-L-left-L-xia";
+        String rightReplace="xia-R-right-R-xia";
+
+        printString=printString.replaceAll("&lt;",leftReplace).replaceAll("&gt;",rightReplace).replaceAll("<","&lt;").replaceAll(">","&gt;");
+
+        for(String s:fontLables){
+            printString=printString.replaceAll("&lt;"+s+"&gt;","<"+s+">").replaceAll("&lt;/"+s+"&gt;","</"+s+">");
+        }
+
+        for(String s:alignLables){
+            printString=printString.replaceAll("&lt;"+s+"&gt;","<"+s+">").replaceAll("&lt;/"+s+"&gt;","</"+s+">");
+        }
+
+        printString=printString.replaceAll(leftReplace,"&lt;").replaceAll(rightReplace,"&gt;");
+
+
         String document="<?xml version=\"1.0\" encoding=\"utf-8\" ?><lableprint>%s</lableprint>";
         return new ByteArrayInputStream(String.format(document,printString).getBytes());
     }

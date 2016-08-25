@@ -22,7 +22,7 @@ public class LablePrinter {
         printInputDTO.setPageWidth(195d);
         //printInputDTO.setPrintText("<G>11111111111111111111111111111111111111111111111111111111111111111111111111111</G><G>菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜菜</G>\n<GB>2</GB>\n3\n<B>4</B>\n<QR>xxxxx</QR>");
        // printInputDTO.setPrintText(s.toString());
-       printInputDTO.setPrintText("<C>xcc</C><B><R>xxxx</R><R><G>xx</G></R>xxxxx<G>xx</G>x<GB>xxx</GB>x</B>x");
+       printInputDTO.setPrintText("<C>xcc</C><B><R>&lt;B&gt;<A>xxxx&lt;/B&gt;</R></A><R><G>xx</G></R>xxxxx<G>xx</G>x<GB>xxx</GB>x</B>x");
        // for (int ii=0;ii<5;ii++) {
             PrintResultDTO printResultVo = PrintUtil.print(printInputDTO);
             System.out.println(printResultVo);
@@ -48,4 +48,19 @@ public class LablePrinter {
         }
         return len;
     }*/
+
+    /*
+
+
+
+    <R>
+        <G> TEXT
+        <R> node
+            XXXXX
+        </R>
+        xx</G>xxxx TEXT
+    </R>
+
+
+    */
 }
