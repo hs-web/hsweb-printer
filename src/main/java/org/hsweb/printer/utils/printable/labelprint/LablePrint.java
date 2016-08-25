@@ -110,7 +110,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                             this.nodeList(item.getChildNodes());
                             align.remove(0);
                             lastLablePrintLineString=null;
-                        };break;
+                        }break;
                     default: this.nodeList(item.getChildNodes());
                 }
                /* if("C".equals(item.getNodeName())){
