@@ -112,27 +112,35 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
             }else {
+                boolean ralign=false;
+                boolean rfont=false;
+
                 switch (item.getNodeName()){
                     case "C":
                     case "R":
-                    case "L":
-                        {
-                            lastLablePrintLineString=null;
-                            align.add(0,item.getNodeName());
-                            this.nodeList(item.getChildNodes());
-                            align.remove(0);
-                            lastLablePrintLineString=null;
-                        }break;
+                    case "L":{
+                        ralign=true;
+                        lastLablePrintLineString=null;
+                        align.add(0,item.getNodeName());
+                    }break;
                     case "B":
                     case "GB":
-                    case "G":
-                        {
-                            fonts.add(0,item.getNodeName());
-                            this.nodeList(item.getChildNodes());
-                            fonts.remove(0);
-                        }break;
-                    default: this.nodeList(item.getChildNodes());
+                    case "G":{
+                        rfont=true;
+                        fonts.add(0,item.getNodeName());
+                    }break;
                 }
+
+                this.nodeList(item.getChildNodes());
+
+                if(ralign){
+                    align.remove(0);
+                    lastLablePrintLineString=null;
+                }
+                if(rfont){
+                    fonts.remove(0);
+                }
+
                /* if("C".equals(item.getNodeName())){
 
                 }else if("R".equals(item.getNodeName())){
