@@ -76,11 +76,11 @@ public class PrintJFrame extends JFrame {
     public PopupMenu getPrintPopupMenu() {
         MenuItem print = new MenuItem("print");
         print.setEnabled(false);
-        MenuItem show = new MenuItem("open");
+        MenuItem show = new MenuItem("打开");
         show.addActionListener(new MenuItemShowActionListener(this,show));
 
 
-        MenuItem exit = new MenuItem("exit");
+        MenuItem exit = new MenuItem("退出");
         exit.addActionListener(e ->  System.exit(0));
 
 
@@ -103,6 +103,8 @@ public class PrintJFrame extends JFrame {
          */
         public void windowActivated(WindowEvent e) {
             JLabel jLabel=new JLabel("打印服务状态："+(printerHttpServer==null||!printerHttpServer.getState()?"未开启":"开启中"));
+            jLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+            jLabel.setVerticalAlignment(SwingConstants.TOP);
 
             printJFrame.add(jLabel);
         }

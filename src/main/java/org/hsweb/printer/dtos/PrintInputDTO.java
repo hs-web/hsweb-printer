@@ -18,7 +18,7 @@ import java.io.Serializable;
  */
 public class PrintInputDTO implements Serializable{
     private String printerName;
-    private String PrintDocName;
+    private String printDocName="java打印";
     private String printType;
     private Double pageWidth;
     private String printText;
@@ -32,11 +32,11 @@ public class PrintInputDTO implements Serializable{
     }
 
     public String getPrintDocName() {
-        return PrintDocName;
+        return printDocName;
     }
 
     public void setPrintDocName(String printDocName) {
-        PrintDocName = printDocName;
+        this.printDocName = printDocName;
     }
 
     public String getPrintType() {
