@@ -16,6 +16,20 @@ import java.util.List;
 
 public class LablePrint extends ArrayList<LablePrintLine> {
 
+    /**
+     * 文字形态的label集合
+     */
+    private Set<String> fontLables=new HashSet<String>(){
+        {
+            add("B");
+            add("G");
+            add("GB");
+        }
+    };
+
+    /**
+     * 文字形态label对应的字体
+     */
     private Map<String, Font> lableFontMap = new HashMap<String, Font>() {
         {
             put("B", FontUtil.deriveFont(Font.BOLD, 12));
@@ -33,14 +47,10 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         }
     };
 
-    private Set<String> fontLables=new HashSet<String>(){
-        {
-            add("B");
-            add("G");
-            add("GB");
-        }
-    };
 
+    /**
+     * 对齐方式lable
+     */
     private Set<String> alignLables=new HashSet<String>(){
         {
             add("L");
@@ -50,33 +60,35 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     };
 
 
+    /**
+     * 文字样式队列
+     */
     private List<String> fonts=new ArrayList<String>(){
         @Override
         public String get(int index) {
             if(size()==0){
                 return "";
             }
-
-
             return super.get(index);
         }
     };
 
+    /**
+     *对齐方式队列
+     */
     private List<String> align=new ArrayList<String>(){
         @Override
         public String get(int index) {
             if(size()==0){
                 return "L";
             }
-
-
             return super.get(index);
         }
     };
 
 
-    private double width;
-    String printString;
+    private double width;//文档宽度
+    String printString;//需要打印的串
 
 
 
@@ -89,20 +101,29 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         init();
     }
 
-    private Node getRootNode(String printString){
-        Node node=null;
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(getDocumentInputStream(printString));
-            NodeList lableprint = document.getElementsByTagName("lableprint");
-            node=lableprint.item(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return node;
+
+
+    public double getWidth() {
+        return width;
     }
 
+    public double getHeight() {
+        float maxHeight=0;
+        boolean f=true;
+        for (LablePrintLine lablePrintLine : this) {
+            maxHeight+=lablePrintLine.getHeight()*(f?2:1);
+            f=false;
+        }
+        return maxHeight;
+    }
+
+
+
+    /**
+     * 将打印字符串转换为输入流
+     * @param printString
+     * @return
+     */
     private InputStream getDocumentInputStream(String printString){
         String leftReplace="xia-L-left-L-xia";
         String rightReplace="xia-R-right-R-xia";
@@ -124,6 +145,30 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         return new ByteArrayInputStream(String.format(document,printString).getBytes());
     }
 
+
+    /**
+     * 将打印字符串 以xml方式解析
+     * @param printString
+     * @return
+     */
+    private Node getRootNode(String printString){
+        Node node=null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(getDocumentInputStream(printString));
+            NodeList lableprint = document.getElementsByTagName("lableprint");
+            node=lableprint.item(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return node;
+    }
+
+
+    /**
+     * 初始化
+     */
     private void init() {
         Node root=getRootNode(printString);
         if(root==null){
@@ -134,7 +179,10 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         nodeList(childNodes);
     }
 
-
+    /**
+     * 进行lable解析
+     * @param childNodes
+     */
     private void nodeList(NodeList childNodes){
         for (int i=0;i<childNodes.getLength();i++) {
             Node item = childNodes.item(i);
@@ -164,7 +212,10 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         }
     }
 
-
+    /**
+     * 构造字符串打印
+     * @param item
+     */
     private void stringNode( Node item ){
         Font font = lableFontMap.get(fonts.get(0));
         int maxText =((int)Math.floor(width / font.getSize2D()))*2;
@@ -176,6 +227,14 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 add(lastLablePrintLineString);
                 continue;
             }
+
+
+            /**
+            *将字符串以每行最大长度分组打印
+            */
+
+
+            //将当前行已有的文字进行补全
             StringBuilder stringBuilder=new StringBuilder();
             if(lastLablePrintLineString!=null){
                 int span=maxText-(int)Math.ceil((width-lastLablePrintLineString.getNextX())/(font.getSize2D()/2)+font.getSize2D());
@@ -184,6 +243,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 }
             }
 
+            //进行分组
             List<String> strings = StringUtil.lengthSplit(stringBuilder.toString()+s, maxText);
             for (int i=0;i<strings.size();i++){//String string : strings) {
                 String s1 = strings.get(i);
@@ -209,14 +269,14 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         }
     }
 
+    /**
+     * 将要打印的字符串以换行符分组
+     * @param item
+     * @return
+     */
     private String[] getPrintStringArray(Node item) {
         String nodeValue = item.getNodeValue();
 
-       /* boolean j=false;
-        if (nodeValue.lastIndexOf("\n") == nodeValue.length() - 1) {
-            nodeValue = nodeValue+" " + "\n";
-            j=true;
-        }*/
        if("\n".equals(nodeValue)){
            return new String[]{"<BR>"};
        }
@@ -226,6 +286,12 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         // nodeValue=nodeValue.replaceAll("\n","<BR>");
         return  split;
     }
+
+
+    /**
+     * 构造二维码打印
+     * @param item
+     */
 
     private void qrcodNode( Node item ){
         int v = (int)(width * 0.16);
@@ -239,18 +305,5 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
 
 
-    public double getWidth() {
-        return width;
-    }
-
-    public double getHeight() {
-        float maxHeight=0;
-        boolean f=true;
-        for (LablePrintLine lablePrintLine : this) {
-            maxHeight+=lablePrintLine.getHeight()*(f?2:1);
-            f=false;
-        }
-        return maxHeight;
-    }
 
 }
