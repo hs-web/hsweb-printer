@@ -100,15 +100,27 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
             }else {
-                if("C".equals(item.getNodeName())){
-                    lastLablePrintLineString=null;
-                    align.add(0,"C");
+                switch (item.getNodeName()){
+                    case "C":;
+                    case "R":;
+                    case "L":
+                        {
+                            lastLablePrintLineString=null;
+                            align.add(0,item.getNodeName());
+                            this.nodeList(item.getChildNodes());
+                            align.remove(0);
+                            lastLablePrintLineString=null;
+                        };break;
+                    default: this.nodeList(item.getChildNodes());
+                }
+               /* if("C".equals(item.getNodeName())){
+
                 }else if("R".equals(item.getNodeName())){
                     lastLablePrintLineString=null;
                     align.add(0,"R");
                 }
 
-                this.nodeList(item.getChildNodes());
+                this.nodeList(item.getChildNodes())
 
                 if("C".equals(item.getNodeName())){
                     lastLablePrintLineString=null;
@@ -116,7 +128,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 }else if("R".equals(item.getNodeName())){
                     lastLablePrintLineString=null;
                     align.remove(0);
-                }
+                }*/
             }
         }
     }
