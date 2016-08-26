@@ -17,7 +17,7 @@ public class PrinterHttpServer {
         httpServer.createContext("/prints/printers",new PrintersHandler());
     }
 
-    public void start() throws IOException {
+    public void start(){
         httpServer.start();
         state=true;
         System.out.println("打印服务启动成功！");

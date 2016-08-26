@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.URL;
 
 /**
@@ -33,7 +34,9 @@ public class PrintJFrame extends JFrame {
         try {
             printerHttpServer=new PrinterHttpServer();
             printerHttpServer.start();
-        } catch (IOException e) {
+        }catch (BindException e){
+            System.exit(0);
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
