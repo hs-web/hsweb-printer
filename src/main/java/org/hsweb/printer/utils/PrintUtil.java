@@ -11,9 +11,11 @@
 
 package org.hsweb.printer.utils;
 
+import org.hsweb.printer.dtos.PrintHistoryDTO;
 import org.hsweb.printer.dtos.PrintInputDTO;
 import org.hsweb.printer.dtos.PrintResultDTO;
 import org.hsweb.printer.dtos.PrinterDTO;
+import org.hsweb.printer.frame.StartMain;
 import org.hsweb.printer.utils.printable.BasePrintable;
 import org.hsweb.printer.utils.printable.LabelPrintable;
 import sun.print.Win32PrintService;
@@ -155,8 +157,16 @@ public class PrintUtil {
      * @return
      */
     public static PrintResultDTO print(PrintInputDTO printInputDTO){
+
         LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getPrintText());
-        return print(printInputDTO.getPrinterName(),labelPrintable);
+        PrintResultDTO resultDTO = print(printInputDTO.getPrinterName(), labelPrintable);
+
+        PrintHistoryDTO printHistoryDTO=new PrintHistoryDTO();
+        printHistoryDTO.setPrintInputDTO(printInputDTO);
+        printHistoryDTO.setPrintResultDTO(resultDTO);
+        StartMain.historyDTOList.add(printHistoryDTO);
+
+        return resultDTO;
     }
 
     public static void main(String[] args) {

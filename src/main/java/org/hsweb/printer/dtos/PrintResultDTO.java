@@ -11,10 +11,12 @@
 
 package org.hsweb.printer.dtos;
 
+import java.io.Serializable;
+
 /**
  * Created by xiongchuang on 2016/8/18 .
  */
-public class PrintResultDTO {
+public class PrintResultDTO implements Serializable{
     private Boolean success;
     private String message;
 

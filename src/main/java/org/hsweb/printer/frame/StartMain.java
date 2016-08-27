@@ -11,6 +11,9 @@
 
 package org.hsweb.printer.frame;
 
+import org.hsweb.printer.dtos.PrintHistoryDTO;
+import org.hsweb.printer.dtos.PrintInputDTO;
+import org.hsweb.printer.dtos.PrintResultDTO;
 import org.hsweb.printer.server.PrinterHttpServer;
 
 import javax.swing.*;
@@ -18,6 +21,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by xiongchuang on 2016/8/27 .
@@ -29,10 +35,49 @@ public class StartMain {
     private static TrayIcon printTrayIcon;
     private static MenuItemActionListener menuItemActionListener;
 
+    private static int maxHistory=10;
+
+    public static List<PrintHistoryDTO> historyDTOList=new ArrayList<PrintHistoryDTO>(){
+        @Override
+        public boolean add(PrintHistoryDTO printHistoryDTO) {
+            super.add(0,printHistoryDTO);
+
+            if(this.size()>maxHistory){
+                this.remove(maxHistory);
+            }
+            return true;
+        }
+
+        @Override
+        public void add(int index, PrintHistoryDTO element) {
+            throw new RuntimeException("不能添加指定位置");
+        }
+
+        @Override
+        public boolean addAll(int index, Collection<? extends PrintHistoryDTO> c) {
+            throw new RuntimeException("不能添加全部");
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends PrintHistoryDTO> c) {
+            throw new RuntimeException("不能添加全部");
+        }
+    };
 
 
 
     public static void main(String[] args) {
+        PrintResultDTO printResultDTO=new PrintResultDTO();
+        printResultDTO.setSuccess(true);
+
+        PrintInputDTO printInputDTO=new PrintInputDTO();
+        printInputDTO.setPrintDocName("xxxx");
+
+
+        PrintHistoryDTO printHistoryDTO=new PrintHistoryDTO();
+        printHistoryDTO.setPrintResultDTO(printResultDTO);
+        printHistoryDTO.setPrintInputDTO(printInputDTO);
+        historyDTOList.add(printHistoryDTO);
 
         PrinterHttpServer printerHttpServer =new PrinterHttpServer();
         if(printerHttpServer.getState()) {
