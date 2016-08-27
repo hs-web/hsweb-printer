@@ -24,4 +24,12 @@ public class PrinterDTO implements Serializable {
     public void setPrinterPort(String printerPort) {
         this.printerPort = printerPort;
     }
+
+    @Override
+    public String toString() {
+        return "PrinterDTO{" +
+                "printerName='" + printerName + '\'' +
+                ", printerPort='" + printerPort + '\'' +
+                '}';
+    }
 }

@@ -15,14 +15,12 @@ package org.hsweb.printer.server.handler;
 import com.alibaba.fastjson.JSON;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.hsweb.printer.dtos.PrinterDTO;
 import org.hsweb.printer.utils.PrintUtil;
 
-import javax.print.PrintService;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by xiongchuang on 2016/8/19 .
@@ -31,15 +29,8 @@ public class PrintersHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        List<Pnv> pnvs=new ArrayList<>();
-        Map<String, PrintService> printServices = PrintUtil.getPrintServices();
-        printServices.forEach((k,v)->{
-            Pnv pnv=new Pnv();
-            pnv.setName(k);
-            pnv.setPort(v.getName());
-            pnvs.add(pnv);
-        });
-        String s = JSON.toJSONString(pnvs);
+        List<PrinterDTO> printers = PrintUtil.getPrinters();
+        String s = JSON.toJSONString(printers);
         byte[] data = s.getBytes();
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
         httpExchange.sendResponseHeaders(200, data.length);

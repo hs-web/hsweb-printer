@@ -16,10 +16,14 @@ import org.hsweb.printer.dtos.PrintResultDTO;
 import org.hsweb.printer.dtos.PrinterDTO;
 import org.hsweb.printer.utils.printable.BasePrintable;
 import org.hsweb.printer.utils.printable.LabelPrintable;
+import sun.print.Win32PrintService;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import java.awt.print.*;
+import javax.print.attribute.standard.ColorSupported;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +87,21 @@ public class PrintUtil {
                 PrinterDTO printerDTO=new PrinterDTO();
                 printerDTO.setPrinterName(printService.getName());
                 printerDTO.setPrinterPort("");
+                if(printService instanceof Win32PrintService){
+                    try {
+                        ColorSupported attribute = printService.getAttribute(ColorSupported.class);
+                        Win32PrintService win32PrintService= (Win32PrintService)printService;
+                        Class<? extends Win32PrintService> aClass = win32PrintService.getClass();
+                        Field port = aClass.getDeclaredField("port");
+                        port.setAccessible(true);
+                        printerDTO.setPrinterPort((String) port.get(win32PrintService));
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
 
+                }
                 printerDTOs.add(printerDTO);
             }
         }
@@ -139,6 +157,13 @@ public class PrintUtil {
     public static PrintResultDTO print(PrintInputDTO printInputDTO){
         LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getPrintText());
         return print(printInputDTO.getPrinterName(),labelPrintable);
+    }
+
+    public static void main(String[] args) {
+        List<PrinterDTO> printers = getPrinters();
+        for (PrinterDTO printer : printers) {
+            System.out.println(printer);
+        }
     }
 
 
