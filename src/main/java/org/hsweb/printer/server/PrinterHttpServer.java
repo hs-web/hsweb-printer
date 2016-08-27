@@ -11,18 +11,17 @@ public class PrinterHttpServer {
     private HttpServer httpServer=null;
     private Boolean state=false;
 
-    public PrinterHttpServer() throws IOException {
-        httpServer= HttpServer.create(new InetSocketAddress(22511), 0);
-        httpServer.createContext("/prints",new PrintHandler());
-        httpServer.createContext("/prints/printers",new PrintersHandler());
+    public PrinterHttpServer(){
+        try {
+            httpServer= HttpServer.create(new InetSocketAddress(22511), 0);
+            httpServer.createContext("/prints",new PrintHandler());
+            httpServer.createContext("/prints/printers",new PrintersHandler());
+            httpServer.start();
+            state = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void start(){
-        httpServer.start();
-        state=true;
-        System.out.println("打印服务启动成功！");
-    }
-
     public HttpServer getHttpServer(){
         return httpServer;
     }
