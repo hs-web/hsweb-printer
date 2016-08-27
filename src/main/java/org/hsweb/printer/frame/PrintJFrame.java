@@ -46,7 +46,7 @@ public class PrintJFrame extends JFrame {
          * 窗口活动
          */
         public void windowActivated(WindowEvent e) {
-            JLabel jLabel=new JLabel("打印服务状态："+(printerHttpServer==null||!printerHttpServer.getState()?"未开启":"开启中"));
+            JLabel jLabel=new JLabel("<html><div style='padding:5px 10px'>打印服务状态："+(printerHttpServer==null||!printerHttpServer.getState()?"<span color='red'>未开启</span>":"<span color='green'>开启中</span>")+"</div></html>");
             jLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             jLabel.setVerticalAlignment(SwingConstants.TOP);
 

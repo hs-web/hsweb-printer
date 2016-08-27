@@ -35,12 +35,13 @@ public class StartMain {
     public static void main(String[] args) {
 
         PrinterHttpServer printerHttpServer =new PrinterHttpServer();
-        new PromptJFrame(applicationName,printerHttpServer);
-
         if(printerHttpServer.getState()) {
             printJFrame = new PrintJFrame(applicationName, printerHttpServer);
             addPrintTrayIcon();
         }
+        new PromptJFrame(applicationName,printerHttpServer);
+
+
     }
     private static void addPrintTrayIcon(){
         URL resource = StartMain.class.getClassLoader().getResource("print_icon.png");
