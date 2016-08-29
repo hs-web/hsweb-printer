@@ -31,9 +31,14 @@ public class PrintJFrame extends JFrame {
     public PrintJFrame(String applicationName, PrinterHttpServer printerHttpServer) {
         super(applicationName);
         this.printerHttpServer=printerHttpServer;
-
+        frame.setIconImage(StartMain.icon.getImage());
         frame.setSize(300, 80);
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();            //获取屏幕的尺寸
+        int screenWidth = screenSize.width;                    //获取屏幕的宽
+        int screenHeight = screenSize.height;
+        frame.setLocation(screenWidth / 2 - frame.getWidth() / 2, screenHeight / 2 - frame.getWidth() / 2);
         frame.setVisible(false);
         frame.setBackground(Color.white);
 

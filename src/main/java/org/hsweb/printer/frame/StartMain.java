@@ -32,6 +32,7 @@ public class StartMain {
     private static PrintJFrame printJFrame;
     private static TrayIcon printTrayIcon;
     private static MenuItemActionListener menuItemActionListener;
+    public static ImageIcon icon ;
 
     private static int maxHistory=10;
 
@@ -96,6 +97,9 @@ public class StartMain {
         historyDTOList.add(printHistoryDTO);*/
 
         PrinterHttpServer printerHttpServer =new PrinterHttpServer();
+        URL resource = StartMain.class.getClassLoader().getResource("print_icon.png");
+        icon=new ImageIcon(resource); // 将要显示到托盘中的图标
+
         if(printerHttpServer.getState()) {
             printJFrame = new PrintJFrame(applicationName, printerHttpServer);
             addPrintTrayIcon();
@@ -105,8 +109,8 @@ public class StartMain {
 
     }
     private static void addPrintTrayIcon(){
-        URL resource = StartMain.class.getClassLoader().getResource("print_icon.png");
-        ImageIcon icon = new ImageIcon(resource); // 将要显示到托盘中的图标
+
+
         printTrayIcon = new TrayIcon(icon.getImage(), "打印服务",new PopupMenu());//实例化托盘图标
         printTrayIcon.setImageAutoSize(true);
         printTrayIcon.addMouseListener(new MouseAdapter(){

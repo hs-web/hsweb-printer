@@ -25,6 +25,7 @@ public class PromptJFrame extends JFrame {
 
 
         JFrame promptJFrame = this;
+        promptJFrame.setIconImage(StartMain.icon.getImage());
         promptJFrame.setSize(300, 150);
         promptJFrame.setResizable(false);
         Toolkit kit = Toolkit.getDefaultToolkit();
