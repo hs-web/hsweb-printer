@@ -12,8 +12,6 @@
 package org.hsweb.printer.frame;
 
 import org.hsweb.printer.dtos.PrintHistoryDTO;
-import org.hsweb.printer.dtos.PrintInputDTO;
-import org.hsweb.printer.dtos.PrintResultDTO;
 import org.hsweb.printer.server.PrinterHttpServer;
 
 import javax.swing.*;
@@ -67,17 +65,35 @@ public class StartMain {
 
 
     public static void main(String[] args) {
-        PrintResultDTO printResultDTO=new PrintResultDTO();
+      /*  PrintResultDTO printResultDTO=new PrintResultDTO();
         printResultDTO.setSuccess(true);
 
         PrintInputDTO printInputDTO=new PrintInputDTO();
         printInputDTO.setPrintDocName("xxxx");
+        printInputDTO.setPageWidth(200d);
+        printInputDTO.setPrinterName("");
+        printInputDTO.setPrintText("a");
 
 
         PrintHistoryDTO printHistoryDTO=new PrintHistoryDTO();
         printHistoryDTO.setPrintResultDTO(printResultDTO);
         printHistoryDTO.setPrintInputDTO(printInputDTO);
         historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);
+        historyDTOList.add(printHistoryDTO);*/
 
         PrinterHttpServer printerHttpServer =new PrinterHttpServer();
         if(printerHttpServer.getState()) {
