@@ -60,7 +60,10 @@ public class ClientPrintContext implements PrintContext {
 
     private StringBuilder stringBuilder=new StringBuilder();
 
-
+    /**
+     * 纸张宽带 mm
+     * @param pageWidth
+     */
     public ClientPrintContext(Integer pageWidth) {
         pageWidth=pageWidth==null?800:pageWidth;
         double pageWidth2 = pageWidth / 3.55555555555555;
