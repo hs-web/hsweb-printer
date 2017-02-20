@@ -40,7 +40,7 @@ public class PrintJFrame extends JFrame {
         int screenHeight = screenSize.height;
         frame.setLocation(screenWidth / 2 - frame.getWidth() / 2, screenHeight / 2 - frame.getWidth() / 2);
         frame.setVisible(false);
-        frame.setBackground(Color.white);
+        frame.getContentPane().setBackground(Color.white);
 
         //为主窗体注册窗体事件
         frame.addWindowListener(new PrintJFrameWindowAdapter());

@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: org.hsweb.printer.frame.PrintMain
+Main-Class: org.hsweb.printer.frame.StartMain

@@ -34,13 +34,14 @@ public class PromptJFrame extends JFrame {
         int screenHeight = screenSize.height;
         promptJFrame.setLocation(screenWidth / 2 - promptJFrame.getWidth() / 2, screenHeight / 2 - promptJFrame.getWidth() / 2);
         promptJFrame.setVisible(true);
-        promptJFrame.setBackground(Color.white);
+        //promptJFrame.setBackground(Color.white);
         //为主窗体注册窗体事件
         // promptJFrame.addWindowListener(new PrintJFrameWindowAdapter(this));
         JLabel jLabel = new JLabel();
         jLabel.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel.setVerticalAlignment(SwingConstants.CENTER);
         promptJFrame.add(jLabel);
+       promptJFrame.getContentPane().setBackground(Color.WHITE);
 
         if (printerHttpServer.getState()) {
             for (int i = 3; i > 0; --i) {
