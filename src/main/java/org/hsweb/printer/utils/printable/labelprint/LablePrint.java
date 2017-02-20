@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.List;
 
@@ -19,86 +20,53 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     /**
      * 文字形态的label集合
      */
-    private Set<String> fontLables=new HashSet<String>(){
-        {
-            add("B");
-            add("G");
-            add("GB");
-        }
-    };
+    private Set<String> otherLables=new HashSet<String>(Arrays.asList("QR"));
+
+    /**
+     * 文字形态的label集合
+     */
+    private Set<String> fontLables=new HashSet<String>(Arrays.asList("B","G","GB","W","H"));
+    /**
+     * 对齐方式lable
+     */
+    private Set<String> alignLables=new HashSet<String>(Arrays.asList("L","R","C"));
+
 
     /**
      * 文字形态label对应的字体
      */
-    private Map<String, Font> lableFontMap = new HashMap<String, Font>() {
-        {
-            put("B", FontUtil.deriveFont(Font.BOLD, 12));
-            put("G", FontUtil.deriveFont(Font.PLAIN, 24));
-            put("GB",FontUtil.deriveFont(Font.BOLD, 24));
-        }
-
-        @Override
-        public Font get(Object key) {
-            Font font = super.get(key);
-            if(font!=null){
-                return font;
-            }
-            return FontUtil.deriveFont(Font.PLAIN, 12);
-        }
-    };
-
-
-    /**
-     * 对齐方式lable
-     */
-    private Set<String> alignLables=new HashSet<String>(){
-        {
-            add("L");
-            add("R");
-            add("C");
-        }
-    };
-
+    private Map<String, Font> lableFontMap;
 
     /**
      * 文字样式队列
      */
-    private List<String> fonts=new ArrayList<String>(){
-        @Override
-        public String get(int index) {
-            if(size()==0){
-                return "";
-            }
-            return super.get(index);
-        }
-    };
+    private List<String> fonts=new FontStyleList();
 
     /**
      *对齐方式队列
      */
-    private List<String> align=new ArrayList<String>(){
-        @Override
-        public String get(int index) {
-            if(size()==0){
-                return "L";
-            }
-            return super.get(index);
-        }
-    };
+    private List<String> align=new FontAlignList();
 
 
     private double width;//文档宽度
-    String printString;//需要打印的串
-
+    private String printString;//需要打印的串
+    private int fontSize;
+    private int textLine;
 
 
     private LablePrintLineString lastLablePrintLineString=null;
+    private boolean lastLablePrintLineStringBR=false;
 
 
-    public LablePrint(double width, String printString) {
+    public LablePrint(double width,int fontSize, String printString) {
         this.width = width;
         this.printString = printString;
+        this.fontSize=fontSize;
+        this.textLine=fontSize/8;
+        lableFontMap= new LableFontMap(fontSize);
         init();
+
+
     }
 
 
@@ -127,6 +95,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private InputStream getDocumentInputStream(String printString){
         String leftReplace="xia-L-left-L-xia";
         String rightReplace="xia-R-right-R-xia";
+        printString=printString.replaceAll("<BR>","\n");
 
         printString=printString.replaceAll("&lt;",leftReplace).replaceAll("&gt;",rightReplace).replaceAll("<","&lt;").replaceAll(">","&gt;");
 
@@ -138,11 +107,23 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             printString=printString.replaceAll("&lt;"+s+"&gt;","<"+s+">").replaceAll("&lt;/"+s+"&gt;","</"+s+">");
         }
 
+        for (String s:otherLables){
+            printString=printString.replaceAll("&lt;"+s+"&gt;","<"+s+">").replaceAll("&lt;/"+s+"&gt;","</"+s+">");
+        }
+
         printString=printString.replaceAll(leftReplace,"&lt;").replaceAll(rightReplace,"&gt;");
+        //printString=printString.replaceAll("\n","<BR/>");
 
 
-        String document="<?xml version=\"1.0\" encoding=\"utf-8\" ?><lableprint>%s</lableprint>";
-        return new ByteArrayInputStream(String.format(document,printString).getBytes());
+        String document="<?xml version=\"1.0\" encoding=\"UTF-8\"?><lableprint>%s</lableprint>";
+        byte[] bytes=null;
+        try {
+            String format = String.format(document, printString);
+            bytes = format.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new ByteArrayInputStream(bytes);
     }
 
 
@@ -161,6 +142,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             node=lableprint.item(0);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("打印解析失败");
         }
         return node;
     }
@@ -218,15 +200,22 @@ public class LablePrint extends ArrayList<LablePrintLine> {
      */
     private void stringNode( Node item ){
         Font font = lableFontMap.get(fonts.get(0));
-        int maxText =((int)Math.floor(width / font.getSize2D()))*2;
+        int maxText =((int) Math.floor(width / font.getSize2D()))*2;
 
         String[] split =getPrintStringArray(item);
         for (String s : split) {
             if("".equals(s)||"\n".equals(s)||"<BR>".equals(s)){
-                lastLablePrintLineString=new LablePrintLineString(align.get(0),(float) width,font,"");
-                add(lastLablePrintLineString);
+                if(lastLablePrintLineStringBR&&lastLablePrintLineString!=null){
+                    add(lastLablePrintLineString);
+                }
+                lastLablePrintLineString=new LablePrintLineString(textLine,align.get(0),(float) width, FontUtil.printFont(Font.PLAIN, fontSize),"","");
+                lastLablePrintLineStringBR=true;
                 continue;
             }
+            if(lastLablePrintLineStringBR&&lastLablePrintLineString!=null){
+                add(lastLablePrintLineString);
+            }
+            lastLablePrintLineStringBR=false;
 
 
             /**
@@ -237,7 +226,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             //将当前行已有的文字进行补全
             StringBuilder stringBuilder=new StringBuilder();
             if(lastLablePrintLineString!=null){
-                int span=maxText-(int)Math.ceil((width-lastLablePrintLineString.getNextX())/(font.getSize2D()/2)+font.getSize2D());
+                int span=maxText-(int) Math.ceil((width-lastLablePrintLineString.getNextX())/(font.getSize2D()/2));
                 for (int i=0;i<span;i++) {
                     stringBuilder.append(" ");
                 }
@@ -255,7 +244,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 if(i==0&&lastLablePrintLineString!=null){
                     lablePrintLineString = lastLablePrintLineString;
                 }else {
-                    lablePrintLineString=new LablePrintLineString(align.get(0),(float) width);
+                    lablePrintLineString=new LablePrintLineString(textLine,align.get(0),(float) width);
                     add(lablePrintLineString);
                 }
 
@@ -264,7 +253,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
                 }else{
                     lastLablePrintLineString=null;
                 }
-                lablePrintLineString.add(font,s1);
+                lablePrintLineString.add(font,fonts.get(0),s1);
             }
         }
     }
@@ -277,9 +266,10 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private String[] getPrintStringArray(Node item) {
         String nodeValue = item.getNodeValue();
 
-       if("\n".equals(nodeValue)){
+       if("\n".equals(nodeValue)||"<BR>".equals(item)){
            return new String[]{"<BR>"};
        }
+        //nodeValue= nodeValue.replaceAll("<BR>","\n<BR>\n");
         nodeValue= nodeValue.replaceAll("\n","\n<BR>\n");
         String[] split = nodeValue.split("\n");
 
@@ -294,16 +284,80 @@ public class LablePrint extends ArrayList<LablePrintLine> {
      */
 
     private void qrcodNode( Node item ){
-        int v = (int)(width * 0.16);
-        int size=(int)width-v*2;
-        LablePrintLineQrcode lablePrintLineQrcode=new LablePrintLineQrcode(v,size,item.getTextContent());
+        int size=(int)(width/2.5);
+        size=size<55?55:size;
+        LablePrintLineQrcode lablePrintLineQrcode=new LablePrintLineQrcode((int)(width-size)/2,size,item.getTextContent());
         add(lablePrintLineQrcode);
     }
 
 
 
+    public void print(Graphics graphics,double xpadding,double ypadding){
+        Color fontColor = Color.BLACK;
+        //转换成Graphics2D
+        Graphics2D g2 = (Graphics2D) graphics;
+        g2.setColor(fontColor);
+
+        float height=fontSize*3;
+        for (LablePrintLine lablePrintLine : this) {
+            float tempheight=height;
+            height+=lablePrintLine.getHeight();
+           /* if(!lablePrintLine.getClass().equals(LablePrintLineQrcode.class)){
+                tempheight=height;
+            }*/
+            lablePrintLine.print((float)xpadding,tempheight,g2);
+        }
+        g2.setFont(new Font("",Font.PLAIN,1));
+        g2.setColor(Color.BLACK);
+        g2.drawString(".",(int)getWidth(), height);
+        //graphics.drawString(" ",0,(int)getHeight());
+    }
 
 
+    private class LableFontMap extends HashMap<String, Font> {
 
 
+        private int fontSize=8;
+        public LableFontMap(int fontSize){
+            this.fontSize=fontSize;
+            init(fontSize);
+        }
+
+        private void init(int fontSize){
+            put("B", FontUtil.printFont(Font.BOLD, fontSize));
+            put("G", FontUtil.printFont(Font.PLAIN, fontSize*2));
+            put("GB",FontUtil.printFont(Font.BOLD, fontSize*2));
+            put("W", FontUtil.printFont(Font.PLAIN, fontSize*2));
+            put("H", FontUtil.printFont(Font.PLAIN, fontSize));
+        }
+
+
+        @Override
+        public Font get(Object key) {
+            Font font = super.get(key);
+            if(font!=null){
+                return font;
+            }
+            return FontUtil.printFont(Font.PLAIN, fontSize);
+        }
+    }
+    private class FontStyleList extends ArrayList<String> {
+        @Override
+        public String get(int index) {
+            if (size() == 0) {
+                return "";
+            }
+            return super.get(index);
+        }
+    }
+    private class FontAlignList extends ArrayList<String> {
+        @Override
+        public String get(int index) {
+            if(size()==0){
+                return "L";
+            }
+            return super.get(index);
+        }
+    }
 }
+

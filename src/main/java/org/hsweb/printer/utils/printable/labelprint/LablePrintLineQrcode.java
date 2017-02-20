@@ -11,6 +11,7 @@
 
 package org.hsweb.printer.utils.printable.labelprint;
 
+
 import org.hsweb.printer.utils.SemacodeTool;
 
 import java.awt.*;
@@ -34,17 +35,17 @@ public class LablePrintLineQrcode implements LablePrintLine{
     }
 
     private void image(){
-        this.bufferedImage=SemacodeTool.toBufferedImage(qrcodeString,size);
+        this.bufferedImage= SemacodeTool.toBufferedImage(qrcodeString,size);
     }
 
 
     @Override
     public float getHeight() {
-        return size+size*0.4f;
+        return size+size*0.1f;
     }
 
     @Override
     public void print(float xpadding,float y,Graphics2D g2){
-        g2.drawImage(bufferedImage,x,(int)(y+size*0.2f),size,size,null);
+        g2.drawImage(bufferedImage,x+(int)xpadding,(int)(y+size*0.05f),size,size,null);
     }
 }

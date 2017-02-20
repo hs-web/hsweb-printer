@@ -1,9 +1,14 @@
 package org.hsweb.printer.utils.printable;
 
-import org.hsweb.printer.utils.printable.labelprint.LablePrint;
-import org.hsweb.printer.utils.printable.labelprint.LablePrintLine;
-import org.hsweb.printer.utils.printable.labelprint.LablePrintLineQrcode;
 
+import org.hsweb.printer.utils.PrintUtil;
+import org.hsweb.printer.utils.printable.labelprint.LablePrint;
+
+import javax.print.DocFlavor;
+import javax.print.PrintService;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.PrintServiceAttribute;
+import javax.print.attribute.standard.Media;
 import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
@@ -19,12 +24,27 @@ public class LabelPrintable implements BasePrintable {
     private String printName;
     private LablePrint lablePrint;
 
+    private double Xpadding;
 
-    private Color fontColor = Color.black;
+/*    pagewidth = 纸张宽度mm/3.55
+    字数= pagewidth/9 -1*/
 
     public LabelPrintable(String printName, double width, String printString) {
+        int fontSize=8;
+
         this.printName = printName;
-        this.lablePrint = new LablePrint(width-getXpadding()*2, printString);
+
+        width=width/ 3.55555555555555;
+
+        int intWidth=(int)(width-width*0.1);
+
+        int i = intWidth / fontSize ;
+
+        int printWidth = i * fontSize;
+
+        Xpadding=(width-printWidth)/2;
+
+        this.lablePrint = new LablePrint(printWidth,fontSize, printString);
     }
 
     @Override
@@ -47,23 +67,34 @@ public class LabelPrintable implements BasePrintable {
         if (pageIndex > 0) {
             return NO_SUCH_PAGE;
         }
-
-        //转换成Graphics2D
-        Graphics2D g2 = (Graphics2D) graphics;
-        g2.setColor(fontColor);
-
-        float height=(float) getYpadding()+lablePrint.get(0).getHeight();
-        for (LablePrintLine lablePrintLine : lablePrint) {
-            float tempheight=height;
-            height+=lablePrintLine.getHeight();
-            if(!lablePrintLine.getClass().equals(LablePrintLineQrcode.class)){
-                tempheight=height;
-            }
-            lablePrintLine.print((float)getXpadding(),tempheight,g2);
-        }
-        //graphics.drawString(" ",0,(int)getHeight());
+        lablePrint.print(graphics,getXpadding(),getYpadding());
         return PAGE_EXISTS;
     }
 
+    @Override
+    public double getXpadding(){
+        return Xpadding;
+    }
+
+
+    public static void main(String[] args) {
+
+        PrintService printer =  PrintUtil.getPrintService("EPSON TM-T81II ReceiptSC4");
+
+        Media[] objs = (Media[]) printer.getSupportedAttributeValues(Media.class, null, null);
+        for (Media obj : objs) {
+            Class<? extends PrintServiceAttribute> category = (Class<? extends PrintServiceAttribute>) obj.getCategory();
+            PrintServiceAttribute attribute = printer.getAttribute(category);
+            System.out.println(1);
+        }
+
+        Class<Attribute>[] supportedAttributeCategories = (Class<Attribute>[]) printer.getSupportedAttributeCategories();
+        for (Class<Attribute> supportedAttributeCategory : supportedAttributeCategories) {
+            Object supportedAttributeValues = printer.getSupportedAttributeValues(supportedAttributeCategory, null, null);
+            System.out.println(1);
+        }
+        DocFlavor[] supportedDocFlavors = printer.getSupportedDocFlavors();
+        System.out.println(1);
+    }
 }
 

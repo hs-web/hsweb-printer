@@ -20,7 +20,7 @@ public interface LablePrintLine {
 
 
     float getHeight();
-    void print(float xpadding,float y,Graphics2D g2);
+    void print(float xpadding, float y, Graphics2D g2);
 
 
 
