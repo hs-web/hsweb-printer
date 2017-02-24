@@ -115,15 +115,13 @@ public interface PrintContext {
          int[] align=getTableAlign();
 
          this.append(start);
-         if(width==null&&text==null && width.length!=text.length&&(align==null||(align!=null&&align.length!=text.length))){
+         if(width==null||text==null || (width.length!=text.length)||(align!=null&&(align.length!=text.length))){
              if(text!=null){
                  for (String s:text){
                      this.append(s);
                  }
              }
          }else{
-             if (text == null)
-                 return this;
              int maxRow=0;
 
              for(int i=0;i<text.length;i++){
