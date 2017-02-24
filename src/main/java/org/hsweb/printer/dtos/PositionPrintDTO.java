@@ -19,7 +19,10 @@ import java.io.Serializable;
 public class PositionPrintDTO implements Serializable {
     private String type;
     private String context;
-    private PositionPrintLocationDTO location=new PositionPrintLocationDTO();
+    private String x;
+    private String y;
+    private String width;
+    private String height;
     private PositionPrintFontDTO font=new PositionPrintFontDTO();
     private PositionPrintStyleDTO style=new PositionPrintStyleDTO();
 
@@ -39,12 +42,36 @@ public class PositionPrintDTO implements Serializable {
         this.context = context;
     }
 
-    public PositionPrintLocationDTO getLocation() {
-        return location;
+    public String getX() {
+        return x;
     }
 
-    public void setLocation(PositionPrintLocationDTO location) {
-        this.location = location;
+    public void setX(String x) {
+        this.x = x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public void setY(String y) {
+        this.y = y;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
     }
 
     public PositionPrintFontDTO getFont() {
