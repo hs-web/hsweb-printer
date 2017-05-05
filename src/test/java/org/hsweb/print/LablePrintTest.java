@@ -74,7 +74,7 @@ public class LablePrintTest {
                 .appendRightFont("菜品：" + PrintContext.getRightString("500", 14))
                 .appendRightFont("快递：" + PrintContext.getRightString("500", 14));
         printContext.appendRightFont("优惠：" + PrintContext.getRightString("500", 14));
-        printContext.appendRightFont("实付：" + PrintContext.getRightString("500", 14))
+        printContext.appendRightFont(ClientPrintContext.HeightFont_S+"实付：" + PrintContext.getRightString("500", 14)+ClientPrintContext.HeightFont_E)
                 //.appendQRcode(orderPrintDTO.getSemacodeStr()).BR()
                 .appendCenterFont("请您在收餐后尽快食用，祝您用餐愉快！")
                 .appendCenterFont("如果有任何疑问，请拨打客服电话：121212")

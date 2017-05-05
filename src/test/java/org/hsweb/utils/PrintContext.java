@@ -14,6 +14,7 @@ package org.hsweb.utils;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  * Created by xiong on 2016/3/1 .
@@ -23,6 +24,12 @@ public interface PrintContext {
 
     int getMaxSize();
 
+    default PrintContext when(boolean b, Consumer<PrintContext> consumer){
+        if(b){
+            consumer.accept(this);
+        }
+        return this;
+    }
 
     static String getBlankString(int size){
         if(size<1){
