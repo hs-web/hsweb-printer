@@ -12,6 +12,9 @@
 package org.hsweb.utils;
 
 
+import java.io.File;
+import java.io.InputStream;
+
 /**
  * Created by xiong on 2016/3/1 .
  */
@@ -307,6 +310,12 @@ public interface PrintContext {
         return this;
     }
     PrintContext appendQRcode(String s);
+
+    PrintContext systemSound(String fileName,boolean... b);
+    PrintContext sound(String base64,boolean... b);
+    PrintContext sound(File file,boolean... b);
+    PrintContext sound(InputStream in,boolean... b);
+
 
     String getContext();
 

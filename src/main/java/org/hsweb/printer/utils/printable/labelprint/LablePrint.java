@@ -1,6 +1,7 @@
 package org.hsweb.printer.utils.printable.labelprint;
 
 import org.hsweb.printer.utils.FontUtil;
+import org.hsweb.printer.utils.MusicPlayer;
 import org.hsweb.printer.utils.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -14,13 +15,16 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LablePrint extends ArrayList<LablePrintLine> {
 
     /**
      * 文字形态的label集合
      */
-    private Set<String> otherLables=new HashSet<String>(Arrays.asList("QR"));
+    private Set<String> otherLables=new HashSet<String>(Arrays.asList("QR","SOUND","TSOUND","SOUND64","TSOUND64"));
+    private Set<String> otherStartLables=new HashSet<String>(Arrays.asList());
 
     /**
      * 文字形态的label集合
@@ -58,7 +62,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private boolean lastLablePrintLineStringBR=false;
 
 
-    public LablePrint(double width,int fontSize, String printString) {
+    public LablePrint(double width, int fontSize, String printString) {
         this.width = width;
         this.printString = printString;
         this.fontSize=fontSize;
@@ -77,16 +81,34 @@ public class LablePrint extends ArrayList<LablePrintLine> {
 
     public double getHeight() {
         float maxHeight=0;
-        boolean f=true;
         for (LablePrintLine lablePrintLine : this) {
-            maxHeight+=lablePrintLine.getHeight()*(f?2:1);
-            f=false;
+            maxHeight+=lablePrintLine.getHeight();
         }
         return maxHeight;
     }
 
 
 
+    private  String replaceAllPrintString(String printString, Collection<String> lables,final String regexTemp,int formatSize) {
+        if(lables==null||lables.size()==0){
+            return printString;
+        }
+
+        StringBuilder regex=new StringBuilder();
+        for (String s : lables) {
+            String[] args=new String[formatSize];
+            for (int i=0;i<formatSize;i++) {
+                args[i]=s;
+            }
+            regex.append(regex.length()>0?"|":"").append(String.format(regexTemp,args));
+        }
+        Matcher matcher = Pattern.compile(regex.toString()).matcher(printString);
+        while (matcher.find()) {
+            String group = matcher.group(0);
+            printString=printString.replaceAll(group,group.replace("&lt;","<").replace("&gt;",">"));
+        }
+        return printString;
+    }
     /**
      * 将打印字符串转换为输入流
      * @param printString
@@ -110,6 +132,8 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         for (String s:otherLables){
             printString=printString.replaceAll("&lt;"+s+"&gt;","<"+s+">").replaceAll("&lt;/"+s+"&gt;","</"+s+">");
         }
+
+        printString=replaceAllPrintString(printString,otherStartLables,"(&lt;%s(_((?!&gt;).)*)?&gt;)|(&lt;/%s(_((?!&gt;).)*)?&gt;)",2);
 
         printString=printString.replaceAll(leftReplace,"&lt;").replaceAll(rightReplace,"&gt;");
         //printString=printString.replaceAll("\n","<BR/>");
@@ -168,31 +192,42 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private void nodeList(NodeList childNodes){
         for (int i=0;i<childNodes.getLength();i++) {
             Node item = childNodes.item(i);
-            if("#text".equals(item.getNodeName())){
+            String nodeName = item.getNodeName();
+            if("#text".equals(nodeName)){
                 this.stringNode(item);
-            }else if("QR".equals(item.getNodeName())) {
+            }else if("QR".equals(nodeName)) {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
+            }else if(nodeName.startsWith("SOUND")){
+                this.soundNode(item,false);
+            }else if(nodeName.startsWith("TSOUND")){
+                this.soundNode(item,true);
+            }else if(nodeName.startsWith("SOUND64")){
+                this.sound64Node(item,false);
+            }else if(nodeName.startsWith("TSOUND64")){
+                this.sound64Node(item,true);
             }else {
 
-                if(alignLables.contains(item.getNodeName())){
+                if(alignLables.contains(nodeName)){
                     lastLablePrintLineString=null;
-                    align.add(0,item.getNodeName());
-                }else if(fontLables.contains(item.getNodeName())){
-                    fonts.add(0,item.getNodeName());
+                    align.add(0, nodeName);
+                }else if(fontLables.contains(nodeName)){
+                    fonts.add(0, nodeName);
                 }
 
                 this.nodeList(item.getChildNodes());
 
-                if(alignLables.contains(item.getNodeName())){
+                if(alignLables.contains(nodeName)){
                     align.remove(0);
                     lastLablePrintLineString=null;
-                }else if(fontLables.contains(item.getNodeName())){
+                }else if(fontLables.contains(nodeName)){
                     fonts.remove(0);
                 }
             }
         }
     }
+
+
 
     /**
      * 构造字符串打印
@@ -289,6 +324,20 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         LablePrintLineQrcode lablePrintLineQrcode=new LablePrintLineQrcode((int)(width-size)/2,size,item.getTextContent());
         add(lablePrintLineQrcode);
     }
+    private void soundNode(Node item, boolean b) {
+        MusicPlayer.playSystem(item.getTextContent(),b);
+    }
+    private void sound64Node(Node item, boolean b) {
+        try {
+            String textContent = item.getTextContent();
+            InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(textContent));
+            MusicPlayer.play(inputStream, b);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 
@@ -298,7 +347,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         Graphics2D g2 = (Graphics2D) graphics;
         g2.setColor(fontColor);
 
-        float height=fontSize*3;
+        float height=(float) ypadding;
         for (LablePrintLine lablePrintLine : this) {
             float tempheight=height;
             height+=lablePrintLine.getHeight();
@@ -307,9 +356,9 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             }*/
             lablePrintLine.print((float)xpadding,tempheight,g2);
         }
-        g2.setFont(new Font("",Font.PLAIN,1));
+        g2.setFont(new Font("",Font.PLAIN,2));
         g2.setColor(Color.BLACK);
-        g2.drawString(".",(int)getWidth(), height);
+        g2.drawString(".",(int)xpadding+1, height+fontSize);
         //graphics.drawString(" ",0,(int)getHeight());
     }
 
@@ -359,5 +408,9 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             return super.get(index);
         }
     }
+
+
+
+
 }
 

@@ -11,6 +11,9 @@
 
 package org.hsweb.utils;
 
+import java.io.*;
+import java.util.Base64;
+
 /**
  * Created by xiong on 2017-02-09.
  */
@@ -56,6 +59,24 @@ public class ClientPrintContext implements PrintContext {
     public static final String QR_S="<QR>";//二维码开始<QRcode></QRcode>测试
 
     public static final String QR_E="</QR>";//二维码结束
+
+    public static final String SOUND_S="<SOUND>";
+    public static final String SOUND_E="</SOUND>";
+
+    public static final String TSOUND_S="<TSOUND>";
+    public static final String TSOUND_E="</TSOUND>";
+
+    public static final String SOUND64_S="<SOUND64>";
+    public static final String SOUND64_E="</SOUND64>";
+
+    public static final String TSOUND64_S="<TSOUND64>";
+    public static final String TSOUND64_E="</TSOUND64>";
+
+
+    public interface SystemSound{
+        String newPrint="new_print";
+        String newOrder="new_order";
+    }
 
 
     private StringBuilder stringBuilder=new StringBuilder();
@@ -220,6 +241,60 @@ public class ClientPrintContext implements PrintContext {
         this.append(QR_S).append(s).append(QR_E);
         return this;
     }
+
+    @Override
+    public PrintContext systemSound(String fileName,boolean... b) {
+        if(b!=null&&b.length>0&&b[0]){
+            return  this.append(TSOUND_S).append(fileName).append(TSOUND_E);
+        }
+
+        return  this.append(SOUND_S).append(fileName).append(SOUND_E);
+    }
+
+    @Override
+    public PrintContext sound(String base64,boolean... b) {
+        if(b!=null&&b.length>0&&b[0]){
+            return  this.append(TSOUND64_S).append(base64).append(TSOUND64_E);
+        }
+        return  this.append(SOUND64_S).append(base64).append(SOUND64_E);
+    }
+
+    @Override
+    public PrintContext sound(File file,boolean... b) {
+        try {
+            return sound(new FileInputStream(file),b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    @Override
+    public PrintContext sound(InputStream in,boolean... b2) {
+        if(in==null){
+            return this;
+        }
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream(1000)){
+
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = in.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            return sound(new String(Base64.getEncoder().encode(bos.toByteArray())),b2);
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return this;
+    }
+
     @Override
     public int getMaxSize(){
         return maxSize;

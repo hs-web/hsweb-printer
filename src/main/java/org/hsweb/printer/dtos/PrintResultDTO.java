@@ -16,9 +16,19 @@ import java.io.Serializable;
 /**
  * Created by xiongchuang on 2016/8/18 .
  */
-public class PrintResultDTO implements Serializable{
+public class PrintResultDTO implements Serializable {
+    private String printDateTime;
     private Boolean success;
     private String message;
+    private String printerName;
+
+    public String getPrintDateTime() {
+        return printDateTime;
+    }
+
+    public void setPrintDateTime(String printDateTime) {
+        this.printDateTime = printDateTime;
+    }
 
     public Boolean getSuccess() {
         return success;
@@ -36,11 +46,11 @@ public class PrintResultDTO implements Serializable{
         this.message = message;
     }
 
-    @Override
-    public String toString() {
-        return "PrintResultDTO{" +
-                "success=" + success +
-                ", message='" + message + '\'' +
-                '}';
+    public String getPrinterName() {
+        return printerName;
+    }
+
+    public void setPrinterName(String printerName) {
+        this.printerName = printerName;
     }
 }

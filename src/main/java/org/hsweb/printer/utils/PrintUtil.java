@@ -11,18 +11,17 @@
 
 package org.hsweb.printer.utils;
 
-import org.hsweb.printer.dtos.PrintHistoryDTO;
+
 import org.hsweb.printer.dtos.PrintInputDTO;
 import org.hsweb.printer.dtos.PrintResultDTO;
 import org.hsweb.printer.dtos.PrinterDTO;
-import org.hsweb.printer.frame.StartMain;
 import org.hsweb.printer.utils.printable.BasePrintable;
 import org.hsweb.printer.utils.printable.LabelPrintable;
-import sun.print.Win32PrintService;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.standard.ColorSupported;
+import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.lang.reflect.Field;
@@ -75,11 +74,11 @@ public class PrintUtil {
         Map<String, PrintService> printServiceMap = Arrays.asList(printServices).stream().collect(Collectors.toMap(PrintService::getName, (o) -> o));
         return printServiceMap;
     }
-    /**
-     * 获取所有打印机
-     * @return
-     */
-    public static List<PrinterDTO> getPrinters(){
+    /*
+   * 获取所有打印机
+    * @return
+    */
+    public static List<PrinterDTO> getPrinters() {
         List<PrinterDTO> printerDTOs=new ArrayList<PrinterDTO>();
 
         PrintService[] printServices = PrinterJob.lookupPrintServices();
@@ -89,25 +88,57 @@ public class PrintUtil {
                 PrinterDTO printerDTO=new PrinterDTO();
                 printerDTO.setPrinterName(printService.getName());
                 printerDTO.setPrinterPort("");
-                if(printService instanceof Win32PrintService){
-                    try {
-                        ColorSupported attribute = printService.getAttribute(ColorSupported.class);
-                        Win32PrintService win32PrintService= (Win32PrintService)printService;
-                        Class<? extends Win32PrintService> aClass = win32PrintService.getClass();
-                        Field port = aClass.getDeclaredField("port");
-                        port.setAccessible(true);
-                        printerDTO.setPrinterPort((String) port.get(win32PrintService));
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
 
+                ColorSupported attribute = printService.getAttribute(ColorSupported.class);
+                Class<?> printServiceImplClass = getPrintServiceImplClass();
+                Field port = null;
+                try {
+                    port = printServiceImplClass.getDeclaredField("port");
+                    String printPort = (String) port.get(printService);
+                    port.setAccessible(true);
+                    printerDTO.setPrinterPort(printPort);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
+
+
+//                if(printService instanceof Win32PrintService){
+//                    try {
+//                        ColorSupported attribute = printService.getAttribute(ColorSupported.class);
+//                        Win32PrintService win32PrintService= (Win32PrintService)printService;
+//                        Class<? extends Win32PrintService> aClass = win32PrintService.getClass();
+//                        Field port = aClass.getDeclaredField("port");
+//                        port.setAccessible(true);
+//                        printerDTO.setPrinterPort((String) port.get(win32PrintService));
+//                    } catch (NoSuchFieldException e) {
+//                        e.printStackTrace();
+//                    } catch (IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
                 printerDTOs.add(printerDTO);
             }
         }
         return printerDTOs;
+    }
+
+    private static Class<?> getPrintServiceImplClass(){
+        Class<?> printServiceClass = null;
+        try {
+            Class<?>  win32PrintService= Class.forName("sun.print.Win32PrintService");
+            printServiceClass = win32PrintService;
+        } catch (ClassNotFoundException e) {
+            try {
+                Class<?>  unixPrintService= Class.forName("sun.print.UnixPrintService");
+                printServiceClass = unixPrintService;
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return printServiceClass;
     }
 
     /**
@@ -121,10 +152,16 @@ public class PrintUtil {
 
         PrintResultDTO printVo=new PrintResultDTO();
         printVo.setSuccess(true);
-
+        printVo.setPrintDateTime(DateUtil.timeToString(System.currentTimeMillis(),"MM-dd HH:mm:ss"));
         if(printService==null){
             printVo.setSuccess(false);
             printVo.setMessage("打印机不存在");
+            return printVo;
+        }
+
+        if(!printerName.equals(printService.getName())) {
+            printVo.setPrinterName(printService.getName());
+            printVo.setMessage("未找到"+printerName+"打印机,使用"+printService.getName()+"打印机打印");
         }
 
         try {
@@ -140,9 +177,10 @@ public class PrintUtil {
             job.setPrintService(printService);
             job.print();
             printVo.setSuccess(true);
-            printVo.setMessage("打印机成功");
-
-        } catch (PrinterException e) {
+        }catch (PrinterAbortException e){
+            printVo.setSuccess(false);
+            printVo.setMessage("主动取消打印");
+        }catch (PrinterException e) {
             e.printStackTrace();
             printVo.setSuccess(false);
             printVo.setMessage(e.getMessage());
@@ -157,16 +195,17 @@ public class PrintUtil {
      * @return
      */
     public static PrintResultDTO print(PrintInputDTO printInputDTO){
-
-        LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getPrintText());
-        PrintResultDTO resultDTO = print(printInputDTO.getPrinterName(), labelPrintable);
-
-        PrintHistoryDTO printHistoryDTO=new PrintHistoryDTO();
-        printHistoryDTO.setPrintInputDTO(printInputDTO);
-        printHistoryDTO.setPrintResultDTO(resultDTO);
-        StartMain.historyDTOList.add(printHistoryDTO);
-
-        return resultDTO;
+        try {
+            LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getPrintText());
+            PrintResultDTO resultDTO = print(printInputDTO.getPrinterName(), labelPrintable);
+            return resultDTO;
+        } catch (Exception e){
+            PrintResultDTO resultDTO=new PrintResultDTO();
+            resultDTO.setSuccess(false);
+            resultDTO.setMessage(e.getMessage());
+            resultDTO.setPrintDateTime(DateUtil.timeToString(System.currentTimeMillis(),"MM-dd HH:mm:ss"));
+            return resultDTO;
+        }
     }
 
     public static void main(String[] args) {
