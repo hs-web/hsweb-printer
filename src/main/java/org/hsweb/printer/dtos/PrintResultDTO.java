@@ -53,4 +53,14 @@ public class PrintResultDTO implements Serializable {
     public void setPrinterName(String printerName) {
         this.printerName = printerName;
     }
+
+    @Override
+    public String toString() {
+        return "PrintResultDTO{" +
+                "printDateTime='" + printDateTime + '\'' +
+                ", success=" + success +
+                ", message='" + message + '\'' +
+                ", printerName='" + printerName + '\'' +
+                '}';
+    }
 }

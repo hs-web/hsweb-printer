@@ -24,6 +24,7 @@ public class LablePrintTest {
     public static void main(String[] args) {
         int pageWidth=800;
         String printText=getPrintText(pageWidth);
+       // System.out.println(printText);
 
         PrintInputDTO printInputDTO=new PrintInputDTO();
         printInputDTO.setPageWidth(pageWidth+0D);
@@ -77,7 +78,8 @@ public class LablePrintTest {
                 //.appendQRcode(orderPrintDTO.getSemacodeStr()).BR()
                 .appendCenterFont("请您在收餐后尽快食用，祝您用餐愉快！")
                 .appendCenterFont("如果有任何疑问，请拨打客服电话：121212")
-        .systemSound(ClientPrintContext.SystemSound.newPrint);
+        .systemSound(ClientPrintContext.SystemSound.newPrint)
+        .sound(ClassLoader.getSystemClassLoader().getResourceAsStream("alarm_new_order.wav"));
 
         return printContext.getContext();
     }

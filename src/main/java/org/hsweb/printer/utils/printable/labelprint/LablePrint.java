@@ -198,9 +198,9 @@ public class LablePrint extends ArrayList<LablePrintLine> {
             }else if("QR".equals(nodeName)) {
                 lastLablePrintLineString=null;
                 this.qrcodNode(item);
-            }else if(nodeName.startsWith("SOUND")){
+            }else if(nodeName.equals("SOUND")){
                 this.soundNode(item,false);
-            }else if(nodeName.startsWith("TSOUND")){
+            }else if(nodeName.equals("TSOUND")){
                 this.soundNode(item,true);
             }else if(nodeName.startsWith("SOUND64")){
                 this.sound64Node(item,false);
