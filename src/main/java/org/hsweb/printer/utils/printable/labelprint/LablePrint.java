@@ -234,7 +234,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
      * @param item
      */
     private void stringNode( Node item ){
-        Font font = lableFontMap.get(fonts.get(0));
+        Font font = getStringFont();
         int maxText =((int) Math.floor(width / font.getSize2D()))*2;
 
         String[] split =getPrintStringArray(item);
@@ -362,6 +362,27 @@ public class LablePrint extends ArrayList<LablePrintLine> {
         //graphics.drawString(" ",0,(int)getHeight());
     }
 
+    public Font getStringFont() {
+        String fontStyle = fonts.get(0);
+        Font font = lableFontMap.get(fontStyle);
+        List<String> bigFont = Arrays.asList("GB", "G", "W");
+        List<String> boldFont = Arrays.asList("GB", "B");
+
+        Set<String> hasBigFont = new HashSet<>(fonts);
+        hasBigFont.retainAll(bigFont);
+        if(!bigFont.contains(fontStyle)&&!hasBigFont.isEmpty()){
+            font=font.deriveFont(font.getSize()*2);
+        }
+
+        Set<String> hasBoldFont = new HashSet<>(fonts);
+        hasBoldFont.retainAll(boldFont);
+        if(!boldFont.contains(fontStyle)&&!hasBoldFont.isEmpty()){
+            font=font.deriveFont(Font.BOLD);
+        }
+
+        return font;
+    }
+
 
     private class LableFontMap extends HashMap<String, Font> {
 
@@ -393,7 +414,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private class FontStyleList extends ArrayList<String> {
         @Override
         public String get(int index) {
-            if (size() == 0) {
+            if (size() <= 0) {
                 return "";
             }
             return super.get(index);
@@ -402,7 +423,7 @@ public class LablePrint extends ArrayList<LablePrintLine> {
     private class FontAlignList extends ArrayList<String> {
         @Override
         public String get(int index) {
-            if(size()==0){
+            if(size()<=0){
                 return "L";
             }
             return super.get(index);
