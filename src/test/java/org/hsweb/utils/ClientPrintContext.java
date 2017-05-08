@@ -11,304 +11,212 @@
 
 package org.hsweb.utils;
 
-import java.io.*;
-import java.util.Base64;
-
 /**
  * Created by xiong on 2017-02-09.
  */
 public class ClientPrintContext implements PrintContext {
-    public static final int  align_left=1;
-    public static final int  align_center=2;
-    public static final int  align_right=3;
 
     private final int maxSize;
 
-    private int[] width;
-    private int[] align;
-    private int tablepadding=0;
 
-    public static final String BR = "<BR>";//换行
-
-    public static final String RightFont_S ="<R>";//右对齐开始
-    public static final String RightFont_E ="</R>";//右对齐结束
-
-    public static final String BigFont_S = "<G>";//放大
-    public static final String BigFont_E = "</G>";//放大结束
-
-    public static final String BoldFont_S = "<B>";//加粗开始
-    public static final String BoldFont_E = "</B>";//加粗结束
-
-    public static final String BigBoldFont_S = "<GB>";//加粗开始
-    public static final String BigBoldFont_E = "</GB>";//加粗结束
+    private static final String BR = "<BR>";//换行
 
 
+    private static final String BigFont_S = "<G>";//放大
+    private static final String BigFont_E = "</G>";//放大结束
 
-    public static final String HeightFont_S = "<H>";//字体变高
-    public static final String HeightFont_E = "</H>";//字体变高结束
+    private static final String BoldFont_S = "<B>";//加粗开始
+    private static final String BoldFont_E = "</B>";//加粗结束
 
-    public static final String WidthFont_S = "<W>";//字体变宽
-    public static final String WidthFont_E = "</W>";//字体变宽结束
-
-    public static final String CenterFont_S="<C>";//居中
-    public static final String CenterFont_E="</C>";//居中结束
-
-    public static final String CenterBigFont_S="<C><G>";//居中放大
-    public static final String CenterBigFont_E="</G></C>";//居中放大结束
-
-    public static final String QR_S="<QR>";//二维码开始<QRcode></QRcode>测试
-
-    public static final String QR_E="</QR>";//二维码结束
-
-    public static final String SOUND_S="<SOUND>";
-    public static final String SOUND_E="</SOUND>";
-
-    public static final String TSOUND_S="<TSOUND>";
-    public static final String TSOUND_E="</TSOUND>";
-
-    public static final String SOUND64_S="<SOUND64>";
-    public static final String SOUND64_E="</SOUND64>";
-
-    public static final String TSOUND64_S="<TSOUND64>";
-    public static final String TSOUND64_E="</TSOUND64>";
+    private static final String BigBoldFont_S = "<GB>";//加粗开始
+    private static final String BigBoldFont_E = "</GB>";//加粗结束
 
 
-    public interface SystemSound{
-        String newPrint="new_print";
-        String newOrder="new_order";
+    private static final String HeightFont_S = "<H>";//字体变高
+    private static final String HeightFont_E = "</H>";//字体变高结束
+
+    private static final String WidthFont_S = "<W>";//字体变宽
+    private static final String WidthFont_E = "</W>";//字体变宽结束
+
+    private static final String CenterBigFont_S = "<C><G>";//居中放大
+    private static final String CenterBigFont_E = "</G></C>";//居中放大结束
+
+
+    private static final String CenterFont_S = "<C>";//居中
+    private static final String CenterFont_E = "</C>";//居中结束
+
+    private static final String RightFont_S = "<R>";//右对齐开始
+    private static final String RightFont_E = "</R>";//右对齐结束
+
+
+    private static final String QR_S = "<QR>";//二维码开始<QRcode></QRcode>测试
+
+    private static final String QR_E = "</QR>";//二维码结束
+
+    private static final String SOUND_S = "<SOUND>";
+    private static final String SOUND_E = "</SOUND>";
+
+    private static final String TSOUND_S = "<TSOUND>";
+    private static final String TSOUND_E = "</TSOUND>";
+
+    private static final String SOUND64_S = "<SOUND64>";
+    private static final String SOUND64_E = "</SOUND64>";
+
+    private static final String TSOUND64_S = "<TSOUND64>";
+    private static final String TSOUND64_E = "</TSOUND64>";
+
+    public interface SystemSound {
+        String newPrint = "new_print";
+        String newOrder = "new_order";
     }
 
 
-    private StringBuilder stringBuilder=new StringBuilder();
+    private StringBuilder stringBuilder = new StringBuilder();
 
+    private Integer fontBig=0;
+    private Integer fontWidth=0;
     /**
      * 纸张宽带 mm
+     *
      * @param pageWidth
      */
     public ClientPrintContext(Integer pageWidth) {
-        pageWidth=pageWidth==null?800:pageWidth;
+        pageWidth = pageWidth == null ? 800 : pageWidth;
         double pageWidth2 = pageWidth / 3.55555555555555;
-        this.maxSize=((int)(pageWidth2-pageWidth2*0.1)/8)*2;
+        this.maxSize = ((int) (pageWidth2 - pageWidth2 * 0.1) / 8) * 2;
         System.out.println(maxSize);
     }
 
     @Override
-    public ClientPrintContext BR(){
-        this.append(BR);
-        return this;
+    public ClientPrintContext BR() {
+        return this.addText(BR);
     }
 
-    /**
-     * 注意注意  width为比例 不是字数
-     * @param width
-     * @return
-     */
     @Override
-    public ClientPrintContext tableWidth(int...width){
-        this.tablepadding=0;
-        this.width=width;
-        return this;
-    }
-    @Override
-    public ClientPrintContext tableAlign(int...align){
-
-        this.align=align;
-
+    public ClientPrintContext addText(String s) {
+        stringBuilder.append(s);
         return this;
     }
 
     @Override
-    public ClientPrintContext tablePadding(int padding) {
-        this.tablepadding=padding;
-        return this;
+    public ClientPrintContext addQRcode(String s) {
+        return this.addText(QR_S)
+                .addText(s)
+                .addText(QR_E);
     }
 
     @Override
-    public ClientPrintContext tableWidthPadding(int padding, int...width){
-        this.tablepadding=padding;
-        this.width=width;
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendTable(String...text ){
-        this.appendTable("",text,"");
-        return this;
-    }
-
-    @Override
-    public int[] getTableWidth() {
-        return width;
-    }
-
-    @Override
-    public int[] getTableAlign() {
-        return align;
-    }
-
-    @Override
-    public int getTablepadding() {
-        return tablepadding;
-    }
-
-    @Override
-    public int getAlignLeft() {
-        return align_left;
-    }
-
-    @Override
-    public int getAlignCenter() {
-        return align_center;
-    }
-
-    @Override
-    public int getAlignRight() {
-        return align_right;
-    }
-
-
-    @Override
-    public ClientPrintContext appendTableHeightFont(String...text ){
-        this.appendTable(ClientPrintContext.HeightFont_S,text, ClientPrintContext.HeightFont_E);
-        return this;
-    }
-
-
-    @Override
-    public ClientPrintContext append(String s){
-        stringBuilder.append(getString(s));
-        return this;
-    }
-
-    @Override
-    public ClientPrintContext appendRightFont(String s){
-        this.stringBuilder.append(RightFont_S);
-        this.append(s);
-        this.stringBuilder.append(RightFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendRightBigFont(String s){
-        this.stringBuilder.append(BigFont_S);
-        this.append(s);
-        this.stringBuilder.append(BigFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendBigFont(String s){
-        this.append(BigFont_S).append(s).append(BigFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendBoldFont(String s){
-        this.append(BoldFont_S).append(s).append(BoldFont_E);
-        return this;
-    }
-    public ClientPrintContext appendBigBoldFont(String s){
-        this.append(BigBoldFont_S).append(s).append(BigBoldFont_E);
-        return this;
-    }
-    public ClientPrintContext appendBigBoldFont(Object s){
-        this.appendBigBoldFont(s==null?"":s.toString());
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendHeightFont(String s){
-        this.append(HeightFont_S).append(s).append(HeightFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendWidthFont(String s){
-        this.append(WidthFont_S).append(s).append(WidthFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendCenterFont(String s){
-        this.append(CenterFont_S).append(s).append(CenterFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendCenterBigFont(String s){
-        this.append(CenterBigFont_S).append(s).append(CenterBigFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendCenterBoldFont(String s){
-        this.append(CenterFont_S).append(BoldFont_S).append(s).append(BoldFont_E).append(CenterFont_E);
-        return this;
-    }
-    @Override
-    public ClientPrintContext appendQRcode(String s){
-        this.append(QR_S).append(s).append(QR_E);
-        return this;
-    }
-
-    @Override
-    public PrintContext systemSound(String fileName,boolean... b) {
-        if(b!=null&&b.length>0&&b[0]){
-            return  this.append(TSOUND_S).append(fileName).append(TSOUND_E);
+    public ClientPrintContext addSystemSound(String fileName, boolean... b) {
+        if (b != null && b.length > 0 && b[0]) {
+            return this.addText(TSOUND_S)
+                    .addText(fileName)
+                    .addText(TSOUND_E);
         }
-
-        return  this.append(SOUND_S).append(fileName).append(SOUND_E);
+        return this.addText(SOUND_S)
+                .addText(fileName)
+                .addText(SOUND_E);
     }
 
     @Override
-    public PrintContext sound(String base64,boolean... b) {
-        if(b!=null&&b.length>0&&b[0]){
-            return  this.append(TSOUND64_S).append(base64).append(TSOUND64_E);
+    public ClientPrintContext addSound(String base64, boolean... b) {
+        if (b != null && b.length > 0 && b[0]) {
+            return this.addText(TSOUND64_S)
+                    .addText(base64)
+                    .addText(TSOUND64_E);
         }
-        return  this.append(SOUND64_S).append(base64).append(SOUND64_E);
+        return this.addText(SOUND64_S)
+                .addText(base64)
+                .addText(SOUND64_E);
+    }
+
+
+    @Override
+    public ClientPrintContext alignCenter() {
+        return this.addText(CenterFont_S);
     }
 
     @Override
-    public PrintContext sound(File file,boolean... b) {
-        try {
-            return sound(new FileInputStream(file),b);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    public ClientPrintContext alignCenterClear() {
+        return this.addText(CenterFont_E);
+    }
+
+    @Override
+    public ClientPrintContext alignRight() {
+        return this.addText(RightFont_S);
+    }
+
+    @Override
+    public ClientPrintContext alignRightClear() {
+        return this.addText(RightFont_E);
+    }
+
+    @Override
+    public ClientPrintContext fontBold() {
+        return this.addText(BoldFont_S);
+    }
+
+    @Override
+    public ClientPrintContext fontBoldClear() {
+        return this.addText(BoldFont_E);
+    }
+
+    @Override
+    public ClientPrintContext fontHeight() {
+        return this.addText(HeightFont_S);
+    }
+
+    @Override
+    public ClientPrintContext fontHeightClear() {
+        return this.addText(HeightFont_E);
+    }
+
+    @Override
+    public ClientPrintContext fontWidth() {
+        fontWidth++;
+        return this.addText(WidthFont_S);
+    }
+
+    @Override
+    public ClientPrintContext fontWidthClear() {
+        fontWidth--;
+        return this.addText(WidthFont_E);
+    }
+
+    @Override
+    public ClientPrintContext fontBig() {
+        fontBig++;
+        return this.addText(BigFont_S);
+    }
+
+    @Override
+    public ClientPrintContext fontBigClear() {
+        fontBig--;
+        return this.addText(BigFont_E);
+    }
+
+
+
+    @Override
+    public int getMaxSize() {
+        int b=1;
+        if(fontWidth>0){
+            b++;
         }
-        return this;
-    }
-
-    @Override
-    public PrintContext sound(InputStream in,boolean... b2) {
-        if(in==null){
-            return this;
+        if(fontBig>0){
+            b++;
         }
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream(1000)){
-
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = in.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            return sound(new String(Base64.getEncoder().encode(bos.toByteArray())),b2);
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return this;
+        return maxSize/b;
     }
 
     @Override
-    public int getMaxSize(){
-        return maxSize;
-    }
-
-    @Override
-    public String getContext(){
+    public String getContext() {
         return stringBuilder.toString();
     }
 
 
     @Override
-    public ClientPrintContext clear(){
-        stringBuilder=new StringBuilder();
+    public ClientPrintContext clear() {
+        stringBuilder = new StringBuilder();
         return this;
     }
 

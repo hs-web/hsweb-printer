@@ -38,48 +38,58 @@ public class LablePrintTest {
     }
 
     private static String getPrintText(int pageWidth) {
-        PrintContext printContext = new ClientPrintContext(pageWidth).appendCenterBigFont("例子吧").BR()
-                .appendBlank().append("订单号：").append("123").BR();
+        PrintContext printContext = new ClientPrintContext(pageWidth) .alignRight(p->p.fontBold(p2->p2.fontBig("优惠：" + PrintContext.getRightString("500", 14)))).fontBig().alignCenter().addText("例子吧").alignCenterClear().fontBigClear().BR()
+                .addBlank(2).addText("订单号：").addText("123").BR();
 
-        printContext.append("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十").BR()
-                .append("订单来源：").append("xsxsxsxs").BR()
-                .append("出餐时间：").append("121212").BR()
-                .append("出餐门店：").append("xxxx").BR()
-                .appendDecollator()
-                .appendBlank().append("收货人：").append("xxxx").BR()
-                .append("收货电话：").append("32132322323").BR()
-                .append("用餐时间：").append("2017").BR()
-                .append("配送地址：").append("sadsadasdsadas", 10, "asdasdasd").BR()
-                .append("客户备注：").append("sadsadasdasdasdsad", 10).BR()
-                .appendDecollator();
+        printContext.addText("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十").BR()
+                .addText("订单来源：").addText("xsxsxsxs").BR()
+                .addText("出餐时间：").addText("121212").BR()
+                .addText("出餐门店：").addText("xxxx").BR()
+                .addDecollator(0)
+                .addBlank(2).addText("收货人：").addText("xxxx").BR()
+                .addText("收货电话：").addText("32132322323").BR()
+                .addText("用餐时间：").addText("2017").BR()
+                .addText("配送地址：").addText("sadsadasdsadas", 10, "asdasdasd").BR()
+                .addText("客户备注：").addText("sadsadasdasdasdsad", 10).BR()
+                .addDecollator(0);
 
 
         printContext.tableWidth(17, 33, 17, 33)
-                .tableAlign(ClientPrintContext.align_center, ClientPrintContext.align_center, ClientPrintContext.align_center, ClientPrintContext.align_center)
-                .appendTable("品名", "单价(￥)", "数量", "金额(￥)")
-                .appendDecollator();
+                .tableAlign(PrintContext.TableAlign.center, PrintContext.TableAlign.center, PrintContext.TableAlign.center, PrintContext.TableAlign.center)
+                .addTable("品名", "单价(￥)", "数量", "金额(￥)")
+                .addDecollator(0);
 
 
-        printContext.append("套餐").BR();
+        printContext.addText("套餐").BR();
 
         printContext.tableWidthPadding(3,100)
-                .tableAlign(ClientPrintContext.align_left)
-                .appendTable("【含】下撒旦飞洒x5");
+                .tableAlign(PrintContext.TableAlign.left)
+                .addTable("【含】下撒旦飞洒x5");
         printContext.tableWidth(17, 32, 17, 32)
-                .tableAlign(ClientPrintContext.align_left, ClientPrintContext.align_right, ClientPrintContext.align_center, ClientPrintContext.align_right);
-        printContext.appendTable("", "500", "" + 1, "500");
+                .tableAlign(PrintContext.TableAlign.left, PrintContext.TableAlign.right,PrintContext.TableAlign.center, PrintContext.TableAlign.right);
+        printContext.addTable("", "500", "" + 1, "500");
 
 
         printContext.BR()
-                .appendRightFont("菜品：" + PrintContext.getRightString("500", 14))
-                .appendRightFont("快递：" + PrintContext.getRightString("500", 14));
-        printContext.appendRightFont("优惠：" + PrintContext.getRightString("500", 14));
-        printContext.appendRightFont(ClientPrintContext.HeightFont_S+"实付：" + PrintContext.getRightString("500", 14)+ClientPrintContext.HeightFont_E)
+                .alignRight().addText("菜品：" + PrintContext.getRightString("500", 14)).alignRightClear()
+                .alignRight("菜品：" + PrintContext.getRightString("500", 14))
+
+                .alignRight().fontHeight().addText("快递：" + PrintContext.getRightString("500", 14)).fontHeightClear().alignRightClear()
+                .alignRight().fontHeight("快递：" + PrintContext.getRightString("500", 14)).alignRightClear()
+                .alignRight(p->p.fontHeight("快递：" + PrintContext.getRightString("500", 14)))
+
+
+                .alignRight().fontBold().fontBig().addText("优惠：" + PrintContext.getRightString("500", 14)).fontBigClear().fontBoldClear().alignRightClear()
+                .alignRight().fontBold().fontBig("优惠：" + PrintContext.getRightString("500", 14)).fontBoldClear().alignRightClear()
+                .alignRight(p->p.fontBold(p2->p2.fontBig("优惠：" + PrintContext.getRightString("500", 14))))
+
+
+                .alignRight().fontHeight("实付：" + PrintContext.getRightString("500", 14)).alignRightClear()
                 //.appendQRcode(orderPrintDTO.getSemacodeStr()).BR()
-                .appendCenterFont("请您在收餐后尽快食用，祝您用餐愉快！")
-                .appendCenterFont("如果有任何疑问，请拨打客服电话：121212")
-        .systemSound(ClientPrintContext.SystemSound.newPrint)
-        .sound(ClassLoader.getSystemClassLoader().getResourceAsStream("alarm_new_order.wav"));
+                .alignCenter().addText("请您在收餐后尽快食用，祝您用餐愉快！").alignCenterClear()
+                .alignCenter().addText("如果有任何疑问，请拨打客服电话：121212").alignCenterClear()
+        .addSystemSound(ClientPrintContext.SystemSound.newPrint)
+        .addSound(ClassLoader.getSystemClassLoader().getResourceAsStream("alarm_new_order.wav"));
 
         return printContext.getContext();
     }
