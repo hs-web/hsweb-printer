@@ -91,6 +91,7 @@ public class LablePrintTest {
         .addSystemSound(ClientPrintContext.SystemSound.newPrint)
         .addSound(ClassLoader.getSystemClassLoader().getResourceAsStream("alarm_new_order.wav"));
 
+        System.out.println(new ClientPrintContext(pageWidth).getTableConfig().tableWidth.size());
         return printContext.getContext();
     }
 }

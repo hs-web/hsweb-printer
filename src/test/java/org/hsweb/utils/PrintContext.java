@@ -26,13 +26,9 @@ public interface PrintContext {
         int right = 2;
     }
 
-    PrintTableConfig printTableConfig=new PrintTableConfig();
-
     String Blank = " ";//空格
 
-    default PrintTableConfig getTableConfig(){
-        return printTableConfig;
-    }
+    PrintTableConfig getTableConfig();
 
     /**
      * 获取纸张普通字体一行的最大的英文字数

@@ -72,9 +72,15 @@ public class ClientPrintContext implements PrintContext {
 
 
     private StringBuilder stringBuilder = new StringBuilder();
+    private PrintTableConfig printTableConfig=new PrintTableConfig();
 
     private Integer fontBig=0;
     private Integer fontWidth=0;
+
+    @Override
+    public PrintTableConfig getTableConfig() {
+        return printTableConfig;
+    }
     /**
      * 纸张宽带 mm
      *
@@ -193,6 +199,7 @@ public class ClientPrintContext implements PrintContext {
         fontBig--;
         return this.addText(BigFont_E);
     }
+
 
 
 
