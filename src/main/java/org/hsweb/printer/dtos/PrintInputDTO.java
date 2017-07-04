@@ -22,6 +22,15 @@ public class PrintInputDTO implements Serializable{
     private String printType;
     private Double pageWidth;
     private String printText;
+    private Integer fontSize;
+
+    public Integer getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+    }
 
     public String getPrinterName() {
         return printerName;

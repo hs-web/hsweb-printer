@@ -16,7 +16,7 @@ package org.hsweb.utils;
  */
 public class ClientPrintContext implements PrintContext {
 
-    private final int maxSize;
+    private  int maxSize;
 
 
     private static final String BR = "<BR>";//换行
@@ -77,21 +77,33 @@ public class ClientPrintContext implements PrintContext {
     private Integer fontBig=0;
     private Integer fontWidth=0;
 
-    @Override
-    public PrintTableConfig getTableConfig() {
-        return printTableConfig;
-    }
     /**
      * 纸张宽带 mm
      *
      * @param pageWidth
      */
     public ClientPrintContext(Integer pageWidth) {
+        this.init(pageWidth,8);
+    }
+    public ClientPrintContext(Integer pageWidth,Integer fontSize) {
+        this.init(pageWidth,fontSize);
+    }
+    public void init(Integer pageWidth,Integer fontSize) {
+        if(fontSize==null){
+            fontSize=8;
+        }
         pageWidth = pageWidth == null ? 800 : pageWidth;
         double pageWidth2 = pageWidth / 3.55555555555555;
-        this.maxSize = ((int) (pageWidth2 - pageWidth2 * 0.1) / 8) * 2;
+
+        this.maxSize = ((int) (pageWidth2 - pageWidth2 * 0.1) / fontSize) * 2;
         System.out.println(maxSize);
     }
+
+    @Override
+    public PrintTableConfig getTableConfig() {
+        return printTableConfig;
+    }
+
 
     @Override
     public ClientPrintContext BR() {

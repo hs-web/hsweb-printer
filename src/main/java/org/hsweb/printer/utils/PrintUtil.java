@@ -196,7 +196,7 @@ public class PrintUtil {
      */
     public static PrintResultDTO print(PrintInputDTO printInputDTO){
         try {
-            LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getPrintText());
+            LabelPrintable labelPrintable=new LabelPrintable(printInputDTO.getPrintDocName(),printInputDTO.getPageWidth(),printInputDTO.getFontSize(),printInputDTO.getPrintText());
             PrintResultDTO resultDTO = print(printInputDTO.getPrinterName(), labelPrintable);
             return resultDTO;
         } catch (Exception e){

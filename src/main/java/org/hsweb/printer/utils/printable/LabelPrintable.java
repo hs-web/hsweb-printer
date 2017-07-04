@@ -28,23 +28,31 @@ public class LabelPrintable implements BasePrintable {
 
 /*    pagewidth = 纸张宽度mm/3.55
     字数= pagewidth/9 -1*/
-
+    private int fontSize=8;
     public LabelPrintable(String printName, double width, String printString) {
-        int fontSize=8;
+        this.init(printName,width,this.fontSize,printString);
 
+    }
+    public LabelPrintable(String printName, double width,Integer fontSize, String printString) {
+        this.init(printName,width,fontSize,printString);
+    }
+    public void init(String printName, double width,Integer fontSize, String printString) {
+        if(fontSize!=null) {
+            this.fontSize = fontSize;
+        }
         this.printName = printName;
 
         width=width/ 3.55555555555555;
 
         int intWidth=(int)(width-width*0.1);
 
-        int i = intWidth / fontSize ;
+        int i = intWidth / this.fontSize ;
 
-        int printWidth = i * fontSize;
+        int printWidth = i * this.fontSize;
 
-        Xpadding=(width-printWidth)/2;
+        this.Xpadding=(width-printWidth)/2;
 
-        this.lablePrint = new LablePrint(printWidth,fontSize, printString);
+        this.lablePrint = new LablePrint(printWidth,this.fontSize, printString);
     }
 
     @Override

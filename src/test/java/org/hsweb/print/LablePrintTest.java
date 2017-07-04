@@ -23,7 +23,8 @@ import org.hsweb.utils.PrintContext;
 public class LablePrintTest {
     public static void main(String[] args) {
         int pageWidth=800;
-        String printText=getPrintText(pageWidth);
+        int fontSize=10;
+        String printText=getPrintText(pageWidth,fontSize);
        // System.out.println(printText);
 
         PrintInputDTO printInputDTO=new PrintInputDTO();
@@ -32,13 +33,14 @@ public class LablePrintTest {
         printInputDTO.setPrintType("labelPrint");
         printInputDTO.setPrinterName("打印机");
         printInputDTO.setPrintText(printText);
+        printInputDTO.setFontSize(fontSize);
 
         PrintResultDTO print = PrintUtil.print(printInputDTO);
         System.out.println(print);
     }
 
-    private static String getPrintText(int pageWidth) {
-        PrintContext printContext = new ClientPrintContext(pageWidth) .alignRight(p->p.fontBold(p2->p2.fontBig("优惠：" + PrintContext.getRightString("500", 14)))).fontBig().alignCenter().addText("例子吧").alignCenterClear().fontBigClear().BR()
+    private static String getPrintText(int pageWidth,int fontSize) {
+        PrintContext printContext = new ClientPrintContext(pageWidth,fontSize) .alignRight(p->p.fontBold(p2->p2.fontBig("优惠：" + PrintContext.getRightString("500", 14)))).fontBig().alignCenter().addText("例子吧").alignCenterClear().fontBigClear().BR()
                 .addBlank(2).addText("订单号：").addText("123").BR();
 
         printContext.addText("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十").BR()
@@ -91,7 +93,6 @@ public class LablePrintTest {
         .addSystemSound(ClientPrintContext.SystemSound.newPrint)
         .addSound(ClassLoader.getSystemClassLoader().getResourceAsStream("alarm_new_order.wav"));
 
-        System.out.println(new ClientPrintContext(pageWidth).getTableConfig().tableWidth.size());
         return printContext.getContext();
     }
 }
