@@ -14,6 +14,7 @@ package org.hsweb.printer.utils.printable.positionprint.simple;
 import org.hsweb.printer.dtos.PositionSimplePrintDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintFontDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintStyleDTO;
+import org.hsweb.printer.utils.StringUtil;
 import org.hsweb.printer.utils.printable.positionprint.PositionPrintUnit;
 import org.hsweb.printer.utils.printable.positionprint.simple.component.PositionSimpleComponent;
 import org.hsweb.printer.utils.printable.positionprint.simple.component.PositionSimpleComponentImage;
@@ -70,6 +71,9 @@ public class PositionSimplePrint {
         Map<String,List<PositionSimplePrintDTO>> pagePositionSimplePrintList=new HashMap<>();
         int i=0;
         for (PositionSimplePrintDTO positionPrintDTO : positionSimplePrintDTOS) {
+            if(positionPrintDTO.getType()==null){
+                continue;
+            }
             positionPrintDTO.setId(i++);
             int thisPage=0;
             int thisPage2=0;
@@ -78,7 +82,12 @@ public class PositionSimplePrint {
                 continue;
             }else {
                 thisPage =(int)(PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) / height);
-                thisPage2 =(int)((PositionPrintUnit.parsingUnit(positionPrintDTO.getY())+PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight())) / height);
+                thisPage2=thisPage;
+                if(positionPrintDTO.getHeight()!=null) {
+                    thisPage2 = (int) ((PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) + PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight())) / height);
+                }else if(PositionSimplePrintConstants.IMAGE.equals(positionPrintDTO.getType())){
+                    continue;
+                }
             }
             this.addPagePositionSimplePrintDTO(positionPrintDTO,pagePositionSimplePrintList,thisPage);
             if(thisPage!=thisPage2){
@@ -91,12 +100,21 @@ public class PositionSimplePrint {
 
     private void noHeightePositionSimplePrint(PositionSimplePrintDTO positionPrintDTO) {
         if(PositionSimplePrintConstants.FONT.equals(positionPrintDTO.getType())){
+            if(StringUtil.isEmpty(positionPrintDTO.getFontName())
+                    ||positionPrintDTO.getFontSize()==null
+                    ||positionPrintDTO.getFontStyle()==null){
+                return;
+            }
             Font font = new Font(positionPrintDTO.getFontName(),positionPrintDTO.getFontStyle(),positionPrintDTO.getFontSize());
             PositionSimplePrintFontDTO positionSimplePrintFontDTO=new PositionSimplePrintFontDTO();
             positionSimplePrintFontDTO.setFont(font);
             positionSimplePrintFontDTO.setId(positionPrintDTO.getId());
             fontList.add(positionSimplePrintFontDTO);
         }else if(PositionSimplePrintConstants.STYLE.equals(positionPrintDTO.getType())){
+            if(StringUtil.isEmpty(positionPrintDTO.getColor())
+                    ||positionPrintDTO.getAlign()==null){
+                return;
+            }
             Color decode = Color.decode(positionPrintDTO.getColor());
             PositionSimplePrintStyleDTO positionSimplePrintStyleDTO=new PositionSimplePrintStyleDTO();
             positionSimplePrintStyleDTO.setColor(decode);
@@ -145,13 +163,23 @@ public class PositionSimplePrint {
         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO = styleList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
         PositionSimplePrintFontDTO positionSimplePrintFontDTO = fontList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
 
+        if(positionSimplePrintDTO.getHeight()==null){
+            positionSimplePrintDTO.setHeight(positionSimplePrintFontDTO.getFont().getSize2D()+"");
+        }
+
+        if(positionSimplePrintDTO.getWidth()==null){
+            positionSimplePrintDTO.setWidth((width-PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()))+"");
+        }
+
         PositionSimpleComponentString positionSimpleComponent=new PositionSimpleComponentString(positionSimplePrintDTO,positionSimplePrintFontDTO,positionSimplePrintStyleDTO,height,width);
         return positionSimpleComponent;
     }
 
     private PositionSimpleComponentImage getPositionSimpleComponentImage(PositionSimplePrintDTO positionSimplePrintDTO) {
-        PositionSimplePrintStyleDTO positionSimplePrintStyleDTO = styleList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
-        PositionSimpleComponentImage positionSimpleComponent=new PositionSimpleComponentImage(positionSimplePrintDTO,positionSimplePrintStyleDTO,height,width);
+        if(positionSimplePrintDTO.getWidth()==null){
+            positionSimplePrintDTO.setWidth((width-PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()))+"");
+        }
+        PositionSimpleComponentImage positionSimpleComponent=new PositionSimpleComponentImage(positionSimplePrintDTO,height,width);
         return positionSimpleComponent;
     }
 

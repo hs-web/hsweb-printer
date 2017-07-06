@@ -14,9 +14,11 @@ package org.hsweb.printer.utils.printable.positionprint.simple.component;
 import org.hsweb.printer.dtos.PositionSimplePrintDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintFontDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintStyleDTO;
+import org.hsweb.printer.utils.StringUtil;
 import org.hsweb.printer.utils.printable.positionprint.PositionPrintUnit;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by xiong on 2017-07-06.
@@ -39,6 +41,17 @@ public class PositionSimpleComponentString implements PositionSimpleComponent {
     }
     @Override
     public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
-        graphics.drawString(positionSimplePrintDTO.getContext(),(int) PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()),(int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getY())-pageIndex*height));
+        List<String> strings = StringUtil.lengthSplit(positionSimplePrintDTO.getContext(),(int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getWidth())/ positionSimplePrintFontDTO.getFont().getSize2D()));
+
+        graphics.setFont(positionSimplePrintFontDTO.getFont());
+        graphics.setColor(positionSimplePrintStyleDTO.getColor());
+        int i=0;
+        for (String string : strings) {
+            graphics.drawString(string,
+                    (int) PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()),
+                    (int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getY())-pageIndex*height+positionSimplePrintFontDTO.getFont().getSize2D()*i)
+            );
+            ++i;
+        }
     }
 }

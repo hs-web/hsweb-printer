@@ -18,6 +18,15 @@ import java.util.List;
  * Created by xiongchuang on 2016/8/23 .
  */
 public class StringUtil {
+    public static boolean isEmpty(CharSequence charSequence){
+        if(charSequence==null||charSequence.length()==0){
+            return true;
+        }
+        return false;
+    }
+    public static boolean isNotEmpty(CharSequence charSequence){
+        return !isEmpty(charSequence);
+    }
     /**
      * 获取字符串长度  汉字为2
      * @param s
