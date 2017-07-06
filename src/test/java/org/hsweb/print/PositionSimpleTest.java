@@ -29,7 +29,7 @@ public class PositionSimpleTest {
         positionSimplePrintDTO.setType(PositionSimplePrintConstants.TEXT);
         positionSimplePrintDTO.setX("0");
         positionSimplePrintDTO.setY("50");
-        positionSimplePrintDTO.setHeight("20");
+        positionSimplePrintDTO.setHeight("10");
         positionSimplePrintDTO.setContext("123456789123456789123456789");
         PositionSimplePrintDTO positionSimplePrintDTO2=new PositionSimplePrintDTO();
         positionSimplePrintDTO2.setType(PositionSimplePrintConstants.TEXT);

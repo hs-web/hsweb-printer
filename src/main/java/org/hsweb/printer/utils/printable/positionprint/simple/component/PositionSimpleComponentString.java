@@ -53,7 +53,7 @@ public class PositionSimpleComponentString implements PositionSimpleComponent {
         for (String string : strings) {
 
             float v = positionSimplePrintFontDTO.getFont().getSize2D() * i;
-            if(v>lineHeight){
+            if(i!=0&&v+positionSimplePrintFontDTO.getFont().getSize2D()>lineHeight){
                 return;
             }
             graphics.drawString(string,
