@@ -45,11 +45,20 @@ public class PositionSimpleComponentString implements PositionSimpleComponent {
 
         graphics.setFont(positionSimplePrintFontDTO.getFont());
         graphics.setColor(positionSimplePrintStyleDTO.getColor());
+
+        double lineHeight = PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getHeight());
+        double x = PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX());
+        double y = PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getY());
         int i=0;
         for (String string : strings) {
+
+            float v = positionSimplePrintFontDTO.getFont().getSize2D() * i;
+            if(v>lineHeight){
+                return;
+            }
             graphics.drawString(string,
-                    (int) PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()),
-                    (int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getY())-pageIndex*height+positionSimplePrintFontDTO.getFont().getSize2D()*i)
+                    (int)x,
+                    (int)(y-pageIndex*height+v)
             );
             ++i;
         }

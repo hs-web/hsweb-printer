@@ -60,7 +60,7 @@ public class PositionSimplePrint {
         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO=new PositionSimplePrintStyleDTO();
         positionSimplePrintStyleDTO.setId(-1);
         positionSimplePrintStyleDTO.setAlign(0);
-        positionSimplePrintStyleDTO.setColor( Color.decode("#ffffff"));
+        positionSimplePrintStyleDTO.setColor( Color.decode("#000000"));
         styleList.add(positionSimplePrintStyleDTO);
 
         PositionSimplePrintFontDTO positionSimplePrintFontDTO=new PositionSimplePrintFontDTO();

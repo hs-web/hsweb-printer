@@ -30,13 +30,13 @@ public class PositionSimpleTest {
         positionSimplePrintDTO.setX("0");
         positionSimplePrintDTO.setY("50");
         positionSimplePrintDTO.setHeight("20");
-        positionSimplePrintDTO.setContext("1111111");
+        positionSimplePrintDTO.setContext("123456789123456789123456789");
         PositionSimplePrintDTO positionSimplePrintDTO2=new PositionSimplePrintDTO();
         positionSimplePrintDTO2.setType(PositionSimplePrintConstants.TEXT);
         positionSimplePrintDTO2.setX("0");
         positionSimplePrintDTO2.setY("150");
         positionSimplePrintDTO2.setHeight("20");
-        positionSimplePrintDTO2.setContext("222222");
+        positionSimplePrintDTO2.setContext("受到法律解释减肥是解放军为己任发哦我就怕日复牌文件让评委进入价位");
         PositionSimplePrintDTO positionSimplePrintDTO3=new PositionSimplePrintDTO();
         positionSimplePrintDTO3.setType(PositionSimplePrintConstants.TEXT);
         positionSimplePrintDTO3.setX("0");
