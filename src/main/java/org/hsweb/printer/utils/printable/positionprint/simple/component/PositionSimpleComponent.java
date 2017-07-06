@@ -17,5 +17,5 @@ import java.awt.*;
  * Created by xiong on 2017-07-06.
  */
 public interface PositionSimpleComponent {
-    void print( Graphics graphics, double xpadding, double ypadding);
+    void print(int pageIndex, Graphics graphics, double xpadding, double ypadding);
 }

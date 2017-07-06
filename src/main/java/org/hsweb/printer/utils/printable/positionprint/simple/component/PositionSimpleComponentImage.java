@@ -20,11 +20,20 @@ import java.awt.*;
  * Created by xiong on 2017-07-06.
  */
 public class PositionSimpleComponentImage implements PositionSimpleComponent {
-    public PositionSimpleComponentImage(PositionSimplePrintDTO positionSimplePrintDTO, PositionSimplePrintStyleDTO positionSimplePrintStyleDTO, double width){
-
+    private PositionSimplePrintDTO positionSimplePrintDTO;
+    private PositionSimplePrintStyleDTO positionSimplePrintStyleDTO;
+    private double height;
+    private double width;
+    public PositionSimpleComponentImage(PositionSimplePrintDTO positionSimplePrintDTO,
+                                        PositionSimplePrintStyleDTO positionSimplePrintStyleDTO,
+                                        double height, double width){
+        this.positionSimplePrintDTO=positionSimplePrintDTO;
+        this.positionSimplePrintStyleDTO=positionSimplePrintStyleDTO;
+        this.height=height;
+        this.width=width;
     }
     @Override
-    public void print(Graphics graphics, double xpadding, double ypadding) {
+    public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
 
     }
 }

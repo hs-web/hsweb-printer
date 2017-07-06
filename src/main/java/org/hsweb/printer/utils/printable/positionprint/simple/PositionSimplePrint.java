@@ -78,7 +78,7 @@ public class PositionSimplePrint {
                 continue;
             }else {
                 thisPage =(int)(PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) / height);
-                thisPage2 =(int)(PositionPrintUnit.parsingUnit(positionPrintDTO.getY())+PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight()) / height);
+                thisPage2 =(int)((PositionPrintUnit.parsingUnit(positionPrintDTO.getY())+PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight())) / height);
             }
             this.addPagePositionSimplePrintDTO(positionPrintDTO,pagePositionSimplePrintList,thisPage);
             if(thisPage!=thisPage2){
@@ -124,9 +124,9 @@ public class PositionSimplePrint {
             for (PositionSimplePrintDTO positionSimplePrintDTO: positionSimplePrintDTOS) {
                 PositionSimpleComponent positionSimpleComponent=null;
                 if(PositionSimplePrintConstants.TEXT.equals(positionSimplePrintDTO.getType())){
-                    positionSimpleComponent=getPositionSimpleComponentString(positionSimplePrintDTO);
+                    positionSimpleComponent=this.getPositionSimpleComponentString(positionSimplePrintDTO);
                 }else if(PositionSimplePrintConstants.IMAGE.equals(positionSimplePrintDTO.getType())){
-                    positionSimpleComponent=getPositionSimpleComponentImage(positionSimplePrintDTO);
+                    positionSimpleComponent=this.getPositionSimpleComponentImage(positionSimplePrintDTO);
                 }else {
                     continue;
                 }
@@ -145,13 +145,13 @@ public class PositionSimplePrint {
         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO = styleList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
         PositionSimplePrintFontDTO positionSimplePrintFontDTO = fontList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
 
-        PositionSimpleComponentString positionSimpleComponent=new PositionSimpleComponentString(positionSimplePrintDTO,positionSimplePrintFontDTO,positionSimplePrintStyleDTO,width);
+        PositionSimpleComponentString positionSimpleComponent=new PositionSimpleComponentString(positionSimplePrintDTO,positionSimplePrintFontDTO,positionSimplePrintStyleDTO,height,width);
         return positionSimpleComponent;
     }
 
     private PositionSimpleComponentImage getPositionSimpleComponentImage(PositionSimplePrintDTO positionSimplePrintDTO) {
         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO = styleList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
-        PositionSimpleComponentImage positionSimpleComponent=new PositionSimpleComponentImage(positionSimplePrintDTO,positionSimplePrintStyleDTO,width);
+        PositionSimpleComponentImage positionSimpleComponent=new PositionSimpleComponentImage(positionSimplePrintDTO,positionSimplePrintStyleDTO,height,width);
         return positionSimpleComponent;
     }
 
@@ -161,8 +161,10 @@ public class PositionSimplePrint {
 
     public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
         List<PositionSimpleComponent> positionSimplePrintList = pagePositionSimpleComponent.get(prefix+pageIndex);
-        for (PositionSimpleComponent positionSimplePrintDTO : positionSimplePrintList) {
-            positionSimplePrintDTO.print(graphics,xpadding,ypadding);
+        if(positionSimplePrintList!=null) {
+            for (PositionSimpleComponent positionSimplePrintDTO : positionSimplePrintList) {
+                positionSimplePrintDTO.print(pageIndex, graphics, xpadding, ypadding);
+            }
         }
     }
 

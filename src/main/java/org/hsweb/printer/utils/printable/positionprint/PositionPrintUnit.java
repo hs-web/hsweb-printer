@@ -32,8 +32,10 @@ public class PositionPrintUnit {
             if(matcher.matches()){
                 double group2 = Double.parseDouble(matcher.group(1));
                 String group3 = matcher.group(2);
-
-                if(null==group3||"xp".equals(group3)){
+                if(null==group3){
+                    return group2;
+                }
+                if("xp".equals(group3)){
                     return pxToPinrt(group2);
                 }
                 if("mm".equals(group3)){

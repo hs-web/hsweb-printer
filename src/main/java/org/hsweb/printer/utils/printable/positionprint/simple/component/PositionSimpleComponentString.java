@@ -14,6 +14,7 @@ package org.hsweb.printer.utils.printable.positionprint.simple.component;
 import org.hsweb.printer.dtos.PositionSimplePrintDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintFontDTO;
 import org.hsweb.printer.dtos.PositionSimplePrintStyleDTO;
+import org.hsweb.printer.utils.printable.positionprint.PositionPrintUnit;
 
 import java.awt.*;
 
@@ -21,11 +22,23 @@ import java.awt.*;
  * Created by xiong on 2017-07-06.
  */
 public class PositionSimpleComponentString implements PositionSimpleComponent {
-    public PositionSimpleComponentString(PositionSimplePrintDTO positionSimplePrintDTO, PositionSimplePrintFontDTO positionSimplePrintFontDTO, PositionSimplePrintStyleDTO positionSimplePrintStyleDTO, double width){
-
+    private PositionSimplePrintDTO positionSimplePrintDTO;
+    private PositionSimplePrintFontDTO positionSimplePrintFontDTO;
+    private PositionSimplePrintStyleDTO positionSimplePrintStyleDTO;
+    private double height;
+    private double width;
+    public PositionSimpleComponentString(PositionSimplePrintDTO positionSimplePrintDTO,
+                                         PositionSimplePrintFontDTO positionSimplePrintFontDTO,
+                                         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO,
+                                         double height, double width){
+        this.positionSimplePrintDTO=positionSimplePrintDTO;
+        this.positionSimplePrintFontDTO=positionSimplePrintFontDTO;
+        this.positionSimplePrintStyleDTO=positionSimplePrintStyleDTO;
+        this.height=height;
+        this.width=width;
     }
     @Override
-    public void print(Graphics graphics, double xpadding, double ypadding) {
-
+    public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
+        graphics.drawString(positionSimplePrintDTO.getContext(),(int) PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getX()),(int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getY())-pageIndex*height));
     }
 }

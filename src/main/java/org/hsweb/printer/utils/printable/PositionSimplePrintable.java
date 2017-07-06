@@ -28,6 +28,7 @@ public class PositionSimplePrintable implements BasePrintable {
     private PositionSimplePrint positionPrint;
     private double height;
     private double width;
+    private int xx=0;
     public PositionSimplePrintable(String printName, String height, String width, List<PositionSimplePrintDTO> printDTOList) {
 
         this.printName = printName;
@@ -43,12 +44,27 @@ public class PositionSimplePrintable implements BasePrintable {
 
     @Override
     public double getWidth() {
-        return 0D;//width;
+        return width;//width;
     }
 
     @Override
     public double getHeight() {
-        return 0D;// height;
+        return height;// height;
+    }
+
+    @Override
+    public double getXpadding() {
+        return 0;
+    }
+
+    @Override
+    public double getYpadding() {
+        return 0;
+    }
+
+    @Override
+    public int getPageSize() {
+        return positionPrint.getPageSize();
     }
 
     @Override
@@ -56,6 +72,11 @@ public class PositionSimplePrintable implements BasePrintable {
         if (pageIndex >=positionPrint.getPageSize()) {
             return NO_SUCH_PAGE;
         }
+        if(xx==0){
+            xx++;
+            return PAGE_EXISTS;
+        }
+
         positionPrint.print(pageIndex,graphics,getXpadding(),getYpadding());
         return PAGE_EXISTS;
     }
