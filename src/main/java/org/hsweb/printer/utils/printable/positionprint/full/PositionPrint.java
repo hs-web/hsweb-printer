@@ -9,10 +9,10 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.positionprint;
+package org.hsweb.printer.utils.printable.positionprint.full;
 
 import org.hsweb.printer.dtos.PositionPrintDTO;
-import org.hsweb.printer.utils.printable.positionprint.component.PositionComponent;
+import org.hsweb.printer.utils.printable.positionprint.full.component.PositionComponent;
 
 import java.awt.*;
 import java.util.ArrayList;

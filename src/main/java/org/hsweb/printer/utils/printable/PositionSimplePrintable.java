@@ -11,9 +11,9 @@
 
 package org.hsweb.printer.utils.printable;
 
-import org.hsweb.printer.dtos.PositionPrintDTO;
-import org.hsweb.printer.utils.printable.positionprint.full.PositionPrint;
+import org.hsweb.printer.dtos.PositionSimplePrintDTO;
 import org.hsweb.printer.utils.printable.positionprint.PositionPrintUnit;
+import org.hsweb.printer.utils.printable.positionprint.simple.PositionSimplePrint;
 
 import java.awt.*;
 import java.awt.print.PageFormat;
@@ -23,18 +23,18 @@ import java.util.List;
 /**
  * Created by xiong on 2017-02-24.
  */
-public class PositionPrintable implements BasePrintable {
+public class PositionSimplePrintable implements BasePrintable {
     private String printName;
-    private PositionPrint positionPrint;
+    private PositionSimplePrint positionPrint;
     private double height;
     private double width;
-    public PositionPrintable(String printName,String height, String width, List<PositionPrintDTO> printDTOList) {
+    public PositionSimplePrintable(String printName, String height, String width, List<PositionSimplePrintDTO> printDTOList) {
 
         this.printName = printName;
         this.height = PositionPrintUnit.parsingUnit(height);
         this.width = PositionPrintUnit.parsingUnit(width);
 
-        this.positionPrint = new PositionPrint(this.height,this.width, printDTOList);
+        this.positionPrint = new PositionSimplePrint(this.height,this.width, printDTOList);
     }
     @Override
     public String getPrintDocName() {
