@@ -41,7 +41,8 @@ public class PositionSimpleComponentString implements PositionSimpleComponent {
     }
     @Override
     public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
-        List<String> strings = StringUtil.lengthSplit(positionSimplePrintDTO.getContext(),(int)(PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getWidth())/ positionSimplePrintFontDTO.getFont().getSize2D()));
+        int lineMaxText = (int) (PositionPrintUnit.parsingUnit(positionSimplePrintDTO.getWidth()) / positionSimplePrintFontDTO.getFont().getSize2D()*2);
+        List<String> strings = StringUtil.lengthSplit(positionSimplePrintDTO.getContext(),lineMaxText);
 
         graphics.setFont(positionSimplePrintFontDTO.getFont());
         graphics.setColor(positionSimplePrintStyleDTO.getColor());
@@ -56,10 +57,17 @@ public class PositionSimpleComponentString implements PositionSimpleComponent {
             if(i!=0&&v+positionSimplePrintFontDTO.getFont().getSize2D()>lineHeight){
                 return;
             }
+            double tempx=x;
+            if(positionSimplePrintStyleDTO.getAlign()==1){
+                tempx+=(lineMaxText-StringUtil.length(string))/2*(positionSimplePrintFontDTO.getFont().getSize2D()/2);
+            }else if(positionSimplePrintStyleDTO.getAlign()==2){
+                tempx+=(lineMaxText-StringUtil.length(string))*(positionSimplePrintFontDTO.getFont().getSize2D()/2);
+            }
             graphics.drawString(string,
-                    (int)x,
-                    (int)(y-pageIndex*height+v)
+                    (int) tempx,
+                    (int) (y - pageIndex * height + v)
             );
+
             ++i;
         }
     }
