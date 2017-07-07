@@ -39,6 +39,7 @@ public class PositionSimplePrint {
     //转化数据
     private List<PositionSimplePrintStyleDTO> styleList=new ArrayList<>();
     private List<PositionSimplePrintFontDTO> fontList=new ArrayList<>();
+    private int maxPage=0;
     //转换结果数据
     private Map<String,List<PositionSimpleComponent>> pagePositionSimpleComponent=new HashMap<>();
 
@@ -82,15 +83,19 @@ public class PositionSimplePrint {
                 continue;
             }else {
                 thisPage =(int)(PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) / height);
-                thisPage2=thisPage;
+
+                maxPage= maxPage<thisPage?thisPage:maxPage;
                 if(positionPrintDTO.getHeight()!=null) {
                     thisPage2 = (int) ((PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) + PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight())) / height);
+
                 }else if(PositionSimplePrintConstants.IMAGE.equals(positionPrintDTO.getType())){
                     continue;
                 }
             }
             this.addPagePositionSimplePrintDTO(positionPrintDTO,pagePositionSimplePrintList,thisPage);
+            thisPage2=thisPage;
             if(thisPage!=thisPage2){
+                maxPage= maxPage<thisPage2?thisPage2:maxPage;
                 this.addPagePositionSimplePrintDTO(positionPrintDTO,pagePositionSimplePrintList,thisPage2);
             }
         }
@@ -184,15 +189,19 @@ public class PositionSimplePrint {
     }
 
     public int getPageSize() {
-        return pagePositionSimpleComponent.size();
+        return maxPage+1;
     }
 
     public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
         List<PositionSimpleComponent> positionSimplePrintList = pagePositionSimpleComponent.get(prefix+pageIndex);
-        if(positionSimplePrintList!=null) {
+        if(positionSimplePrintList!=null&&!positionSimplePrintList.isEmpty()) {
             for (PositionSimpleComponent positionSimplePrintDTO : positionSimplePrintList) {
                 positionSimplePrintDTO.print(pageIndex, graphics, xpadding, ypadding);
             }
+        }else {//当打印页为空时，不断打
+            graphics.setFont(new Font(null,Font.PLAIN,10));
+            graphics.setColor(Color.black);
+            graphics.drawString(".",2,10);
         }
     }
 

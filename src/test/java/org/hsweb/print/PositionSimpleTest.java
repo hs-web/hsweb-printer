@@ -66,7 +66,7 @@ public class PositionSimpleTest {
 
         java.util.List<PositionSimplePrintDTO> positionSimplePrintDTOS1 = JSON.parseArray(JSON.toJSONString(positionSimplePrintDTOS), PositionSimplePrintDTO.class);
 
-        PositionSimplePrintable positionSimplePrintable=new PositionSimplePrintable("10xx","2400","800",positionSimplePrintDTOS1);
+        PositionSimplePrintable positionSimplePrintable=new PositionSimplePrintable("10xx","30","800",positionSimplePrintDTOS1);
         PrintResultDTO xxx = PrintUtil.print("xxx", positionSimplePrintable);
 
     }
