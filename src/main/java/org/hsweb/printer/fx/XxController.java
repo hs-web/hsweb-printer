@@ -15,9 +15,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.hsweb.printer.fx.x.PrintText;
+import org.hsweb.printer.fx.components.BasicComponent;
+import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -27,12 +30,19 @@ public class XxController  implements ControllerDataInitializable{
     @FXML
     private AnchorPane content;
 
+    public static List<BasicComponent> basicComponents=new ArrayList<>();
+
 
     @Override
     public void initData(Stage nowStage, Object userData, Object sendData) {
         content.setPrefWidth(400);
         content.setPrefHeight(400);
         nowStage.show();
+        content.setOnMousePressed((e) -> {
+            if(content.equals(e.getTarget())){
+                basicComponents.forEach(basicComponent -> basicComponent.hiddenBoder());
+            }
+        });
     }
 
     @Override
@@ -40,11 +50,26 @@ public class XxController  implements ControllerDataInitializable{
 
     }
 
-
-    public void insertText(ActionEvent actionEvent) {
-        PrintText printText = new PrintText(content.getWidth(),content.getHeight());
+    public void insertLable(ActionEvent actionEvent) {
+        BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
+        baseComponentDTO.setWindowHeight(content.getHeight());
+        baseComponentDTO.setWindowWidth(content.getWidth());
+        baseComponentDTO.setContext("插入文本");
+        BasicComponent printText = new BasicComponent(baseComponentDTO);
+        basicComponents.add(printText);
         content.getChildren().add(printText);
         //Event.fireEvent(printText, );
     }
+    public void inserObj(ActionEvent actionEvent) {
+        BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
+        baseComponentDTO.setWindowHeight(content.getHeight());
+        baseComponentDTO.setWindowWidth(content.getWidth());
+        baseComponentDTO.setContext("插入变量");
+        BasicComponent printText = new BasicComponent(baseComponentDTO);
+        basicComponents.add(printText);
+        content.getChildren().add(printText);
+        //Event.fireEvent(printText, );
+    }
+
 
 }

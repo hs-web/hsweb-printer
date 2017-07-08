@@ -9,14 +9,15 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.x;
+package org.hsweb.printer.fx.components;
 
 import javafx.scene.text.Text;
+import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
 
 /**
- * Created by xiong on 2017-02-25.
+ * Created by xiong on 2017-07-08.
  */
-public class PrintText extends Text {
+public class BasicComponent  extends Text {
     private double windowWidth;
     private double windowHeight;
 
@@ -26,14 +27,16 @@ public class PrintText extends Text {
     private double pressedY=0;
 
 
-    public PrintText(double width,double height) {
-        this.windowHeight=height;
-        this.windowWidth=width;
-        this.setText("新文本");
-        this.setX(50);
-        this.setY(50);
+    public BasicComponent(BaseComponentDTO baseComponentDTO) {
+        this.windowHeight=baseComponentDTO.getWindowHeight();
+        this.windowWidth=baseComponentDTO.getWindowWidth();
+        this.setText(baseComponentDTO.getContext());
+        this.setX(baseComponentDTO.getInitX());
+        this.setY(baseComponentDTO.getInitY());
+
 
         this.setOnMousePressed((e)->{
+           this.showBoder();
             System.out.println(1);
         });
         this.setOnMouseClicked((e)->{
@@ -99,5 +102,12 @@ public class PrintText extends Text {
             this.pressed=false;
         });
 
+    }
+
+    public void showBoder(){
+        this.setStyle("-fx-border-color: red;-fx-border-width: 1px");
+    }
+    public void hiddenBoder(){
+        this.setStyle("-fx-border-color: none;");
     }
 }

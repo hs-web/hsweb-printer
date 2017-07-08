@@ -15,7 +15,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="插入">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#insertText" text="文本" />
+                <MenuItem mnemonicParsing="false" onAction="#insertLable" text="文本" />
+                <MenuItem mnemonicParsing="false" onAction="#inserObj" text="变量" />
             </items>
           </Menu>
         </menus>
