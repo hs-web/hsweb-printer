@@ -1,0 +1,3 @@
+.show_border{
+    -fx-border-width: 5;   -fx-border-color: red;
+}

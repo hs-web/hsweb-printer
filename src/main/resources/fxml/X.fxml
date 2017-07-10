@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hsweb.printer.fx.XxController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Box?>
+<BorderPane styleClass="X.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hsweb.printer.fx.XxController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -25,16 +19,27 @@
    <center>
       <Pane>
          <children>
-            <ScrollPane layoutX="100.0" layoutY="88.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000000;">
-               <content>
-                  <AnchorPane fx:id="content" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #ffffff;">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </AnchorPane>
-               </content>
+            <ScrollPane>
+              <content>
+                <AnchorPane fx:id="content" styleClass="show_border" minHeight="0.0" minWidth="0.0"   style="-fx-fit-to-width: 100%; -fx-fit-to-height: 100%;"/>
+              </content>
             </ScrollPane>
          </children>
       </Pane>
    </center>
+   <right>
+      <Accordion BorderPane.alignment="CENTER" fx:id="property">
+          <panes>
+              <TitledPane animated="true" text="通用">
+                  <content>
+                      <HBox>
+                          <VBox fx:id="propertyPubName" minWidth="100"></VBox>
+                          <VBox fx:id="propertyPubValue" ></VBox>
+                      </HBox>
+
+                  </content>
+              </TitledPane>
+          </panes>
+      </Accordion>
+   </right>
 </BorderPane>

@@ -21,8 +21,10 @@ public class BaseComponentDTO implements Serializable {
     private Double windowWidth;
     private Double windowHeight;
     private String context;
-    private Double initX=10D;
-    private Double initY=20D;
+    private Double x=10D;
+    private Double y=20D;
+    private Double width=100D;
+    private Double height=20D;
 
 
     public String getType() {
@@ -33,20 +35,36 @@ public class BaseComponentDTO implements Serializable {
         this.type = type;
     }
 
-    public Double getInitX() {
-        return initX;
+    public Double getX() {
+        return x;
     }
 
-    public void setInitX(Double initX) {
-        this.initX = initX;
+    public void setX(Double x) {
+        this.x = x;
     }
 
-    public Double getInitY() {
-        return initY;
+    public Double getY() {
+        return y;
     }
 
-    public void setInitY(Double initY) {
-        this.initY = initY;
+    public void setY(Double y) {
+        this.y = y;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
     public Double getWindowWidth() {

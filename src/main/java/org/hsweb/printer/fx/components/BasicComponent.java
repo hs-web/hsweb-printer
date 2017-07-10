@@ -12,6 +12,7 @@
 package org.hsweb.printer.fx.components;
 
 import javafx.scene.text.Text;
+import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
 
 /**
@@ -27,16 +28,19 @@ public class BasicComponent  extends Text {
     private double pressedY=0;
 
 
-    public BasicComponent(BaseComponentDTO baseComponentDTO) {
+    public void changeProperty(BaseComponentDTO baseComponentDTO){
         this.windowHeight=baseComponentDTO.getWindowHeight();
         this.windowWidth=baseComponentDTO.getWindowWidth();
         this.setText(baseComponentDTO.getContext());
-        this.setX(baseComponentDTO.getInitX());
-        this.setY(baseComponentDTO.getInitY());
-
-
+        this.setX(baseComponentDTO.getX());
+        this.setY(baseComponentDTO.getY());
+    }
+    public BasicComponent(BaseComponentDTO baseComponentDTO, PropertyController propertyController) {
+        changeProperty(baseComponentDTO);
+        propertyController.property(this,baseComponentDTO);
         this.setOnMousePressed((e)->{
-           this.showBoder();
+          // this.showBoder();
+            propertyController.property(this,baseComponentDTO);
             System.out.println(1);
         });
         this.setOnMouseClicked((e)->{
@@ -82,8 +86,10 @@ public class BasicComponent  extends Text {
                 y=windowHeight;
             }
 
-            this.setX(x);
-            this.setY(y);
+            baseComponentDTO.setX(x);
+            baseComponentDTO.setY(y);
+            changeProperty(baseComponentDTO);
+            propertyController.property(this,baseComponentDTO);
         });
         this.setOnMouseDragOver((e)->{
             System.out.println(7);
@@ -104,10 +110,5 @@ public class BasicComponent  extends Text {
 
     }
 
-    public void showBoder(){
-        this.setStyle("-fx-border-color: red;-fx-border-width: 1px");
-    }
-    public void hiddenBoder(){
-        this.setStyle("-fx-border-color: none;");
-    }
+
 }
