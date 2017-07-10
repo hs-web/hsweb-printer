@@ -14,10 +14,11 @@ package org.hsweb.printer.fx.dtos;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.io.Serializable;
 import java.util.function.BiConsumer;
@@ -44,15 +45,19 @@ public class PubPropertyDTO implements Serializable {
     }
 
     public void add(Node  pubName,Node pubValue){
+        VBox.setMargin(pubName, new Insets(3,0 , 3, 8));
         pubNames.add(pubName);
+        VBox.setMargin(pubValue, new Insets(3,0 , 3, 8));
         pubValues.add(pubValue);
     }
     public void add(String  pubName, String pubValue, BiConsumer<String,TextField> stringConsumer){
-        Text tableColumn=new Text(pubName);
+        Label tableColumn=new Label(pubName);
+        tableColumn.setStyle("-fx-min-height:25;");
 
         TextField tableColumn2=new TextField();
         tableColumn2.setText(pubValue);
         tableColumn2.setEditable(true);
+        tableColumn2.setStyle("-fx-min-height:25;");
         tableColumn2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
