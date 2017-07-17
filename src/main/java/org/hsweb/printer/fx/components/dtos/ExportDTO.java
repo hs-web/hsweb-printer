@@ -12,15 +12,15 @@
 package org.hsweb.printer.fx.components.dtos;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Created by xiong on 2017-07-08.
+ * Created by xiong on 2017-07-17.
  */
-public class BaseComponentDTO extends ExportComponentDTO implements Serializable {
+public class ExportDTO implements Serializable {
     private Double windowWidth;
     private Double windowHeight;
-
-
+    private List<ExportComponentDTO> componentDTOS;
 
     public Double getWindowWidth() {
         return windowWidth;
@@ -38,4 +38,11 @@ public class BaseComponentDTO extends ExportComponentDTO implements Serializable
         this.windowHeight = windowHeight;
     }
 
+    public List<ExportComponentDTO> getComponentDTOS() {
+        return componentDTOS;
+    }
+
+    public void setComponentDTOS(List<ExportComponentDTO> componentDTOS) {
+        this.componentDTOS = componentDTOS;
+    }
 }

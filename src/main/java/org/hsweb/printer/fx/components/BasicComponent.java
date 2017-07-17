@@ -11,9 +11,11 @@
 
 package org.hsweb.printer.fx.components;
 
+import com.alibaba.fastjson.JSON;
 import javafx.scene.text.Text;
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
+import org.hsweb.printer.fx.components.dtos.ExportComponentDTO;
 
 /**
  * Created by xiong on 2017-07-08.
@@ -26,9 +28,15 @@ public class BasicComponent  extends Text {
 
     private double pressedX=0;
     private double pressedY=0;
+    private BaseComponentDTO baseComponentDTO;
 
+
+    public ExportComponentDTO getBaseComponentDTO() {
+        return JSON.parseObject(JSON.toJSONBytes(baseComponentDTO),ExportComponentDTO.class);
+    }
 
     public void changeProperty(BaseComponentDTO baseComponentDTO){
+        this.baseComponentDTO=baseComponentDTO;
         this.windowHeight=baseComponentDTO.getWindowHeight();
         this.windowWidth=baseComponentDTO.getWindowWidth();
         this.setText(baseComponentDTO.getContext());

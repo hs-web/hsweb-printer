@@ -11,15 +11,20 @@
 
 package org.hsweb.printer.fx;
 
+import com.alibaba.fastjson.JSON;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.hsweb.printer.fx.components.BasicComponent;
 import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
+import org.hsweb.printer.fx.components.dtos.ExportComponentDTO;
+import org.hsweb.printer.fx.components.dtos.ExportDTO;
 import org.hsweb.printer.fx.dtos.PubPropertyDTO;
 
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,36 +66,35 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
     }
 
+    private void add(BaseComponentDTO baseComponentDTO){
+        BasicComponent printText = new BasicComponent(baseComponentDTO,this);
+        basicComponents.add(printText);
+        content.getChildren().add(printText);
+    }
+
     public void insertLable(ActionEvent actionEvent) {
         BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());
         baseComponentDTO.setContext("插入文本");
-        BasicComponent printText = new BasicComponent(baseComponentDTO,this);
-        basicComponents.add(printText);
-        content.getChildren().add(printText);
-        //Event.fireEvent(printText, );
+
+        this.add(baseComponentDTO);
     }
     public void inserObj(ActionEvent actionEvent) {
         BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());
         baseComponentDTO.setContext("插入变量");
-        BasicComponent printText = new BasicComponent(baseComponentDTO,this);
-        basicComponents.add(printText);
-        content.getChildren().add(printText);
-        //Event.fireEvent(printText, );
+
+        this.add(baseComponentDTO);
     }
 
     @Override
     public void  property(BasicComponent basicComponent,BaseComponentDTO baseComponentDTO){
 
         pubProperty(basicComponent,baseComponentDTO);
-
-
-
-
     }
+
     private void pubProperty(BasicComponent basicComponent,BaseComponentDTO baseComponentDTO){
         pubPropertyDTO.clear();
         pubPropertyDTO.add("内容", baseComponentDTO.getContext() + "",(s,f) ->{
@@ -118,6 +122,71 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
 
     }
+    public String getFileUrl(String title){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("json files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+        Stage s = new Stage();
+        File file = fileChooser.showOpenDialog(s);
+        if (file == null) return null;
+        String exportFilePath = file.getAbsolutePath().replaceAll(".json", "") + ".json.";
+        return exportFilePath;
+    }
 
+    public void importFile(ActionEvent actionEvent) {
+        String exportFilePath =getFileUrl("选择文件" );
+        if(exportFilePath==null){
+            return;
+        }
+        StringBuilder json=new StringBuilder();
+        try (BufferedReader file1 = new BufferedReader(new FileReader(new File(exportFilePath)))) {
+            while(file1.ready()){
+                json.append(file1.readLine());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(json.length()==0){
+            return;
+        }
+        ExportDTO baseComponentDTOS = JSON.parseObject(json.toString(), ExportDTO.class);
+
+        content.getChildren().clear();
+        for (ExportComponentDTO baseComponentDTO : baseComponentDTOS.getComponentDTOS()) {
+            BaseComponentDTO baseComponentDTO1 = JSON.parseObject(JSON.toJSONBytes(baseComponentDTO), BaseComponentDTO.class);
+            baseComponentDTO1.setWindowWidth(baseComponentDTOS.getWindowWidth());
+            baseComponentDTO1.setWindowHeight(baseComponentDTOS.getWindowHeight());
+            this.add(baseComponentDTO1);
+        }
+
+    }
+    public void exportFile(ActionEvent actionEvent) {
+        String exportFilePath =getFileUrl("选择要保存的位置" );
+        if(exportFilePath==null){
+            return;
+        }
+        List<ExportComponentDTO> baseComponentDTOS = new ArrayList<>();
+        for (BasicComponent basicComponent : basicComponents) {
+            baseComponentDTOS.add(basicComponent.getBaseComponentDTO());
+        }
+
+        ExportDTO exportDTO = new ExportDTO();
+        exportDTO.setWindowHeight(content.getHeight());
+        exportDTO.setWindowWidth(content.getWidth());
+        exportDTO.setComponentDTOS(baseComponentDTOS);
+
+        try (FileWriter file1 = new FileWriter(new File(exportFilePath))) {
+            file1.write(JSON.toJSONString(exportDTO));
+            file1.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
