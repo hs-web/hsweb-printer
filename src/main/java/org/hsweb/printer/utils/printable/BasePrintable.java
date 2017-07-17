@@ -62,8 +62,13 @@ public interface BasePrintable extends Printable {
         //    通俗理解就是书、文档
         Book book = new Book();
         //    把 PageFormat 和 Printable 添加到书中，组成一个页面
-        book.append(this, pageFormat);
+        for ( int i=0;i<this.getPageSize();i++) {
+            book.append(this, pageFormat);
+        }
         return book;
+    }
+    default int getPageSize(){
+        return 1;
     }
     /**
      * 打印文档方向

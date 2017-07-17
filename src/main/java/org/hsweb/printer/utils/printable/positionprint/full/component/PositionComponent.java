@@ -9,22 +9,13 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.positionprint;
+package org.hsweb.printer.utils.printable.positionprint.full.component;
+
+import java.awt.*;
 
 /**
  * Created by xiong on 2017-02-24.
  */
-public interface PositionPrintConstants {
-    interface Type{
-        String TEXT="TEXT";
-        String HTM="HTM";
-        String TABLE="TABLE";
-        String URL="URL";
-        String IMAGE="IMAGE";
-        String TBURL="TBURL";
-        String HTML="HTML";
-        String LINE="LINE";
-        String RECT="RECT";
-        String ELLIPSE="ELLIPSE";
-    }
+public interface PositionComponent {
+    void print( Graphics graphics);
 }
