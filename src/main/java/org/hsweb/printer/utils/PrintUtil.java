@@ -167,7 +167,7 @@ public class PrintUtil {
         try {
             //获取打印服务对象
             PrinterJob job = PrinterJob.getPrinterJob();
-            job.setJobName(basePrintable.getPrintDocName());
+            job.setJobName(basePrintable.getPrintDocName()==null?"":basePrintable.getPrintDocName());
             // 设置打印类
             job.setPageable(basePrintable.getBook());
 

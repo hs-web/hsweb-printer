@@ -9,14 +9,12 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx;
-
-import org.hsweb.printer.fx.components.BasicComponent;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
+package org.hsweb.printer.utils.printable.templateptint;
 
 /**
- * Created by xiong on 2017-07-10.
+ * Created by xiong on 2017-07-06.
  */
-public interface PropertyController {
-    void  property(BasicComponent basicComponent, TemplateComponentDTO baseComponentDTO);
+public interface TemplatePrintConstants {
+    String TEXT="TEXT";
+    String VARIABLE="VARIABLE";
 }

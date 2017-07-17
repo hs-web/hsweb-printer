@@ -9,12 +9,12 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components.dtos;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
 
 import java.io.Serializable;
 
 /**
  * Created by xiong on 2017-07-10.
  */
-public class TextComponentDTO extends BaseComponentDTO implements Serializable {
+public class VariableComponentDTO extends TextComponentDTO implements Serializable {
 }

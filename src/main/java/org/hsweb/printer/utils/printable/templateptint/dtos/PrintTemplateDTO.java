@@ -9,7 +9,9 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components.dtos;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
+
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,10 +19,19 @@ import java.util.List;
 /**
  * Created by xiong on 2017-07-17.
  */
-public class ExportDTO implements Serializable {
+public class PrintTemplateDTO implements Serializable {
+    private String printName;
     private Double windowWidth;
     private Double windowHeight;
-    private List<ExportComponentDTO> componentDTOS;
+    private List<JSONObject> componentDTOS;
+
+    public String getPrintName() {
+        return printName;
+    }
+
+    public void setPrintName(String printName) {
+        this.printName = printName;
+    }
 
     public Double getWindowWidth() {
         return windowWidth;
@@ -38,11 +49,11 @@ public class ExportDTO implements Serializable {
         this.windowHeight = windowHeight;
     }
 
-    public List<ExportComponentDTO> getComponentDTOS() {
+    public List<JSONObject> getComponentDTOS() {
         return componentDTOS;
     }
 
-    public void setComponentDTOS(List<ExportComponentDTO> componentDTOS) {
+    public void setComponentDTOS(List<JSONObject> componentDTOS) {
         this.componentDTOS = componentDTOS;
     }
 }

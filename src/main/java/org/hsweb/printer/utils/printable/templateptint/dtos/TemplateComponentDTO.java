@@ -9,20 +9,38 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components.dtos;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
 
 import java.io.Serializable;
 
 /**
  * Created by xiong on 2017-07-17.
  */
-public class ExportComponentDTO implements Serializable {
+public class TemplateComponentDTO implements Serializable {
+    private Double windowWidth;
+    private Double windowHeight;
     private String type;
     private String context;
     private Double x=10D;
     private Double y=20D;
     private Double width=100D;
     private Double height=20D;
+
+    public Double getWindowWidth() {
+        return windowWidth;
+    }
+
+    public void setWindowWidth(Double windowWidth) {
+        this.windowWidth = windowWidth;
+    }
+
+    public Double getWindowHeight() {
+        return windowHeight;
+    }
+
+    public void setWindowHeight(Double windowHeight) {
+        this.windowHeight = windowHeight;
+    }
 
     public String getType() {
         return type;

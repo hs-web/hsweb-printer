@@ -9,18 +9,27 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components.dtos;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Created by xiong on 2017-07-08.
+ * Created by xiong on 2017-07-17.
  */
-public class BaseComponentDTO extends ExportComponentDTO implements Serializable {
+public class TemplateDTO implements Serializable {
+    private String printName;
     private Double windowWidth;
     private Double windowHeight;
+    private List<TemplateComponentDTO> componentDTOS;
 
+    public String getPrintName() {
+        return printName;
+    }
 
+    public void setPrintName(String printName) {
+        this.printName = printName;
+    }
 
     public Double getWindowWidth() {
         return windowWidth;
@@ -38,4 +47,11 @@ public class BaseComponentDTO extends ExportComponentDTO implements Serializable
         this.windowHeight = windowHeight;
     }
 
+    public List<TemplateComponentDTO> getComponentDTOS() {
+        return componentDTOS;
+    }
+
+    public void setComponentDTOS(List<TemplateComponentDTO> componentDTOS) {
+        this.componentDTOS = componentDTOS;
+    }
 }

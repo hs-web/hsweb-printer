@@ -19,10 +19,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.hsweb.printer.fx.components.BasicComponent;
-import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
-import org.hsweb.printer.fx.components.dtos.ExportComponentDTO;
-import org.hsweb.printer.fx.components.dtos.ExportDTO;
 import org.hsweb.printer.fx.dtos.PubPropertyDTO;
+import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
 
 import java.io.*;
 import java.net.URL;
@@ -45,6 +47,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
 
     private PubPropertyDTO pubPropertyDTO;
+    private String printName="打印模板";
 
 
 
@@ -66,14 +69,15 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
     }
 
-    private void add(BaseComponentDTO baseComponentDTO){
+    private void add(TemplateComponentDTO baseComponentDTO){
         BasicComponent printText = new BasicComponent(baseComponentDTO,this);
         basicComponents.add(printText);
         content.getChildren().add(printText);
     }
 
     public void insertLable(ActionEvent actionEvent) {
-        BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
+        TextComponentDTO baseComponentDTO=new TextComponentDTO();
+        baseComponentDTO.setType(TemplatePrintConstants.TEXT);
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());
         baseComponentDTO.setContext("插入文本");
@@ -81,7 +85,8 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         this.add(baseComponentDTO);
     }
     public void inserObj(ActionEvent actionEvent) {
-        BaseComponentDTO baseComponentDTO=new BaseComponentDTO();
+        VariableComponentDTO baseComponentDTO=new VariableComponentDTO();
+        baseComponentDTO.setType(TemplatePrintConstants.VARIABLE);
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());
         baseComponentDTO.setContext("插入变量");
@@ -90,12 +95,12 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     }
 
     @Override
-    public void  property(BasicComponent basicComponent,BaseComponentDTO baseComponentDTO){
+    public void  property(BasicComponent basicComponent,TemplateComponentDTO baseComponentDTO){
 
         pubProperty(basicComponent,baseComponentDTO);
     }
 
-    private void pubProperty(BasicComponent basicComponent,BaseComponentDTO baseComponentDTO){
+    private void pubProperty(BasicComponent basicComponent,TemplateComponentDTO baseComponentDTO){
         pubPropertyDTO.clear();
         pubPropertyDTO.add("内容", baseComponentDTO.getContext() + "",(s,f) ->{
             baseComponentDTO.setContext(s);
@@ -153,11 +158,11 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         if(json.length()==0){
             return;
         }
-        ExportDTO baseComponentDTOS = JSON.parseObject(json.toString(), ExportDTO.class);
+        TemplateDTO baseComponentDTOS = JSON.parseObject(json.toString(), TemplateDTO.class);
 
         content.getChildren().clear();
-        for (ExportComponentDTO baseComponentDTO : baseComponentDTOS.getComponentDTOS()) {
-            BaseComponentDTO baseComponentDTO1 = JSON.parseObject(JSON.toJSONBytes(baseComponentDTO), BaseComponentDTO.class);
+        for (TemplateComponentDTO baseComponentDTO : baseComponentDTOS.getComponentDTOS()) {
+            TemplateComponentDTO baseComponentDTO1 = JSON.parseObject(JSON.toJSONBytes(baseComponentDTO), TemplateComponentDTO.class);
             baseComponentDTO1.setWindowWidth(baseComponentDTOS.getWindowWidth());
             baseComponentDTO1.setWindowHeight(baseComponentDTOS.getWindowHeight());
             this.add(baseComponentDTO1);
@@ -169,12 +174,13 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         if(exportFilePath==null){
             return;
         }
-        List<ExportComponentDTO> baseComponentDTOS = new ArrayList<>();
+        List<TemplateComponentDTO> baseComponentDTOS = new ArrayList<>();
         for (BasicComponent basicComponent : basicComponents) {
             baseComponentDTOS.add(basicComponent.getBaseComponentDTO());
         }
 
-        ExportDTO exportDTO = new ExportDTO();
+        TemplateDTO exportDTO = new TemplateDTO();
+        exportDTO.setPrintName(printName);
         exportDTO.setWindowHeight(content.getHeight());
         exportDTO.setWindowWidth(content.getWidth());
         exportDTO.setComponentDTOS(baseComponentDTOS);

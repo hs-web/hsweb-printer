@@ -11,11 +11,13 @@
 
 package org.hsweb.printer.fx.components;
 
-import com.alibaba.fastjson.JSON;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.hsweb.printer.fx.PropertyController;
-import org.hsweb.printer.fx.components.dtos.BaseComponentDTO;
-import org.hsweb.printer.fx.components.dtos.ExportComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
 
 /**
  * Created by xiong on 2017-07-08.
@@ -28,22 +30,39 @@ public class BasicComponent  extends Text {
 
     private double pressedX=0;
     private double pressedY=0;
-    private BaseComponentDTO baseComponentDTO;
+    private TemplateComponentDTO baseComponentDTO;
 
 
-    public ExportComponentDTO getBaseComponentDTO() {
-        return JSON.parseObject(JSON.toJSONBytes(baseComponentDTO),ExportComponentDTO.class);
+    public TemplateComponentDTO getBaseComponentDTO() {
+        return baseComponentDTO;
     }
 
-    public void changeProperty(BaseComponentDTO baseComponentDTO){
+    public void changeProperty(TemplateComponentDTO baseComponentDTO){
         this.baseComponentDTO=baseComponentDTO;
         this.windowHeight=baseComponentDTO.getWindowHeight();
         this.windowWidth=baseComponentDTO.getWindowWidth();
         this.setText(baseComponentDTO.getContext());
         this.setX(baseComponentDTO.getX());
         this.setY(baseComponentDTO.getY());
+        if(TemplatePrintConstants.TEXT.equals(baseComponentDTO.getType())){
+            this.changeTextProperty((TextComponentDTO)baseComponentDTO);
+        }else if(TemplatePrintConstants.VARIABLE.equals(baseComponentDTO.getType())){
+            this.changeVariableProperty((VariableComponentDTO)baseComponentDTO);
+        }
     }
-    public BasicComponent(BaseComponentDTO baseComponentDTO, PropertyController propertyController) {
+
+
+
+    private void changeTextProperty(TextComponentDTO baseComponentDTO) {
+        Font font =  Font.font(baseComponentDTO.getFontName(),baseComponentDTO.getFontPosture(),baseComponentDTO.getFontSize());
+        this.setFont(font);
+        this.setStyle("-fx-color:"+baseComponentDTO.getColor());
+    }
+    private void changeVariableProperty(VariableComponentDTO baseComponentDTO) {
+        this.changeTextProperty(baseComponentDTO);
+    }
+
+    public BasicComponent(TemplateComponentDTO baseComponentDTO, PropertyController propertyController) {
         changeProperty(baseComponentDTO);
         propertyController.property(this,baseComponentDTO);
         this.setOnMousePressed((e)->{
