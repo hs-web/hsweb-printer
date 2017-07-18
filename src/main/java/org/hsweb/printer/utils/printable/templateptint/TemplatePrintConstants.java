@@ -18,4 +18,5 @@ public interface TemplatePrintConstants {
     String TEXT="TEXT";
     String VARIABLE="VARIABLE";
     String IMAGE="IMAGE";
+    String QRCODE="QRCODE";
 }

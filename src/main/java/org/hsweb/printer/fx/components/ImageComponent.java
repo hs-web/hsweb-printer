@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.hsweb.printer.fx.PropertyController;
+import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 /**
@@ -42,7 +43,11 @@ public class ImageComponent  extends ImageView implements Component{
         this.baseComponentDTO=baseComponentDTO;
 
         this.componentEvent.changeTemplateComponent(baseComponentDTO);
-        Image image=new Image("image.png",baseComponentDTO.getWidth(),baseComponentDTO.getHeight(),false,false);
+        String url="image.png";
+        if(TemplatePrintConstants.QRCODE.equals(baseComponentDTO.getType())){
+            url="qrcode.png";
+        }
+        Image image=new Image(url,baseComponentDTO.getWidth(),baseComponentDTO.getHeight(),false,false);
         this.setImage(image);
         //this.setText(baseComponentDTO.getContext());
         this.setX(baseComponentDTO.getX());

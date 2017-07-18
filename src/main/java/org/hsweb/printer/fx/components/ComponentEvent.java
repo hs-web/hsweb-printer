@@ -45,8 +45,10 @@ public  class ComponentEvent {
 
     public void init(){
         this.component.getThisNode().setOnMousePressed((e)->{
+
             this.propertyController.property(this.component,this.baseComponentDTO);
             System.out.println(1);
+            return;
         });
         this.component.getThisNode().setOnMouseClicked((e)->{
             e.getEventType();

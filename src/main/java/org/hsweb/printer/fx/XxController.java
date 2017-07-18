@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -52,13 +53,15 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     @FXML
     private VBox propertyFontValue;
 
+    private Component nowComponent;
 
-    public static List<Component> basicComponents=new ArrayList<>();
+
+    public List<Component> basicComponents=new ArrayList<>();
 
 
     private PropertyDTO pubPropertyDTO;
     private PropertyDTO fontPropertyDTO;
-    private String printName="打印模板";
+    private TemplateComponentDTO contentComponentDTO;
 
 
 
@@ -74,11 +77,67 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
                 basicComponents.forEach(basicComponent -> basicComponent.hiddenBoder());
             }
         });*/
+        contentComponentDTO=new TemplateComponentDTO();
+        contentComponentDTO.setWidth(400D);
+        contentComponentDTO.setHeight(400D);
+        contentComponentDTO.setContext("打印模板");
+
+        content.setOnMousePressed((e)->{
+            if (e.getTarget().equals(content)) {
+                contentProperty();
+            }
+        });
+        content.setOnKeyReleased((e)->{
+            KeyCode code = e.getCode();
+            if(nowComponent!=null&&KeyCode.DELETE.equals(code)){
+                basicComponents.remove(nowComponent);
+                content.getChildren().remove(nowComponent.getThisNode());
+            }
+        });
+        contentProperty();
+    }
+
+    private void contentProperty() {
+        nowComponent=null;
+        this.propertyFont.setVisible(false);
+        pubPropertyDTO.clear();
+        pubPropertyDTO.add("文档标题", contentComponentDTO.getContext(),(s,f) ->{
+            contentComponentDTO.setContext(s);
+        });
+
+        pubPropertyDTO.add("高度", contentComponentDTO.getHeight() + "", (s,f) ->{
+            try {
+                double height = Double.parseDouble(s);
+                contentComponentDTO.setHeight(height);
+                content.setPrefHeight(height);
+                for (Component basicComponent : basicComponents) {
+                    basicComponent.getComponent().setHeight(height);
+                    basicComponent.changeProperty(basicComponent.getComponent());
+                }
+            }catch (NumberFormatException e2){
+                f.setText(content.getHeight()+"");
+                f.requestFocus();
+            }
+        });
+        pubPropertyDTO.add("宽度", contentComponentDTO.getWidth() + "", (s,f) ->{
+            try {
+                double width = Double.parseDouble(s);
+                contentComponentDTO.setWidth(width);
+                content.setPrefWidth(width);
+
+                for (Component basicComponent : basicComponents) {
+                    basicComponent.getComponent().setWidth(width);
+                    basicComponent.changeProperty(basicComponent.getComponent());
+                }
+            }catch (NumberFormatException e2){
+                f.setText(contentComponentDTO.getWidth()+"");
+                f.requestFocus();
+            }
+        });
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     private void add(TemplateComponentDTO baseComponentDTO){
@@ -87,7 +146,8 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
             BasicComponent printText = new BasicComponent(baseComponentDTO, this);
             basicComponents.add(printText);
             content.getChildren().add(printText);
-        }else if(TemplatePrintConstants.IMAGE.equals(baseComponentDTO.getType())){
+        }else if(TemplatePrintConstants.IMAGE.equals(baseComponentDTO.getType())
+                ||TemplatePrintConstants.QRCODE.equals(baseComponentDTO.getType())){
             ImageComponent imageComponent= new ImageComponent(baseComponentDTO, this);
             basicComponents.add(imageComponent);
             content.getChildren().add(imageComponent);
@@ -118,28 +178,44 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());
         baseComponentDTO.setContext("");
+        baseComponentDTO.setWidth(100D);
+        baseComponentDTO.setHeight(100D);
+
+        this.add(baseComponentDTO);
+    }
+    public void inserQrcode(ActionEvent actionEvent) {
+        ImageComponentDTO baseComponentDTO=new ImageComponentDTO();
+        baseComponentDTO.setType(TemplatePrintConstants.QRCODE);
+        baseComponentDTO.setWindowHeight(content.getHeight());
+        baseComponentDTO.setWindowWidth(content.getWidth());
+        baseComponentDTO.setContext("");
+        baseComponentDTO.setWidth(100D);
+        baseComponentDTO.setHeight(100D);
 
         this.add(baseComponentDTO);
     }
 
     @Override
     public void  property(Component basicComponent,TemplateComponentDTO baseComponentDTO){
+        nowComponent=basicComponent;
         this.propertyFont.setVisible(false);
-        this.pubProperty(basicComponent,baseComponentDTO);
+
         if(TemplatePrintConstants.TEXT.equals(baseComponentDTO.getType())){
             this.textProperty(basicComponent,(TextComponentDTO)baseComponentDTO);
         }else  if(TemplatePrintConstants.VARIABLE.equals(baseComponentDTO.getType())){
             this.variableProperty(basicComponent,(VariableComponentDTO)baseComponentDTO);
         }else  if(TemplatePrintConstants.IMAGE.equals(baseComponentDTO.getType())){
             this.imageProperty(basicComponent,(ImageComponentDTO)baseComponentDTO);
+        }else  if(TemplatePrintConstants.QRCODE.equals(baseComponentDTO.getType())){
+            this.qrcodeProperty(basicComponent,(ImageComponentDTO)baseComponentDTO);
         }
     }
 
 
 
-    private void pubProperty(Component basicComponent,TemplateComponentDTO baseComponentDTO){
+    private void pubProperty(Component basicComponent,TemplateComponentDTO baseComponentDTO,String contentName){
         pubPropertyDTO.clear();
-        pubPropertyDTO.add("内容", baseComponentDTO.getContext() + "",(s,f) ->{
+        pubPropertyDTO.add(contentName, baseComponentDTO.getContext() + "",(s,f) ->{
             baseComponentDTO.setContext(s);
             basicComponent.changeProperty(baseComponentDTO);
         });
@@ -183,6 +259,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
     }
     private void textProperty(Component basicComponent, TextComponentDTO baseComponentDTO) {
+        this.pubProperty(basicComponent,baseComponentDTO,"内容");
         this.fontProperty(basicComponent,baseComponentDTO);
 
     }
@@ -230,10 +307,15 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     }
 
     private void variableProperty(Component basicComponent, VariableComponentDTO baseComponentDTO) {
-        this.textProperty(basicComponent,baseComponentDTO);
+        this.pubProperty(basicComponent,baseComponentDTO,"变量名");
+        this.fontProperty(basicComponent,baseComponentDTO);
     }
 
     private void imageProperty(Component basicComponent, ImageComponentDTO baseComponentDTO) {
+        this.pubProperty(basicComponent,baseComponentDTO,"变量名");
+    }
+    private void qrcodeProperty(Component basicComponent, ImageComponentDTO baseComponentDTO) {
+        this.pubProperty(basicComponent,baseComponentDTO,"变量名");
     }
 
 
@@ -290,7 +372,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         }
 
         TemplateDTO exportDTO = new TemplateDTO();
-        exportDTO.setPrintName(printName);
+        exportDTO.setPrintName(contentComponentDTO.getContext());
         exportDTO.setWindowHeight(content.getHeight());
         exportDTO.setWindowWidth(content.getWidth());
         exportDTO.setComponentDTOS(baseComponentDTOS);
@@ -304,6 +386,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
             e.printStackTrace();
         }
     }
+
 
 
 }

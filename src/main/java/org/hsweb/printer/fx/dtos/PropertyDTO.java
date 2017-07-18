@@ -12,8 +12,6 @@
 package org.hsweb.printer.fx.dtos;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -65,11 +63,11 @@ public class PropertyDTO implements Serializable {
         tableColumn2.setText(pubValue);
         tableColumn2.setEditable(true);
         tableColumn2.setStyle("-fx-min-height:25;");
-        tableColumn2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                stringConsumer.accept(tableColumn2.getText(),tableColumn2);
-            }
+        tableColumn2.setOnAction(event -> {
+            stringConsumer.accept(tableColumn2.getText(),tableColumn2);
+        });
+        tableColumn2.setOnKeyReleased(event -> {
+            stringConsumer.accept(tableColumn2.getText(),tableColumn2);
         });
 
         this.add(tableColumn,tableColumn2);

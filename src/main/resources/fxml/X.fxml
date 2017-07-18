@@ -3,7 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane styleClass="X.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hsweb.printer.fx.XxController">
+<BorderPane styleClass="X.css" maxHeight="-Infinity"
+            maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="600.0" prefWidth="870.0"
+            style="-fx-background-color: #000000;"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hsweb.printer.fx.XxController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -12,6 +15,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#insertLable" text="文本" />
                 <MenuItem mnemonicParsing="false" onAction="#inserObj" text="变量" />
                 <MenuItem mnemonicParsing="false" onAction="#inserImage" text="图片" />
+                <MenuItem mnemonicParsing="false" onAction="#inserQrcode" text="二维码" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="导入导出">
@@ -23,42 +27,84 @@
         </menus>
       </MenuBar>
    </top>
-   <center>
-      <Pane>
+   <!--<left>
+      <VBox>
          <children>
-            <ScrollPane>
+            <ScrollPane opacity="1" >
               <content>
-                <AnchorPane fx:id="content" styleClass="show_border" minHeight="0.0" minWidth="0.0"   style="-fx-fit-to-width: 100%; -fx-fit-to-height: 100%;"/>
+                <AnchorPane fx:id="content" styleClass="show_border" minHeight="0.0" minWidth="0.0" />
               </content>
             </ScrollPane>
          </children>
-      </Pane>
-   </center>
-   <right>
-      <Accordion BorderPane.alignment="TOP_LEFT" fx:id="property" minWidth="200">
-          <panes>
-              <TitledPane animated="false" text="通用" maxHeight="300">
-                  <content>
-                      <HBox>
-                          <VBox fx:id="propertyPubName" minWidth="100"></VBox>
-                          <VBox fx:id="propertyPubValue" ></VBox>
-                      </HBox>
+      </VBox>
+   </left>-->
+    <center>
+        <SplitPane dividerPositions="0.63" BorderPane.alignment="CENTER">
+            <items>
+                <VBox>
+                    <children>
+                        <ScrollPane>
+                            <content>
+                                <AnchorPane fx:id="content" minHeight="0.0" minWidth="0.0" styleClass="show_border" />
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+                <VBox>
+                    <children>
+                        <Accordion fx:id="property" BorderPane.alignment="TOP_LEFT">
+                            <panes>
+                                <TitledPane  animated="false" maxHeight="300" text="通用">
+                                    <content>
+                                        <HBox>
+                                            <VBox fx:id="propertyPubName" minWidth="100" />
+                                            <VBox fx:id="propertyPubValue" />
+                                        </HBox>
 
-                  </content>
-              </TitledPane>
-              <TitledPane animated="false" text="字体" fx:id="propertyFont"  maxHeight="500">
-                  <content>
-                      <HBox>
-                          <VBox fx:id="propertyFontName" minWidth="100"></VBox>
-                          <VBox fx:id="propertyFontValue" ></VBox>
-                      </HBox>
+                                    </content>
+                                </TitledPane>
+                                <TitledPane fx:id="propertyFont" animated="false" text="字体">
+                                    <content>
+                                        <HBox>
+                                            <VBox fx:id="propertyFontName" minWidth="100" />
+                                            <VBox fx:id="propertyFontValue" />
+                                        </HBox>
 
-                  </content>
-              </TitledPane>
-          </panes>
-          <padding>
-              <Insets right="15.0" bottom="50"/>
-          </padding>
-      </Accordion>
-   </right>
+                                    </content>
+                                </TitledPane>
+                            </panes>
+                        </Accordion>
+                    </children>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+   <!--<right>
+       <VBox>
+       <children>
+          <Accordion BorderPane.alignment="TOP_LEFT" fx:id="property" minWidth="200">
+              <panes>
+                  <TitledPane animated="false" text="通用" maxHeight="300" >
+                      <content>
+                          <HBox>
+                              <VBox fx:id="propertyPubName" minWidth="100"></VBox>
+                              <VBox fx:id="propertyPubValue" ></VBox>
+                          </HBox>
+
+                      </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="字体" fx:id="propertyFont"  maxHeight="500">
+                      <content>
+                          <HBox>
+                              <VBox fx:id="propertyFontName" minWidth="100"></VBox>
+                              <VBox fx:id="propertyFontValue" ></VBox>
+                          </HBox>
+
+                      </content>
+                  </TitledPane>
+              </panes>
+          </Accordion>
+       </children>
+       </VBox>
+   </right>-->
 </BorderPane>
