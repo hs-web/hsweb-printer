@@ -50,7 +50,7 @@
                         </ScrollPane>
                     </children>
                 </VBox>
-                <VBox>
+                <VBox minWidth="310">
                     <children>
                         <Accordion fx:id="property" BorderPane.alignment="TOP_LEFT">
                             <panes>
