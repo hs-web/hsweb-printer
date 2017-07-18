@@ -12,7 +12,9 @@
 package org.hsweb.printer.utils.printable.positionprint.simple.component;
 
 import org.hsweb.printer.dtos.PositionSimplePrintDTO;
+import org.hsweb.printer.utils.SemacodeTool;
 import org.hsweb.printer.utils.printable.positionprint.PositionPrintUnit;
+import org.hsweb.printer.utils.printable.positionprint.simple.PositionSimplePrintConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -37,7 +39,9 @@ public class PositionSimpleComponentImage implements PositionSimpleComponent {
     public void print(int pageIndex, Graphics graphics, double xpadding, double ypadding) {
         try {
             Image image=null;
-            if( positionSimplePrintDTO.getContext().indexOf("http://")==0|| positionSimplePrintDTO.getContext().indexOf("https://")==0){
+            if(PositionSimplePrintConstants.QRCODE.equals(positionSimplePrintDTO.getType())){
+                image=ImageIO.read(SemacodeTool.getInputStream(positionSimplePrintDTO.getContext()));
+            }else if( positionSimplePrintDTO.getContext().indexOf("http://")==0|| positionSimplePrintDTO.getContext().indexOf("https://")==0){
                 image=ImageIO.read(new URL(positionSimplePrintDTO.getContext()));
             }else {
                 String[] split = positionSimplePrintDTO.getContext().split(",");

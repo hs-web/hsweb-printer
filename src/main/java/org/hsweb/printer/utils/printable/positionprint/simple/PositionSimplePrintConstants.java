@@ -20,6 +20,7 @@ import java.util.Set;
 public interface PositionSimplePrintConstants {
     String TEXT="TEXT";
     String IMAGE="IMAGE";
+    String QRCODE="QRCODE";
     String FONT="FONT";
     String STYLE="STYLE";
 

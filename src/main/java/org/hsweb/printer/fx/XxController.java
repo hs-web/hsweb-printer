@@ -184,7 +184,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
         this.add(baseComponentDTO);
     }
     public void inserQrcode(ActionEvent actionEvent) {
-        ImageComponentDTO baseComponentDTO=new ImageComponentDTO();
+        QrcodeComponentDTO baseComponentDTO=new QrcodeComponentDTO();
         baseComponentDTO.setType(TemplatePrintConstants.QRCODE);
         baseComponentDTO.setWindowHeight(content.getHeight());
         baseComponentDTO.setWindowWidth(content.getWidth());

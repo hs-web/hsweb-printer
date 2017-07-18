@@ -89,7 +89,8 @@ public class PositionSimplePrint {
                 if (positionPrintDTO.getHeight() != null) {
                     thisPage2 = (int) ((PositionPrintUnit.parsingUnit(positionPrintDTO.getY()) + PositionPrintUnit.parsingUnit(positionPrintDTO.getHeight())) / height);
 
-                } else if (PositionSimplePrintConstants.IMAGE.equals(positionPrintDTO.getType())) {
+                } else if (PositionSimplePrintConstants.IMAGE.equals(positionPrintDTO.getType())
+                        ||PositionSimplePrintConstants.QRCODE.equals(positionPrintDTO.getType())) {
                     continue;
                 }
             }
@@ -152,9 +153,10 @@ public class PositionSimplePrint {
                 PositionSimpleComponent positionSimpleComponent = null;
                 if (PositionSimplePrintConstants.TEXT.equals(positionSimplePrintDTO.getType())) {
                     positionSimpleComponent = this.getPositionSimpleComponentString(positionSimplePrintDTO);
-                } else if (PositionSimplePrintConstants.IMAGE.equals(positionSimplePrintDTO.getType())) {
+                } else if (PositionSimplePrintConstants.IMAGE.equals(positionSimplePrintDTO.getType())
+                        ||PositionSimplePrintConstants.QRCODE.equals(positionSimplePrintDTO.getType())) {
                     positionSimpleComponent = this.getPositionSimpleComponentImage(positionSimplePrintDTO);
-                } else {
+                }else {
                     continue;
                 }
 
@@ -167,6 +169,8 @@ public class PositionSimplePrint {
             }
         }
     }
+
+
 
     private PositionSimpleComponentString getPositionSimpleComponentString(PositionSimplePrintDTO positionSimplePrintDTO) {
         PositionSimplePrintStyleDTO positionSimplePrintStyleDTO = styleList.stream().filter(positionSimplePrintDTO1 -> positionSimplePrintDTO1.getId() < positionSimplePrintDTO.getId()).findFirst().get();
@@ -191,6 +195,7 @@ public class PositionSimplePrint {
         PositionSimpleComponentImage positionSimpleComponent = new PositionSimpleComponentImage(positionSimplePrintDTO, height, width);
         return positionSimpleComponent;
     }
+
 
     public int getPageSize() {
         return maxPage + 1;

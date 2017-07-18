@@ -23,6 +23,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,6 +47,8 @@ public class TemplatePrint {
                 positionSimplePrintDTOS.addAll(this.getVariablePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),VariableComponentDTO.class),o));
             }else if(TemplatePrintConstants.IMAGE.equals(type)){
                 positionSimplePrintDTOS.addAll(this.getImagePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),ImageComponentDTO.class),o));
+            }else if(TemplatePrintConstants.QRCODE.equals(type)){
+                positionSimplePrintDTOS.addAll(this.getQrcodepositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),QrcodeComponentDTO.class),o));
             }
         }
 
@@ -81,17 +84,20 @@ public class TemplatePrint {
         return textPrintDTO;
     }
 
-    private List<PositionSimplePrintDTO> getVariablePositionPrintDTO(VariableComponentDTO positionSimplePrintDTO,Object o) {
-        String content="";
+    private String getVaule(TemplateComponentDTO templateComponentDTO,Object o){
         if(o!=null){
             try {
-                Object objectValue = ObjectValueUtil.getObjectValue(o, positionSimplePrintDTO.getContext());
+                Object objectValue = ObjectValueUtil.getObjectValue(o, templateComponentDTO.getContext());
                 if(objectValue!=null){
-                    content=""+objectValue.toString();
+                    return ""+objectValue.toString();
                 }
             } catch (Exception e) {
             }
         }
+        return "";
+    }
+    private List<PositionSimplePrintDTO> getVariablePositionPrintDTO(VariableComponentDTO positionSimplePrintDTO,Object o) {
+        String content=getVaule(positionSimplePrintDTO,o);
         return Arrays.asList(this.getFontPrintDTO(positionSimplePrintDTO),this.getStylePrintDTO(positionSimplePrintDTO),this.getContextPrintDTO(positionSimplePrintDTO,content));
     }
 
@@ -100,16 +106,8 @@ public class TemplatePrint {
     }
 
     private List<PositionSimplePrintDTO> getImagePositionPrintDTO(ImageComponentDTO imageComponentDTO, Object o) {
-        String content="";
-        if(o!=null){
-            try {
-                Object objectValue = ObjectValueUtil.getObjectValue(o, imageComponentDTO.getContext());
-                if(objectValue!=null){
-                    content=""+objectValue.toString();
-                }
-            } catch (Exception e) {
-            }
-        }
+        String content=getVaule(imageComponentDTO,o);
+
         if(content.length()==0){
             return new ArrayList<>();
         }
@@ -122,6 +120,19 @@ public class TemplatePrint {
         printDTO.setHeight(imageComponentDTO.getHeight()+"");
         return Arrays.asList(printDTO);
     }
+    private Collection<? extends PositionSimplePrintDTO> getQrcodepositionPrintDTO(QrcodeComponentDTO qrcodeComponentDTO, Object o) {
+        String content=getVaule(qrcodeComponentDTO,o);
+
+        PositionSimplePrintDTO printDTO=new PositionSimplePrintDTO();
+        printDTO.setType(PositionSimplePrintConstants.QRCODE);
+        printDTO.setContext(content);
+        printDTO.setX(qrcodeComponentDTO.getX()+"");
+        printDTO.setY(qrcodeComponentDTO.getY()+"");
+        printDTO.setWidth(qrcodeComponentDTO.getWidth()+"");
+        printDTO.setHeight(qrcodeComponentDTO.getHeight()+"");
+        return Arrays.asList(printDTO);
+    }
+
 
 
     public int getPageSize() {
