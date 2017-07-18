@@ -14,17 +14,19 @@ package org.hsweb.printer.fx;
 import com.alibaba.fastjson.JSON;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.hsweb.printer.fx.components.BasicComponent;
-import org.hsweb.printer.fx.dtos.PubPropertyDTO;
+import org.hsweb.printer.fx.components.Component;
+import org.hsweb.printer.fx.components.ImageComponent;
+import org.hsweb.printer.fx.dtos.PropertyDTO;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.*;
 
 import java.io.*;
 import java.net.URL;
@@ -43,10 +45,19 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     @FXML
     private VBox propertyPubValue;
 
-    public static List<BasicComponent> basicComponents=new ArrayList<>();
+    @FXML
+    private TitledPane propertyFont;
+    @FXML
+    private VBox propertyFontName;
+    @FXML
+    private VBox propertyFontValue;
 
 
-    private PubPropertyDTO pubPropertyDTO;
+    public static List<Component> basicComponents=new ArrayList<>();
+
+
+    private PropertyDTO pubPropertyDTO;
+    private PropertyDTO fontPropertyDTO;
     private String printName="打印模板";
 
 
@@ -55,7 +66,8 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     public void initData(Stage nowStage, Object userData, Object sendData) {
         content.setPrefWidth(400);
         content.setPrefHeight(400);
-        pubPropertyDTO=new PubPropertyDTO(propertyPubName,propertyPubValue);
+        pubPropertyDTO=new PropertyDTO(propertyPubName,propertyPubValue);
+        fontPropertyDTO=new PropertyDTO(propertyFontName,propertyFontValue);
         nowStage.show();
        /* content.setOnMousePressed((e) -> {
             if(content.equals(e.getTarget())){
@@ -70,9 +82,16 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     }
 
     private void add(TemplateComponentDTO baseComponentDTO){
-        BasicComponent printText = new BasicComponent(baseComponentDTO,this);
-        basicComponents.add(printText);
-        content.getChildren().add(printText);
+        if(TemplatePrintConstants.TEXT.equals(baseComponentDTO.getType())
+                ||TemplatePrintConstants.VARIABLE.equals(baseComponentDTO.getType())) {
+            BasicComponent printText = new BasicComponent(baseComponentDTO, this);
+            basicComponents.add(printText);
+            content.getChildren().add(printText);
+        }else if(TemplatePrintConstants.IMAGE.equals(baseComponentDTO.getType())){
+            ImageComponent imageComponent= new ImageComponent(baseComponentDTO, this);
+            basicComponents.add(imageComponent);
+            content.getChildren().add(imageComponent);
+        }
     }
 
     public void insertLable(ActionEvent actionEvent) {
@@ -93,20 +112,38 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
 
         this.add(baseComponentDTO);
     }
+    public void inserImage(ActionEvent actionEvent) {
+        ImageComponentDTO baseComponentDTO=new ImageComponentDTO();
+        baseComponentDTO.setType(TemplatePrintConstants.IMAGE);
+        baseComponentDTO.setWindowHeight(content.getHeight());
+        baseComponentDTO.setWindowWidth(content.getWidth());
+        baseComponentDTO.setContext("");
 
-    @Override
-    public void  property(BasicComponent basicComponent,TemplateComponentDTO baseComponentDTO){
-
-        pubProperty(basicComponent,baseComponentDTO);
+        this.add(baseComponentDTO);
     }
 
-    private void pubProperty(BasicComponent basicComponent,TemplateComponentDTO baseComponentDTO){
+    @Override
+    public void  property(Component basicComponent,TemplateComponentDTO baseComponentDTO){
+        this.propertyFont.setVisible(false);
+        this.pubProperty(basicComponent,baseComponentDTO);
+        if(TemplatePrintConstants.TEXT.equals(baseComponentDTO.getType())){
+            this.textProperty(basicComponent,(TextComponentDTO)baseComponentDTO);
+        }else  if(TemplatePrintConstants.VARIABLE.equals(baseComponentDTO.getType())){
+            this.variableProperty(basicComponent,(VariableComponentDTO)baseComponentDTO);
+        }else  if(TemplatePrintConstants.IMAGE.equals(baseComponentDTO.getType())){
+            this.imageProperty(basicComponent,(ImageComponentDTO)baseComponentDTO);
+        }
+    }
+
+
+
+    private void pubProperty(Component basicComponent,TemplateComponentDTO baseComponentDTO){
         pubPropertyDTO.clear();
         pubPropertyDTO.add("内容", baseComponentDTO.getContext() + "",(s,f) ->{
             baseComponentDTO.setContext(s);
             basicComponent.changeProperty(baseComponentDTO);
         });
-        pubPropertyDTO.add("x", baseComponentDTO.getX() + "", (s,f) ->{
+        pubPropertyDTO.add("坐标x", baseComponentDTO.getX() + "", (s,f) ->{
             try {
                 baseComponentDTO.setX(Double.parseDouble(s));
                 basicComponent.changeProperty(baseComponentDTO);
@@ -115,7 +152,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
                 f.requestFocus();
             }
         });
-        pubPropertyDTO.add("y", baseComponentDTO.getY() + "", (s,f) ->{
+        pubPropertyDTO.add("坐标y", baseComponentDTO.getY() + "", (s,f) ->{
             try {
                 baseComponentDTO.setY(Double.parseDouble(s));
                 basicComponent.changeProperty(baseComponentDTO);
@@ -124,9 +161,82 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
                 f.requestFocus();
             }
         });
+        pubPropertyDTO.add("高度", baseComponentDTO.getHeight() + "", (s,f) ->{
+            try {
+                baseComponentDTO.setHeight(Double.parseDouble(s));
+                basicComponent.changeProperty(baseComponentDTO);
+            }catch (NumberFormatException e){
+                f.setText(baseComponentDTO.getHeight()+"");
+                f.requestFocus();
+            }
+        });
+        pubPropertyDTO.add("宽度", baseComponentDTO.getWidth() + "", (s,f) ->{
+            try {
+                baseComponentDTO.setWidth(Double.parseDouble(s));
+                basicComponent.changeProperty(baseComponentDTO);
+            }catch (NumberFormatException e){
+                f.setText(baseComponentDTO.getWidth()+"");
+                f.requestFocus();
+            }
+        });
 
 
     }
+    private void textProperty(Component basicComponent, TextComponentDTO baseComponentDTO) {
+        this.fontProperty(basicComponent,baseComponentDTO);
+
+    }
+
+    private void fontProperty(Component basicComponent, TextComponentDTO baseComponentDTO) {
+        this.propertyFont.setVisible(true);
+        fontPropertyDTO.clear();
+        fontPropertyDTO.add("字体名", baseComponentDTO.getFontName() + "",(s,f) ->{
+            if(s==null||s.length()==0){
+                f.setText(baseComponentDTO.getFontName());
+            }else {
+                baseComponentDTO.setFontName(s);
+                basicComponent.changeProperty(baseComponentDTO);
+            }
+        });
+        fontPropertyDTO.add("字体大小", baseComponentDTO.getFontSize() + "", (s,f) ->{
+            try {
+                baseComponentDTO.setFontSize(Integer.parseInt(s));
+                basicComponent.changeProperty(baseComponentDTO);
+            }catch (NumberFormatException e){
+                f.setText(baseComponentDTO.getX()+"");
+                f.requestFocus();
+            }
+        });
+
+        ColorPicker colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.valueOf(baseComponentDTO.getColor()));
+        colorPicker.setOnAction(event -> {
+            Color color = colorPicker.getValue();
+            Color desaturate = color.desaturate();
+            String s = desaturate.toString();
+            baseComponentDTO.setColor(s);
+            basicComponent.changeProperty(baseComponentDTO);
+        });
+        fontPropertyDTO.add("颜色", colorPicker);
+       /* fontPropertyDTO.add("字体样式", baseComponentDTO.getY() + "", (s,f) ->{
+            try {
+                baseComponentDTO.setY(Double.parseDouble(s));
+                basicComponent.changeProperty(baseComponentDTO);
+            }catch (NumberFormatException e){
+                f.setText(baseComponentDTO.getY()+"");
+                f.requestFocus();
+            }
+        });*/
+    }
+
+    private void variableProperty(Component basicComponent, VariableComponentDTO baseComponentDTO) {
+        this.textProperty(basicComponent,baseComponentDTO);
+    }
+
+    private void imageProperty(Component basicComponent, ImageComponentDTO baseComponentDTO) {
+    }
+
+
     public String getFileUrl(String title){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
@@ -175,8 +285,8 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
             return;
         }
         List<TemplateComponentDTO> baseComponentDTOS = new ArrayList<>();
-        for (BasicComponent basicComponent : basicComponents) {
-            baseComponentDTOS.add(basicComponent.getBaseComponentDTO());
+        for (Component basicComponent : basicComponents) {
+            baseComponentDTOS.add(basicComponent.getComponent());
         }
 
         TemplateDTO exportDTO = new TemplateDTO();
@@ -194,5 +304,6 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
             e.printStackTrace();
         }
     }
+
 
 }

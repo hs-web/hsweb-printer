@@ -11,12 +11,12 @@
 
 package org.hsweb.printer.fx;
 
-import org.hsweb.printer.fx.components.BasicComponent;
+import org.hsweb.printer.fx.components.Component;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 /**
  * Created by xiong on 2017-07-10.
  */
 public interface PropertyController {
-    void  property(BasicComponent basicComponent, TemplateComponentDTO baseComponentDTO);
+    void  property(Component basicComponent, TemplateComponentDTO baseComponentDTO);
 }

@@ -9,13 +9,18 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.templateptint;
+package org.hsweb.printer.fx.components;
+
+import javafx.scene.Node;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 /**
- * Created by xiong on 2017-07-06.
+ * Created by xiong on 2017-07-18.
  */
-public interface TemplatePrintConstants {
-    String TEXT="TEXT";
-    String VARIABLE="VARIABLE";
-    String IMAGE="IMAGE";
+public interface Component {
+    TemplateComponentDTO getComponent();
+    void changeProperty(TemplateComponentDTO baseComponentDTO);
+    Node getThisNode();
+    double getX();
+    double getY();
 }

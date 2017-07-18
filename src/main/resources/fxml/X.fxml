@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Box?>
 <BorderPane styleClass="X.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hsweb.printer.fx.XxController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -11,6 +11,7 @@
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#insertLable" text="文本" />
                 <MenuItem mnemonicParsing="false" onAction="#inserObj" text="变量" />
+                <MenuItem mnemonicParsing="false" onAction="#inserImage" text="图片" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="导入导出">
@@ -34,9 +35,9 @@
       </Pane>
    </center>
    <right>
-      <Accordion BorderPane.alignment="CENTER" fx:id="property">
+      <Accordion BorderPane.alignment="TOP_LEFT" fx:id="property" minWidth="200">
           <panes>
-              <TitledPane animated="true" text="通用">
+              <TitledPane animated="false" text="通用" maxHeight="300">
                   <content>
                       <HBox>
                           <VBox fx:id="propertyPubName" minWidth="100"></VBox>
@@ -45,7 +46,19 @@
 
                   </content>
               </TitledPane>
+              <TitledPane animated="false" text="字体" fx:id="propertyFont"  maxHeight="500">
+                  <content>
+                      <HBox>
+                          <VBox fx:id="propertyFontName" minWidth="100"></VBox>
+                          <VBox fx:id="propertyFontValue" ></VBox>
+                      </HBox>
+
+                  </content>
+              </TitledPane>
           </panes>
+          <padding>
+              <Insets right="15.0" bottom="50"/>
+          </padding>
       </Accordion>
    </right>
 </BorderPane>

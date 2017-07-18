@@ -18,10 +18,7 @@ import org.hsweb.printer.dtos.PositionSimplePrintDTO;
 import org.hsweb.printer.utils.ObjectValueUtil;
 import org.hsweb.printer.utils.printable.positionprint.simple.PositionSimplePrint;
 import org.hsweb.printer.utils.printable.positionprint.simple.PositionSimplePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.PrintTemplateDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -47,11 +44,16 @@ public class TemplatePrint {
                 positionSimplePrintDTOS.addAll(this.getTextPositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),TextComponentDTO.class)));
             }else if(TemplatePrintConstants.VARIABLE.equals(type)){
                 positionSimplePrintDTOS.addAll(this.getVariablePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),VariableComponentDTO.class),o));
+            }else if(TemplatePrintConstants.IMAGE.equals(type)){
+                positionSimplePrintDTOS.addAll(this.getImagePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),ImageComponentDTO.class),o));
             }
         }
 
         positionSimplePrint =new PositionSimplePrint(printDTOList.getWindowHeight(),printDTOList.getWindowHeight(),positionSimplePrintDTOS);
     }
+
+
+
     private PositionSimplePrintDTO getFontPrintDTO(TextComponentDTO textComponentDTO){
         PositionSimplePrintDTO fontPrintDTO=new PositionSimplePrintDTO();
         fontPrintDTO.setType(PositionSimplePrintConstants.FONT);
@@ -95,6 +97,30 @@ public class TemplatePrint {
 
     private List<PositionSimplePrintDTO> getTextPositionPrintDTO(TextComponentDTO positionSimplePrintDTO) {
         return Arrays.asList(this.getFontPrintDTO(positionSimplePrintDTO),this.getStylePrintDTO(positionSimplePrintDTO),this.getContextPrintDTO(positionSimplePrintDTO,positionSimplePrintDTO.getContext()));
+    }
+
+    private List<PositionSimplePrintDTO> getImagePositionPrintDTO(ImageComponentDTO imageComponentDTO, Object o) {
+        String content="";
+        if(o!=null){
+            try {
+                Object objectValue = ObjectValueUtil.getObjectValue(o, imageComponentDTO.getContext());
+                if(objectValue!=null){
+                    content=""+objectValue.toString();
+                }
+            } catch (Exception e) {
+            }
+        }
+        if(content.length()==0){
+            return new ArrayList<>();
+        }
+        PositionSimplePrintDTO printDTO=new PositionSimplePrintDTO();
+        printDTO.setType(PositionSimplePrintConstants.IMAGE);
+        printDTO.setContext(content);
+        printDTO.setX(imageComponentDTO.getX()+"");
+        printDTO.setY(imageComponentDTO.getY()+"");
+        printDTO.setWidth(imageComponentDTO.getWidth()+"");
+        printDTO.setHeight(imageComponentDTO.getHeight()+"");
+        return Arrays.asList(printDTO);
     }
 
 

@@ -26,12 +26,12 @@ import java.util.function.BiConsumer;
 /**
  * Created by xiong on 2017-07-10.
  */
-public class PubPropertyDTO implements Serializable {
+public class PropertyDTO implements Serializable {
     private VBox propertyPubName;
     private VBox propertyPubValue;
     private ObservableList<Node> pubNames;
     private ObservableList<Node> pubValues;
-    public PubPropertyDTO(VBox propertyPubName, VBox propertyPubValue) {
+    public PropertyDTO(VBox propertyPubName, VBox propertyPubValue) {
         this.propertyPubName = propertyPubName;
         this.propertyPubValue = propertyPubValue;
         pubNames=propertyPubName.getChildren();
@@ -49,6 +49,13 @@ public class PubPropertyDTO implements Serializable {
         pubNames.add(pubName);
         VBox.setMargin(pubValue, new Insets(3,0 , 3, 8));
         pubValues.add(pubValue);
+    }
+    public void add(String  pubName,Node pubValue){
+        Label tableColumn=new Label(pubName);
+        tableColumn.setStyle("-fx-min-height:25;");
+
+
+        this.add(tableColumn,pubValue);
     }
     public void add(String  pubName, String pubValue, BiConsumer<String,TextField> stringConsumer){
         Label tableColumn=new Label(pubName);

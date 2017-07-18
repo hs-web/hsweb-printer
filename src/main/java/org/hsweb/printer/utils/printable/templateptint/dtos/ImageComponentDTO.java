@@ -9,13 +9,12 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.templateptint;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
+
+import java.io.Serializable;
 
 /**
- * Created by xiong on 2017-07-06.
+ * Created by xiong on 2017-07-10.
  */
-public interface TemplatePrintConstants {
-    String TEXT="TEXT";
-    String VARIABLE="VARIABLE";
-    String IMAGE="IMAGE";
+public class ImageComponentDTO extends TemplateComponentDTO implements Serializable {
 }
