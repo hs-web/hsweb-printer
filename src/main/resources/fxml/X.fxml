@@ -10,12 +10,19 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="插入">
+          <Menu mnemonicParsing="false" text="插入面板">
             <items>
-                <MenuItem mnemonicParsing="false" onAction="#insertLable" text="文本" />
-                <MenuItem mnemonicParsing="false" onAction="#inserObj" text="变量" />
-                <MenuItem mnemonicParsing="false" onAction="#inserImage" text="图片" />
-                <MenuItem mnemonicParsing="false" onAction="#inserQrcode" text="二维码" />
+                <MenuItem mnemonicParsing="false" onAction="#insertpanel" fx:id="POS" text="固定面板" />
+                <MenuItem mnemonicParsing="false" onAction="#insertpanel" fx:id="FOR" text="循环面板" />
+                <MenuItem mnemonicParsing="false" onAction="#insertpanel" fx:id="TABLE" text="表格面板" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="插入元素" fx:id="elementMenu" >
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#insertelement" fx:id="TEXT" text="文本" />
+                <MenuItem mnemonicParsing="false" onAction="#insertelement" fx:id="VARIABLE" text="变量" />
+                <MenuItem mnemonicParsing="false" onAction="#insertelement" fx:id="IMAGE" text="图片" />
+                <MenuItem mnemonicParsing="false" onAction="#insertelement" fx:id="QRCODE" text="二维码" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="导入导出">
@@ -41,15 +48,17 @@
     <center>
         <SplitPane dividerPositions="0.63" BorderPane.alignment="CENTER">
             <items>
-                <VBox>
-                    <children>
-                        <ScrollPane>
-                            <content>
+                <ScrollPane fitToHeight="true" fitToWidth="true">
+                    <content>
+                        <VBox fx:id="doc" fillWidth="true">
+                            <children>
+                           <!--
                                 <AnchorPane fx:id="content" minHeight="0.0" minWidth="0.0" styleClass="show_border" />
-                            </content>
-                        </ScrollPane>
-                    </children>
-                </VBox>
+                            -->
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
                 <VBox minWidth="310">
                     <children>
                         <Accordion fx:id="property" BorderPane.alignment="TOP_LEFT">

@@ -9,7 +9,7 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.dtos;
+package org.hsweb.printer.fx.components.propertys.dtos;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

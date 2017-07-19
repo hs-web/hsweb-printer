@@ -9,7 +9,7 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components;
+package org.hsweb.printer.fx.components.components;
 
 import javafx.scene.Node;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
@@ -18,6 +18,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO
  * Created by xiong on 2017-07-18.
  */
 public interface Component {
+    PanelComponent getParentComponent();
     TemplateComponentDTO getComponent();
     void changeProperty(TemplateComponentDTO baseComponentDTO);
     Node getThisNode();

@@ -9,17 +9,17 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.templateptint;
+package org.hsweb.printer.fx.components.builders.elements.image;
+
+import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
 
 /**
- * Created by xiong on 2017-07-06.
+ * Created by xiong on 2017-07-19.
  */
-public interface TemplatePrintConstants {
-    String TEXT="TEXT";
-    String VARIABLE="VARIABLE";
-    String IMAGE="IMAGE";
-    String QRCODE="QRCODE";
-    String POS="POS";
-    String FOR="FOR";
-    String TABLE="TABLE";
+public  class QrcodeElementComponentBuilder extends ImageElementComponentBuilder {
+    @Override
+    public String getType() {
+        return TemplatePrintConstants.QRCODE;
+    }
+
 }

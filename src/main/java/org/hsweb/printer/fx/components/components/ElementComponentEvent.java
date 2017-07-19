@@ -9,7 +9,7 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.components;
+package org.hsweb.printer.fx.components.components;
 
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
@@ -17,7 +17,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO
 /**
  * Created by xiong on 2017-07-18.
  */
-public  class ComponentEvent {
+public  class ElementComponentEvent {
     private double windowWidth;
     private double windowHeight;
     private boolean pressed=false;
@@ -31,7 +31,7 @@ public  class ComponentEvent {
     private PropertyController propertyController;
     private TemplateComponentDTO baseComponentDTO;
 
-    public ComponentEvent(Component component,TemplateComponentDTO baseComponentDTO,PropertyController propertyController) {
+    public ElementComponentEvent(Component component, TemplateComponentDTO baseComponentDTO, PropertyController propertyController) {
         this.component = component;
         this.propertyController = propertyController;
         this.baseComponentDTO = baseComponentDTO;

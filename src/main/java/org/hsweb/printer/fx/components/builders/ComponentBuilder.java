@@ -9,16 +9,17 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx;
+package org.hsweb.printer.fx.components.builders;
 
+import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.components.components.Component;
 import org.hsweb.printer.fx.components.components.PanelComponent;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 /**
- * Created by xiong on 2017-07-10.
+ * Created by xiong on 2017-07-19.
  */
-public interface PropertyController {
-    void  property(Component basicComponent, TemplateComponentDTO baseComponentDTO);
-    void  property(PanelComponent basicComponent, TemplateComponentDTO baseComponentDTO);
+public interface ComponentBuilder<T extends Component> {
+    String getType();
+    T builder(TemplateComponentDTO docComponentDTO, PropertyController propertyController, PanelComponent parentComponent);
 }

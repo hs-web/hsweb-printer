@@ -9,17 +9,13 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.utils.printable.templateptint;
+package org.hsweb.printer.fx.components.propertys.dtos;
+
+import org.hsweb.printer.fx.components.components.elements.TextViewComponent;
 
 /**
- * Created by xiong on 2017-07-06.
+ * Created by xiong on 2017-07-10.
  */
-public interface TemplatePrintConstants {
-    String TEXT="TEXT";
-    String VARIABLE="VARIABLE";
-    String IMAGE="IMAGE";
-    String QRCODE="QRCODE";
-    String POS="POS";
-    String FOR="FOR";
-    String TABLE="TABLE";
+public interface PubPropertNewValue {
+    void changeValue(TextViewComponent basicComponent, String oldValue, String newValue);
 }

@@ -9,13 +9,12 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx.dtos;
+package org.hsweb.printer.utils.printable.templateptint.dtos;
 
-import org.hsweb.printer.fx.components.BasicComponent;
+import java.io.Serializable;
 
 /**
- * Created by xiong on 2017-07-10.
+ * Created by xiong on 2017-07-19.
  */
-public interface PubPropertNewValue {
-    void changeValue(BasicComponent basicComponent,String oldValue, String newValue);
+public class ForPanelComponentDTO extends PosPanelComponentDTO implements Serializable {
 }
