@@ -125,7 +125,7 @@ public class XxController  implements ControllerDataInitializable,PropertyContro
     private void docProperty() {
         nowComponent=null;
         nowPanelComponent=null;
-        //this.elementMenu.hide();
+        this.elementMenu.setVisible(false);
         this.propertyFont.setVisible(false);
         PropertyDTO pubPropertyDTO = this.propertys.getPubProperty();
         pubPropertyDTO.clear();
