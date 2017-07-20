@@ -9,16 +9,19 @@
  *  with meicanyun.com.
  */
 
-package org.hsweb.printer.fx;
+package org.hsweb.printer.fx.component.components;
 
-import org.hsweb.printer.fx.component.components.Component;
-import org.hsweb.printer.fx.component.components.PanelComponent;
+import javafx.scene.Node;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 /**
- * Created by xiong on 2017-07-10.
+ * Created by xiong on 2017-07-18.
  */
-public interface PropertyController {
-    void  property(Component basicComponent, TemplateComponentDTO baseComponentDTO);
-    void  property(PanelComponent basicComponent, TemplateComponentDTO baseComponentDTO);
+public interface Component {
+    PanelComponent getParentComponent();
+    TemplateComponentDTO getComponent();
+    void changeProperty(TemplateComponentDTO baseComponentDTO);
+    Node getThisNode();
+    double getX();
+    double getY();
 }

@@ -20,12 +20,12 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.hsweb.printer.fx.components.ComponentFactory;
-import org.hsweb.printer.fx.components.ComponentPropertyFactory;
-import org.hsweb.printer.fx.components.components.Component;
-import org.hsweb.printer.fx.components.components.PanelComponent;
-import org.hsweb.printer.fx.components.propertys.dtos.PropertyDTO;
-import org.hsweb.printer.fx.components.propertys.dtos.PropertysDTO;
+import org.hsweb.printer.fx.component.ComponentFactory;
+import org.hsweb.printer.fx.component.ComponentPropertyFactory;
+import org.hsweb.printer.fx.component.components.Component;
+import org.hsweb.printer.fx.component.components.PanelComponent;
+import org.hsweb.printer.fx.component.propertys.dtos.PropertyDTO;
+import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateDTO;
 
