@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -39,6 +40,8 @@ import java.util.ResourceBundle;
  * Created by xiong on 2017-02-25.
  */
 public class XxController  implements ControllerDataInitializable,PropertyController{
+    @FXML
+    public SplitPane xx;
     /**
      * doc
      */

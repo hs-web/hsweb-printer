@@ -25,7 +25,7 @@ public class SplitComponentProperty extends SplitPaneComponentProperty<SplitPane
 
     @Override
     public String getType() {
-        return TemplatePrintConstants.POS;
+        return TemplatePrintConstants.TABLE;
     }
 
 

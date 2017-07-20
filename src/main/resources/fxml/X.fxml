@@ -46,7 +46,7 @@
       </VBox>
    </left>-->
     <center>
-        <SplitPane dividerPositions="0.63" BorderPane.alignment="CENTER">
+        <SplitPane fx:id="xx" dividerPositions="0.63" BorderPane.alignment="CENTER">
             <items>
                 <ScrollPane fitToHeight="true" fitToWidth="true">
                     <content>

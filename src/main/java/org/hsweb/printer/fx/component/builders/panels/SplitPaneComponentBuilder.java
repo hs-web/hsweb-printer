@@ -22,6 +22,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.SplitPaneComponentDT
 public abstract class SplitPaneComponentBuilder<T extends SplitPaneComponent,A extends SplitPaneComponentDTO> extends BasePanelComponentBuilder<T,A> {
     @Override
     public T builderComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+        templateComponentDTO.setHeight(20D);
         return this.builderSplitComponent(templateComponentDTO,propertyController,parentComponent);
     }
     public abstract T builderSplitComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent);

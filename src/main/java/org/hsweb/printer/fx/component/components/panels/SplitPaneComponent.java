@@ -11,14 +11,15 @@
 
 package org.hsweb.printer.fx.component.components.panels;
 
+import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.VBox;
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.PanelComponent;
-import org.hsweb.printer.fx.component.components.PanelComponentEvent;
-import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.AnchorPaneComponentDTO;
+import org.hsweb.printer.fx.component.components.elements.TextViewComponent;
 import org.hsweb.printer.utils.printable.templateptint.dtos.SplitPaneComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +34,33 @@ public class SplitPaneComponent extends SplitPane implements PanelComponent<Spli
     private SplitPaneComponentDTO baseComponentDTO;
     private PropertyController propertyController;
     private  PanelComponent parentComponent;
-    private PanelComponentEvent<AnchorPaneComponent,AnchorPaneComponentDTO> panelComponentEvent;
 
 
     public SplitPaneComponent(SplitPaneComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         //this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
         this.propertyController=propertyController;
         this.parentComponent=parentComponent;
+        this.setOrientation(Orientation.HORIZONTAL);
 
         this.changeProperty(templateComponentDTO);
-        this.panelComponentEvent = new PanelComponentEvent(this,baseComponentDTO,propertyController);
+        this.setOnMousePressed((e)->{
+            if (!e.getTarget().equals(this)) {
+                return;
+            }
+            this.propertyController.property(this,this.baseComponentDTO);
+            return;
+        });
         propertyController.property(this,baseComponentDTO);
 
         for (int i=0;i<5;i++) {
-            this.add(TemplatePrintConstants.TEXT);
+            TextViewComponentDTO textViewComponentDTO = new TextViewComponentDTO();
+            textViewComponentDTO.setWindowHeight(100D);
+            textViewComponentDTO.setWindowWidth(100D);
+            textViewComponentDTO.setContext("xxxx");
+            VBox vBox = new VBox();
+            vBox.getChildren().add(new TextViewComponent(textViewComponentDTO,propertyController,this));
+            //this.add(vBox);
+            this.getItems().add(vBox);
         }
     }
 
@@ -70,9 +84,8 @@ public class SplitPaneComponent extends SplitPane implements PanelComponent<Spli
         this.setMinWidth(baseComponentDTO.getWindowWidth());
         this.setMaxWidth(baseComponentDTO.getWindowWidth());
 
-        this.setHeight(baseComponentDTO.getWindowWidth());
-        this.setMinHeight(baseComponentDTO.getWindowWidth());
-        this.setMaxHeight(baseComponentDTO.getWindowWidth());
+        this.setHeight(baseComponentDTO.getHeight());
+       // this.setMaxHeight(baseComponentDTO.getHeight());
     }
 
     @Override
@@ -99,7 +112,7 @@ public class SplitPaneComponent extends SplitPane implements PanelComponent<Spli
     @Override
     public void add(Component component) {
         components.add(component);
-        this.getChildren().add(component.getThisNode());
+        this.getItems().add(component.getThisNode());
     }
 
     @Override

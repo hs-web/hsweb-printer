@@ -23,7 +23,7 @@ public abstract class SplitPaneComponentProperty<T extends SplitPaneComponent,A 
 
     @Override
     public void panelComponentProperty(PropertysDTO propertys, T basicComponent, A baseComponentDTO){
-        propertys.getElementMenu().setVisible(true);
+        //propertys.getElementMenu().setVisible(true);
         this.splitComponentProperty(propertys,basicComponent,baseComponentDTO);
     }
     public abstract void splitComponentProperty(PropertysDTO propertys, T basicComponent, A baseComponentDTO);
