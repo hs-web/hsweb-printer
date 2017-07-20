@@ -18,17 +18,17 @@ import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.ElementComponentEvent;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.ImageComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.ImageViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-18.
  */
-public class ImageViewComponent extends ImageView implements Component<ImageComponentDTO,ImageView> {
-    private ImageComponentDTO baseComponentDTO;
-    private ElementComponentEvent<ImageViewComponent,ImageComponentDTO> componentEvent;
+public class ImageViewComponent extends ImageView implements Component<ImageViewComponentDTO,ImageView> {
+    private ImageViewComponentDTO baseComponentDTO;
+    private ElementComponentEvent<ImageViewComponent,ImageViewComponentDTO> componentEvent;
     private PanelComponent parentComponent;
 
-    public ImageViewComponent(ImageComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public ImageViewComponent(ImageViewComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
 
         this.parentComponent= parentComponent;
         this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
@@ -45,11 +45,11 @@ public class ImageViewComponent extends ImageView implements Component<ImageComp
     }
 
     @Override
-    public ImageComponentDTO getComponent() {
+    public ImageViewComponentDTO getComponent() {
         return baseComponentDTO;
     }
     @Override
-    public void changeProperty(ImageComponentDTO baseComponentDTO){
+    public void changeProperty(ImageViewComponentDTO baseComponentDTO){
         this.baseComponentDTO=baseComponentDTO;
 
         this.componentEvent.changeTemplateComponent(baseComponentDTO);

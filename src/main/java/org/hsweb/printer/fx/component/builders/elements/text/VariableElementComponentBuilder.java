@@ -17,7 +17,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO
 /**
  * Created by xiong on 2017-07-19.
  */
-public class VariableElementComponentBuilder extends TextElementComponentBuilder {
+public class VariableElementComponentBuilder extends TextViewElementComponentBuilder {
     @Override
     public String getType() {
         return TemplatePrintConstants.VARIABLE;

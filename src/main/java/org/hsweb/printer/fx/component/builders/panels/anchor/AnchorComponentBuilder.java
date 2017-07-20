@@ -17,7 +17,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.ForPanelComponentDTO
 /**
  * Created by xiong on 2017-07-19.
  */
-public class ForPanelComponentBudiler extends PosPanelComponentBudiler{
+public class AnchorComponentBuilder extends PosComponentBudiler {
 
     @Override
     public String getType() {

@@ -16,5 +16,5 @@ import java.io.Serializable;
 /**
  * Created by xiong on 2017-07-19.
  */
-public class PosPanelComponentDTO extends TemplateComponentDTO implements Serializable {
+public class AnchorPaneComponentDTO extends TemplateComponentDTO implements Serializable {
 }

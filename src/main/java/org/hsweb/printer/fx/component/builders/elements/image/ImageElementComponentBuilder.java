@@ -16,26 +16,26 @@ import org.hsweb.printer.fx.component.builders.elements.BaseElementComponentBuil
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.components.elements.ImageViewComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.ImageComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.ImageViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public  class ImageElementComponentBuilder extends BaseElementComponentBuilder<ImageViewComponent,ImageComponentDTO> {
+public  class ImageElementComponentBuilder extends BaseElementComponentBuilder<ImageViewComponent,ImageViewComponentDTO> {
     @Override
     public String getType() {
         return TemplatePrintConstants.IMAGE;
     }
 
     @Override
-    protected ImageComponentDTO getTemplateComponentDTO() {
-        ImageComponentDTO textComponentDTO=new ImageComponentDTO();
+    protected ImageViewComponentDTO getTemplateComponentDTO() {
+        ImageViewComponentDTO textComponentDTO=new ImageViewComponentDTO();
         textComponentDTO.setContext("变量名");
         return textComponentDTO;
     }
 
     @Override
-    public ImageViewComponent builderComponent(ImageComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public ImageViewComponent builderComponent(ImageViewComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         return new ImageViewComponent(templateComponentDTO,propertyController,parentComponent);
     }
 }

@@ -14,7 +14,7 @@ package org.hsweb.printer.utils.printable.templateptint.dtos;
 import java.io.Serializable;
 
 /**
- * Created by xiong on 2017-07-10.
+ * Created by xiong on 2017-07-20.
  */
-public class ImageComponentDTO extends TemplateComponentDTO implements Serializable {
+public class SplitPaneComponentDTO extends TemplateComponentDTO implements Serializable  {
 }

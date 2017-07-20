@@ -15,12 +15,12 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public abstract class TextViewElementComponentProperty<T extends Component,A extends TextComponentDTO>  extends BaseElementComponentProperty<T,A>  {
+public abstract class TextViewElementComponentProperty<T extends Component,A extends TextViewComponentDTO>  extends BaseElementComponentProperty<T,A>  {
 
 
     @Override

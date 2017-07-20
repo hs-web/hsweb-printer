@@ -16,5 +16,5 @@ import java.io.Serializable;
 /**
  * Created by xiong on 2017-07-10.
  */
-public class VariableComponentDTO extends TextViewComponentDTO implements Serializable {
+public class ImageViewComponentDTO extends TemplateComponentDTO implements Serializable {
 }

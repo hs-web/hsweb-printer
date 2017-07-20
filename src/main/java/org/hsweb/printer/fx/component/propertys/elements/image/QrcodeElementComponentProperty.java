@@ -15,19 +15,19 @@ import org.hsweb.printer.fx.component.components.elements.ImageViewComponent;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
 import org.hsweb.printer.fx.component.propertys.elements.ImageViewElementComponentProperty;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.ImageComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.ImageViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public class QrcodeElementComponentProperty extends ImageViewElementComponentProperty<ImageViewComponent,ImageComponentDTO> {
+public class QrcodeElementComponentProperty extends ImageViewElementComponentProperty<ImageViewComponent,ImageViewComponentDTO> {
     @Override
     public String getType() {
         return TemplatePrintConstants.QRCODE;
     }
 
     @Override
-    public void imageComponentProperty(PropertysDTO propertys, ImageViewComponent baseComponentDTO, ImageComponentDTO basicComponent) {
+    public void imageComponentProperty(PropertysDTO propertys, ImageViewComponent baseComponentDTO, ImageViewComponentDTO basicComponent) {
         this.pubAll("变量");
     }
 }

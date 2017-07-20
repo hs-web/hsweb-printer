@@ -16,12 +16,12 @@ import org.hsweb.printer.fx.component.builders.panels.AnchorPaneComponentBuilder
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.components.panels.AnchorPaneComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.PosPanelComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.AnchorPaneComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public class PosPanelComponentBudiler extends AnchorPaneComponentBuilder<AnchorPaneComponent,PosPanelComponentDTO>{
+public class PosComponentBudiler extends AnchorPaneComponentBuilder<AnchorPaneComponent,AnchorPaneComponentDTO>{
 
     @Override
     public String getType() {
@@ -29,14 +29,14 @@ public class PosPanelComponentBudiler extends AnchorPaneComponentBuilder<AnchorP
     }
 
     @Override
-    protected PosPanelComponentDTO getTemplateComponentDTO() {
-        PosPanelComponentDTO textComponentDTO=new PosPanelComponentDTO();
+    protected AnchorPaneComponentDTO getTemplateComponentDTO() {
+        AnchorPaneComponentDTO textComponentDTO=new AnchorPaneComponentDTO();
         //textComponentDTO.setContext("变量");
         return textComponentDTO;
     }
 
     @Override
-    public AnchorPaneComponent builderImageComponent(PosPanelComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public AnchorPaneComponent builderImageComponent(AnchorPaneComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         return new AnchorPaneComponent(templateComponentDTO,propertyController,parentComponent);
     }
 }

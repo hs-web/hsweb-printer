@@ -13,12 +13,12 @@ package org.hsweb.printer.fx.component.propertys.panels;
 
 import org.hsweb.printer.fx.component.components.panels.AnchorPaneComponent;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.PosPanelComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.AnchorPaneComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public abstract class AnchorPaneComponentProperty <T extends AnchorPaneComponent,A extends PosPanelComponentDTO>  extends BasePanelComponentProperty<T,A> {
+public abstract class AnchorPaneComponentProperty <T extends AnchorPaneComponent,A extends AnchorPaneComponentDTO>  extends BasePanelComponentProperty<T,A> {
 
 
     @Override

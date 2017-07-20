@@ -14,12 +14,12 @@ package org.hsweb.printer.fx.component.builders.elements;
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.components.elements.TextViewComponent;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public abstract class TextViewElementComponentBuilder<T extends TextViewComponent,A extends TextComponentDTO> extends BaseElementComponentBuilder<T,A> {
+public abstract class TextViewElementComponentBuilder<T extends TextViewComponent,A extends TextViewComponentDTO> extends BaseElementComponentBuilder<T,A> {
     @Override
     public T builderComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
 

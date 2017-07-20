@@ -42,11 +42,11 @@ public class TemplatePrint {
             String type = positionSimplePrintDTO.getString("type");
             if(TemplatePrintConstants.TEXT.equals(type)){
 
-                positionSimplePrintDTOS.addAll(this.getTextPositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),TextComponentDTO.class)));
+                positionSimplePrintDTOS.addAll(this.getTextPositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),TextViewComponentDTO.class)));
             }else if(TemplatePrintConstants.VARIABLE.equals(type)){
                 positionSimplePrintDTOS.addAll(this.getVariablePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),VariableComponentDTO.class),o));
             }else if(TemplatePrintConstants.IMAGE.equals(type)){
-                positionSimplePrintDTOS.addAll(this.getImagePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),ImageComponentDTO.class),o));
+                positionSimplePrintDTOS.addAll(this.getImagePositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),ImageViewComponentDTO.class),o));
             }else if(TemplatePrintConstants.QRCODE.equals(type)){
                 positionSimplePrintDTOS.addAll(this.getQrcodepositionPrintDTO( JSON.parseObject(positionSimplePrintDTO.toJSONString(),QrcodeComponentDTO.class),o));
             }
@@ -57,7 +57,7 @@ public class TemplatePrint {
 
 
 
-    private PositionSimplePrintDTO getFontPrintDTO(TextComponentDTO textComponentDTO){
+    private PositionSimplePrintDTO getFontPrintDTO(TextViewComponentDTO textComponentDTO){
         PositionSimplePrintDTO fontPrintDTO=new PositionSimplePrintDTO();
         fontPrintDTO.setType(PositionSimplePrintConstants.FONT);
 
@@ -66,7 +66,7 @@ public class TemplatePrint {
         fontPrintDTO.setFontSize(textComponentDTO.getFontSize());
         return fontPrintDTO;
     }
-    private PositionSimplePrintDTO getStylePrintDTO(TextComponentDTO textComponentDTO){
+    private PositionSimplePrintDTO getStylePrintDTO(TextViewComponentDTO textComponentDTO){
         PositionSimplePrintDTO colorPrintDTO=new PositionSimplePrintDTO();
         colorPrintDTO.setType(PositionSimplePrintConstants.STYLE);
         colorPrintDTO.setColor(textComponentDTO.getColor());
@@ -101,11 +101,11 @@ public class TemplatePrint {
         return Arrays.asList(this.getFontPrintDTO(positionSimplePrintDTO),this.getStylePrintDTO(positionSimplePrintDTO),this.getContextPrintDTO(positionSimplePrintDTO,content));
     }
 
-    private List<PositionSimplePrintDTO> getTextPositionPrintDTO(TextComponentDTO positionSimplePrintDTO) {
+    private List<PositionSimplePrintDTO> getTextPositionPrintDTO(TextViewComponentDTO positionSimplePrintDTO) {
         return Arrays.asList(this.getFontPrintDTO(positionSimplePrintDTO),this.getStylePrintDTO(positionSimplePrintDTO),this.getContextPrintDTO(positionSimplePrintDTO,positionSimplePrintDTO.getContext()));
     }
 
-    private List<PositionSimplePrintDTO> getImagePositionPrintDTO(ImageComponentDTO imageComponentDTO, Object o) {
+    private List<PositionSimplePrintDTO> getImagePositionPrintDTO(ImageViewComponentDTO imageComponentDTO, Object o) {
         String content=getVaule(imageComponentDTO,o);
 
         if(content.length()==0){

@@ -18,7 +18,7 @@ import java.io.Serializable;
 /**
  * Created by xiong on 2017-07-10.
  */
-public class TextComponentDTO extends TemplateComponentDTO implements Serializable {
+public class TextViewComponentDTO extends TemplateComponentDTO implements Serializable {
 
     private String fontName="微软雅黑";
     private FontPosture fontPosture;

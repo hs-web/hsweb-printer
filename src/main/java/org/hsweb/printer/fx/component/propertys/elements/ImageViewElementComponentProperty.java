@@ -13,12 +13,12 @@ package org.hsweb.printer.fx.component.propertys.elements;
 
 import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.ImageComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.ImageViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public abstract class ImageViewElementComponentProperty<T extends Component,A extends ImageComponentDTO>  extends BaseElementComponentProperty<T,A>  {
+public abstract class ImageViewElementComponentProperty<T extends Component,A extends ImageViewComponentDTO>  extends BaseElementComponentProperty<T,A>  {
 
 
     @Override

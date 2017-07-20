@@ -15,12 +15,12 @@ import org.hsweb.printer.fx.component.components.elements.TextViewComponent;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
 import org.hsweb.printer.fx.component.propertys.elements.TextViewElementComponentProperty;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public class TextElementComponentPropery extends TextViewElementComponentProperty<TextViewComponent,TextComponentDTO> {
+public class TextElementComponentPropery extends TextViewElementComponentProperty<TextViewComponent,TextViewComponentDTO> {
 
 
     @Override
@@ -31,7 +31,7 @@ public class TextElementComponentPropery extends TextViewElementComponentPropert
 
 
     @Override
-    public void textComponentProperty(PropertysDTO propertys, TextViewComponent basicComponent, TextComponentDTO baseComponentDTO) {
+    public void textComponentProperty(PropertysDTO propertys, TextViewComponent basicComponent, TextViewComponentDTO baseComponentDTO) {
         this.pubAll("内容");
         this.fontAll();
     }

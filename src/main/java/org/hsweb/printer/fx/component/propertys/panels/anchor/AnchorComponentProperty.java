@@ -15,23 +15,22 @@ import org.hsweb.printer.fx.component.components.panels.AnchorPaneComponent;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
 import org.hsweb.printer.fx.component.propertys.panels.AnchorPaneComponentProperty;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.ForPanelComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.AnchorPaneComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public class ForPanelComponentProperty extends AnchorPaneComponentProperty<AnchorPaneComponent,ForPanelComponentDTO> {
+public class AnchorComponentProperty extends AnchorPaneComponentProperty<AnchorPaneComponent,AnchorPaneComponentDTO> {
 
 
     @Override
     public String getType() {
-        return TemplatePrintConstants.FOR;
+        return TemplatePrintConstants.POS;
     }
 
 
     @Override
-    public void posComponentProperty(PropertysDTO propertys, AnchorPaneComponent basicComponent, ForPanelComponentDTO baseComponentDTO) {
-        this.pubContextProperty("变量");
+    public void posComponentProperty(PropertysDTO propertys, AnchorPaneComponent basicComponent, AnchorPaneComponentDTO baseComponentDTO) {
         this.pubWidthProperty();
         this.pubHeightProperty();
     }

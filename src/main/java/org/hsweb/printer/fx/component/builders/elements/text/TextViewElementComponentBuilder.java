@@ -16,26 +16,26 @@ import org.hsweb.printer.fx.component.builders.elements.TextViewElementComponent
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.components.elements.TextViewComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public class TextElementComponentBuilder extends TextViewElementComponentBuilder<TextViewComponent,TextComponentDTO> {
+public class TextViewElementComponentBuilder extends org.hsweb.printer.fx.component.builders.elements.TextViewElementComponentBuilder<TextViewComponent,TextViewComponentDTO> {
     @Override
     public String getType() {
         return TemplatePrintConstants.TEXT;
     }
 
     @Override
-    protected TextComponentDTO getTemplateComponentDTO() {
-        TextComponentDTO textComponentDTO=new TextComponentDTO();
+    protected TextViewComponentDTO getTemplateComponentDTO() {
+        TextViewComponentDTO textComponentDTO=new TextViewComponentDTO();
         textComponentDTO.setContext("文本");
         return textComponentDTO;
     }
 
     @Override
-    public TextViewComponent builderTextComponent(TextComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public TextViewComponent builderTextComponent(TextViewComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         return new TextViewComponent(templateComponentDTO,propertyController,parentComponent);
     }
 

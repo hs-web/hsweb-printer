@@ -20,18 +20,18 @@ import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.ElementComponentEvent;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO;
 import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
 
 /**
  * Created by xiong on 2017-07-08.
  */
-public class TextViewComponent extends Text implements Component<TextComponentDTO,Text> {
+public class TextViewComponent extends Text implements Component<TextViewComponentDTO,Text> {
 
-    private TextComponentDTO baseComponentDTO;
-    private ElementComponentEvent<TextViewComponent,TextComponentDTO> componentEvent;
+    private TextViewComponentDTO baseComponentDTO;
+    private ElementComponentEvent<TextViewComponent,TextViewComponentDTO> componentEvent;
     private PanelComponent parentComponent;
-    public TextViewComponent(TextComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public TextViewComponent(TextViewComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
 
         this.parentComponent= parentComponent;
         this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
@@ -48,11 +48,11 @@ public class TextViewComponent extends Text implements Component<TextComponentDT
     }
 
     @Override
-    public TextComponentDTO getComponent() {
+    public TextViewComponentDTO getComponent() {
         return baseComponentDTO;
     }
     @Override
-    public void changeProperty(TextComponentDTO baseComponentDTO){
+    public void changeProperty(TextViewComponentDTO baseComponentDTO){
         this.baseComponentDTO=baseComponentDTO;
 
         this.componentEvent.changeTemplateComponent(baseComponentDTO);
@@ -76,7 +76,7 @@ public class TextViewComponent extends Text implements Component<TextComponentDT
     }
 
 
-    private void changeTextProperty(TextComponentDTO baseComponentDTO) {
+    private void changeTextProperty(TextViewComponentDTO baseComponentDTO) {
         Font font =  Font.font(baseComponentDTO.getFontName(),baseComponentDTO.getFontPosture(),baseComponentDTO.getFontSize());
         this.setFont(font);
         this.setTextAlignment(TextAlignment.LEFT);
