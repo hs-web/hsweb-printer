@@ -11,7 +11,6 @@
 
 package org.hsweb.printer.fx.component.components.elements;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.hsweb.printer.fx.PropertyController;
@@ -19,17 +18,17 @@ import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.ElementComponentEvent;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
+import org.hsweb.printer.utils.printable.templateptint.dtos.ImageComponentDTO;
 
 /**
  * Created by xiong on 2017-07-18.
  */
-public class ImageViewComponent extends ImageView implements Component {
-    private TemplateComponentDTO baseComponentDTO;
-    private ElementComponentEvent componentEvent;
+public class ImageViewComponent extends ImageView implements Component<ImageComponentDTO,ImageView> {
+    private ImageComponentDTO baseComponentDTO;
+    private ElementComponentEvent<ImageViewComponent,ImageComponentDTO> componentEvent;
     private PanelComponent parentComponent;
 
-    public ImageViewComponent(TemplateComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public ImageViewComponent(ImageComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
 
         this.parentComponent= parentComponent;
         this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
@@ -46,11 +45,11 @@ public class ImageViewComponent extends ImageView implements Component {
     }
 
     @Override
-    public TemplateComponentDTO getComponent() {
+    public ImageComponentDTO getComponent() {
         return baseComponentDTO;
     }
     @Override
-    public void changeProperty(TemplateComponentDTO baseComponentDTO){
+    public void changeProperty(ImageComponentDTO baseComponentDTO){
         this.baseComponentDTO=baseComponentDTO;
 
         this.componentEvent.changeTemplateComponent(baseComponentDTO);
@@ -75,7 +74,7 @@ public class ImageViewComponent extends ImageView implements Component {
     }
 
     @Override
-    public Node getThisNode() {
+    public ImageView getThisNode() {
         return this;
     }
 

@@ -17,11 +17,11 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO
 /**
  * Created by xiong on 2017-07-18.
  */
-public interface Component {
+public interface Component<T extends TemplateComponentDTO,N extends Node> {
     PanelComponent getParentComponent();
-    TemplateComponentDTO getComponent();
-    void changeProperty(TemplateComponentDTO baseComponentDTO);
-    Node getThisNode();
+    T getComponent();
+    void changeProperty(T baseComponentDTO);
+    N getThisNode();
     double getX();
     double getY();
 }

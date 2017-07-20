@@ -11,7 +11,6 @@
 
 package org.hsweb.printer.fx.component.components.panels;
 
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.component.components.Component;
@@ -19,7 +18,6 @@ import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.components.PanelComponentEvent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
 import org.hsweb.printer.utils.printable.templateptint.dtos.PosPanelComponentDTO;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +25,13 @@ import java.util.List;
 /**
  * Created by xiong on 2017-07-19.
  */
-public class AnchorPaneComponent extends AnchorPane implements PanelComponent {
+public class AnchorPaneComponent extends AnchorPane implements PanelComponent<PosPanelComponentDTO,AnchorPane> {
     private List<Component> components=new ArrayList<>();
 
-    private TemplateComponentDTO baseComponentDTO;
+    private PosPanelComponentDTO baseComponentDTO;
     private PropertyController propertyController;
     private  PanelComponent parentComponent;
-    private PanelComponentEvent panelComponentEvent;
+    private PanelComponentEvent<AnchorPaneComponent,PosPanelComponentDTO> panelComponentEvent;
 
     public AnchorPaneComponent(PosPanelComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         //this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
@@ -54,12 +52,12 @@ public class AnchorPaneComponent extends AnchorPane implements PanelComponent {
     }
 
     @Override
-    public TemplateComponentDTO getComponent() {
+    public PosPanelComponentDTO getComponent() {
         return baseComponentDTO;
     }
 
     @Override
-    public void changeProperty(TemplateComponentDTO baseComponentDTO) {
+    public void changeProperty(PosPanelComponentDTO baseComponentDTO) {
         this.baseComponentDTO=baseComponentDTO;
 
         //this.componentEvent.changeTemplateComponent(baseComponentDTO);
@@ -83,7 +81,7 @@ public class AnchorPaneComponent extends AnchorPane implements PanelComponent {
     }
 
     @Override
-    public Node getThisNode() {
+    public AnchorPane getThisNode() {
         return this;
     }
 

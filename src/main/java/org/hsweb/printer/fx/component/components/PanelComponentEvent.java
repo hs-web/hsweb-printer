@@ -17,15 +17,15 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO
 /**
  * Created by xiong on 2017-07-18.
  */
-public  class PanelComponentEvent {
+public  class PanelComponentEvent<C extends PanelComponent,T extends TemplateComponentDTO> {
 
 
 
-    private Component component;
+    private C component;
     private PropertyController propertyController;
-    private TemplateComponentDTO baseComponentDTO;
+    private T baseComponentDTO;
 
-    public PanelComponentEvent(Component component, TemplateComponentDTO baseComponentDTO, PropertyController propertyController) {
+    public PanelComponentEvent(C component, T baseComponentDTO, PropertyController propertyController) {
         this.component = component;
         this.propertyController = propertyController;
         this.baseComponentDTO = baseComponentDTO;

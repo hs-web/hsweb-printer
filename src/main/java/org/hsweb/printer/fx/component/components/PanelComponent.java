@@ -11,15 +11,17 @@
 
 package org.hsweb.printer.fx.component.components;
 
+import javafx.scene.Node;
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.component.ComponentFactory;
+import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 
 import java.util.List;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public interface PanelComponent extends Component {
+public interface PanelComponent<T extends TemplateComponentDTO,N extends Node> extends Component<T,N> {
     PropertyController getPropertyController();
     void add(Component component);
     List<Component> getComponents();

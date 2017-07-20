@@ -11,7 +11,6 @@
 
 package org.hsweb.printer.fx.component.components.elements;
 
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -21,19 +20,18 @@ import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.ElementComponentEvent;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.utils.printable.templateptint.TemplatePrintConstants;
-import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TextComponentDTO;
 import org.hsweb.printer.utils.printable.templateptint.dtos.VariableComponentDTO;
 
 /**
  * Created by xiong on 2017-07-08.
  */
-public class TextViewComponent extends Text implements Component {
+public class TextViewComponent extends Text implements Component<TextComponentDTO,Text> {
 
-    private TemplateComponentDTO baseComponentDTO;
-    private ElementComponentEvent componentEvent;
+    private TextComponentDTO baseComponentDTO;
+    private ElementComponentEvent<TextViewComponent,TextComponentDTO> componentEvent;
     private PanelComponent parentComponent;
-    public TextViewComponent(TemplateComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public TextViewComponent(TextComponentDTO baseComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
 
         this.parentComponent= parentComponent;
         this.componentEvent= new ElementComponentEvent(this,baseComponentDTO,propertyController);
@@ -50,11 +48,11 @@ public class TextViewComponent extends Text implements Component {
     }
 
     @Override
-    public TemplateComponentDTO getComponent() {
+    public TextComponentDTO getComponent() {
         return baseComponentDTO;
     }
     @Override
-    public void changeProperty(TemplateComponentDTO baseComponentDTO){
+    public void changeProperty(TextComponentDTO baseComponentDTO){
         this.baseComponentDTO=baseComponentDTO;
 
         this.componentEvent.changeTemplateComponent(baseComponentDTO);
@@ -66,14 +64,14 @@ public class TextViewComponent extends Text implements Component {
         this.prefWidth(baseComponentDTO.getWidth());
         this.setWrappingWidth(baseComponentDTO.getWidth());
         if(TemplatePrintConstants.TEXT.equals(baseComponentDTO.getType())){
-            this.changeTextProperty((TextComponentDTO)baseComponentDTO);
+            this.changeTextProperty(baseComponentDTO);
         }else if(TemplatePrintConstants.VARIABLE.equals(baseComponentDTO.getType())){
             this.changeVariableProperty((VariableComponentDTO)baseComponentDTO);
         }
     }
 
     @Override
-    public Node getThisNode() {
+    public Text getThisNode() {
         return this;
     }
 

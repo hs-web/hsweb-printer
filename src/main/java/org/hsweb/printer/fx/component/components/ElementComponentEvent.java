@@ -17,7 +17,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO
 /**
  * Created by xiong on 2017-07-18.
  */
-public  class ElementComponentEvent {
+public  class ElementComponentEvent<C extends Component,T extends TemplateComponentDTO> {
     private double windowWidth;
     private double windowHeight;
     private boolean pressed=false;
@@ -27,18 +27,18 @@ public  class ElementComponentEvent {
     private double pressedY=0;
 
 
-    private Component component;
+    private C component;
     private PropertyController propertyController;
-    private TemplateComponentDTO baseComponentDTO;
+    private T baseComponentDTO;
 
-    public ElementComponentEvent(Component component, TemplateComponentDTO baseComponentDTO, PropertyController propertyController) {
+    public ElementComponentEvent(C component, T baseComponentDTO, PropertyController propertyController) {
         this.component = component;
         this.propertyController = propertyController;
         this.baseComponentDTO = baseComponentDTO;
         this.changeTemplateComponent(baseComponentDTO);
         init();
     }
-    public void changeTemplateComponent(TemplateComponentDTO baseComponentDTO){
+    public void changeTemplateComponent(T baseComponentDTO){
         this.windowHeight=baseComponentDTO.getWindowHeight();
         this.windowWidth=baseComponentDTO.getWindowWidth();
     }
