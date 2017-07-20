@@ -45,7 +45,9 @@ public class SplitPaneComponent extends SplitPane implements PanelComponent<Spli
         this.panelComponentEvent = new PanelComponentEvent(this,baseComponentDTO,propertyController);
         propertyController.property(this,baseComponentDTO);
 
-        this.add(TemplatePrintConstants.TEXT);
+        for (int i=0;i<5;i++) {
+            this.add(TemplatePrintConstants.TEXT);
+        }
     }
 
 
