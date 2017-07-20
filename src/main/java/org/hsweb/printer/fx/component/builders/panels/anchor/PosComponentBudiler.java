@@ -36,7 +36,7 @@ public class PosComponentBudiler extends AnchorPaneComponentBuilder<AnchorPaneCo
     }
 
     @Override
-    public AnchorPaneComponent builderImageComponent(AnchorPaneComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
+    public AnchorPaneComponent builderAnchorComponent(AnchorPaneComponentDTO templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
         return new AnchorPaneComponent(templateComponentDTO,propertyController,parentComponent);
     }
 }

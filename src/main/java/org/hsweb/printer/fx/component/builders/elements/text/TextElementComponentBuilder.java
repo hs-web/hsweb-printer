@@ -21,7 +21,7 @@ import org.hsweb.printer.utils.printable.templateptint.dtos.TextViewComponentDTO
 /**
  * Created by xiong on 2017-07-19.
  */
-public class TextViewElementComponentBuilder extends org.hsweb.printer.fx.component.builders.elements.TextViewElementComponentBuilder<TextViewComponent,TextViewComponentDTO> {
+public class TextElementComponentBuilder extends TextViewElementComponentBuilder<TextViewComponent,TextViewComponentDTO> {
     @Override
     public String getType() {
         return TemplatePrintConstants.TEXT;

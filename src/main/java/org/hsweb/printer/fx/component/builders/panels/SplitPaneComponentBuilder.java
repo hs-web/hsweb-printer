@@ -13,16 +13,16 @@ package org.hsweb.printer.fx.component.builders.panels;
 
 import org.hsweb.printer.fx.PropertyController;
 import org.hsweb.printer.fx.component.components.PanelComponent;
-import org.hsweb.printer.fx.component.components.panels.AnchorPaneComponent;
-import org.hsweb.printer.utils.printable.templateptint.dtos.AnchorPaneComponentDTO;
+import org.hsweb.printer.fx.component.components.panels.SplitPaneComponent;
+import org.hsweb.printer.utils.printable.templateptint.dtos.SplitPaneComponentDTO;
 
 /**
  * Created by xiong on 2017-07-19.
  */
-public abstract class AnchorPaneComponentBuilder<T extends AnchorPaneComponent,A extends AnchorPaneComponentDTO> extends BasePanelComponentBuilder<T,A> {
+public abstract class SplitPaneComponentBuilder<T extends SplitPaneComponent,A extends SplitPaneComponentDTO> extends BasePanelComponentBuilder<T,A> {
     @Override
     public T builderComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent) {
-        return this.builderAnchorComponent(templateComponentDTO,propertyController,parentComponent);
+        return this.builderSplitComponent(templateComponentDTO,propertyController,parentComponent);
     }
-    public abstract T builderAnchorComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent);
+    public abstract T builderSplitComponent(A templateComponentDTO, PropertyController propertyController, PanelComponent parentComponent);
 }
