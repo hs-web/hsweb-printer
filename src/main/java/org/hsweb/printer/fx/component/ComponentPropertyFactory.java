@@ -15,8 +15,8 @@ import org.hsweb.printer.fx.component.components.Component;
 import org.hsweb.printer.fx.component.components.PanelComponent;
 import org.hsweb.printer.fx.component.propertys.ComponentProperty;
 import org.hsweb.printer.fx.component.propertys.dtos.PropertysDTO;
-import org.hsweb.printer.fx.utils.scan.ClassScanner;
 import org.hsweb.printer.utils.printable.templateptint.dtos.TemplateComponentDTO;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -29,8 +29,9 @@ import java.util.Set;
 public class ComponentPropertyFactory {
     private static Map<String,ComponentProperty> propertyMap=new HashMap<>();
     static {
-        Set<Class<ComponentProperty>> routesSet = ClassScanner.scan(ComponentProperty.class,"org.hsweb.printer.fx.component.propertys");
-        for (Class<ComponentProperty> componentBuilderClass : routesSet) {
+        Reflections reflections = new Reflections("org.hsweb.printer.fx.component.propertys");
+        Set<Class<? extends ComponentProperty>> routesSet = reflections.getSubTypesOf(ComponentProperty.class);
+        for (Class<? extends ComponentProperty> componentBuilderClass : routesSet) {
             if(componentBuilderClass.isInterface()|| Modifier.isAbstract(componentBuilderClass.getModifiers())){
                 continue;
             }
