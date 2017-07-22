@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 public class PrintUtil {
     /**
-     * 获取默认打印机
+     * 获取 默认打印机
      * @return
      */
     public static PrintService getDefaultPrintService(){
