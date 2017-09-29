@@ -56,7 +56,7 @@ public class PositionPrintable implements BasePrintable {
         if (pageIndex >=positionPrint.getPageSize()) {
             return NO_SUCH_PAGE;
         }
-        positionPrint.print(pageIndex,graphics,getXpadding(),getYpadding());
+        positionPrint.print(pageIndex,graphics, getXPadding(), getYPadding());
         return PAGE_EXISTS;
     }
 }

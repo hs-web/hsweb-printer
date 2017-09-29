@@ -67,7 +67,7 @@ public class LabelPrintable implements BasePrintable {
 
     @Override
     public double getHeight() {
-        return lablePrint.getHeight()+lablePrint.get(0).getHeight()+getYpadding()*2;
+        return lablePrint.getHeight()+lablePrint.get(0).getHeight()+ getYPadding()*2;
     }
 
     @Override
@@ -75,12 +75,12 @@ public class LabelPrintable implements BasePrintable {
         if (pageIndex > 0) {
             return NO_SUCH_PAGE;
         }
-        lablePrint.print(graphics,getXpadding(),getYpadding());
+        lablePrint.print(graphics, getXPadding(), getYPadding());
         return PAGE_EXISTS;
     }
 
     @Override
-    public double getXpadding(){
+    public double getXPadding(){
         return Xpadding;
     }
 

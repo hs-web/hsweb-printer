@@ -88,7 +88,7 @@ public interface BasePrintable extends Printable {
      * 纸张左边距
      * @return
      */
-    default double getXpadding(){
+    default double getXPadding(){
         return 0;
     }
 
@@ -96,7 +96,7 @@ public interface BasePrintable extends Printable {
      *  纸张上边距
      * @return
      */
-    default double getYpadding(){
+    default double getYPadding(){
         return getWidth()*0.1;
     }
 
