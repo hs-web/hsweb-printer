@@ -15,7 +15,7 @@ public abstract class PrintObject {
 
     private int y;
 
-    private Direction direction;
+    private Direction direction = Direction.LEFT;
 
     public String getName() {
         return name;
@@ -47,5 +47,13 @@ public abstract class PrintObject {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

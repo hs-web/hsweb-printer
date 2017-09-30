@@ -5,6 +5,7 @@ package org.hswebframework.printer.designer;
  * @since
  */
 public class Color {
+
     private int r;
 
     private int g;
@@ -53,5 +54,14 @@ public class Color {
 
     public void setHex(String hex) {
         this.hex = hex;
+    }
+
+    public Color(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    public Color() {
     }
 }

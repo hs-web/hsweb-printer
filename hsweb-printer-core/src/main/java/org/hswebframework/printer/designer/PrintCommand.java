@@ -12,6 +12,10 @@ public class PrintCommand {
 
     private List<Pager> pagers;
 
+    public int getPageSize() {
+        return pagers == null ? 0 : pagers.size();
+    }
+
     public List<Pager> getPagers() {
         return pagers;
     }

@@ -12,7 +12,7 @@ public class Line extends PrintObject {
 
     private int size;
 
-    private Color color;
+    private Color color = new Color();
 
     public int getLength() {
         return length;

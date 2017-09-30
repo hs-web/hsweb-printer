@@ -15,7 +15,7 @@ public class Label extends PrintObject {
 
     private String text;
 
-    private Color color;
+    private Color color = new Color();
 
     public int getWidth() {
         return width;
