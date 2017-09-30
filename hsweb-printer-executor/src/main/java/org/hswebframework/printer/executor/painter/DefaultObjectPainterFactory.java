@@ -1,5 +1,6 @@
 package org.hswebframework.printer.executor.painter;
 
+import org.hswebframework.printer.designer.Label;
 import org.hswebframework.printer.designer.Line;
 import org.hswebframework.printer.designer.PrintObject;
 
@@ -22,6 +23,8 @@ public class DefaultObjectPainterFactory implements ObjectPainterFactory {
 
     static {
         registerPainter(Line.class, () -> LinePainter::new);
+
+        registerPainter(Label.class, () -> LabelPainter::new);
     }
 
     private DefaultObjectPainterFactory() {

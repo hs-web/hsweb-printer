@@ -1,5 +1,6 @@
 package org.hswebframework.printer.executor.painter;
 
+import org.hswebframework.printer.designer.Direction;
 import org.hswebframework.printer.designer.Line;
 
 import java.awt.*;
@@ -23,8 +24,11 @@ public class LinePainter implements ObjectPainter {
         Color color = new Color(line.getColor().getR(), line.getColor().getG(), line.getColor().getB());
         graphics.setColor(color);
 
-        graphics.drawLine(line.getX(), line.getY(), line.getX() + line.getLength(), line.getY());
-
+        if (line.getDirection() == Direction.DOWN) {
+            graphics.drawLine(line.getX(), line.getY(), line.getX(), line.getY() + line.getLength());
+        } else {
+            graphics.drawLine(line.getX(), line.getY(), line.getX() + line.getLength(), line.getY());
+        }
         graphics.setColor(oldColor);
     }
 }

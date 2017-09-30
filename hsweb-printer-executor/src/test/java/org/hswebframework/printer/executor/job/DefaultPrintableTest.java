@@ -1,10 +1,7 @@
 package org.hswebframework.printer.executor.job;
 
 
-import org.hswebframework.printer.designer.Color;
-import org.hswebframework.printer.designer.Line;
-import org.hswebframework.printer.designer.Pager;
-import org.hswebframework.printer.designer.PrintCommand;
+import org.hswebframework.printer.designer.*;
 import org.hswebframework.printer.executor.DefaultPagerGraphicsService;
 import org.hswebframework.printer.executor.PagerGraphicsService;
 
@@ -32,20 +29,39 @@ public class DefaultPrintableTest {
         line.setColor(new Color());
         line.setLength(100);
         line.setSize(1);
-        line.setX(10);
+        line.setX(20);
         line.setY(100);
+//        line.setDirection(Direction.DOWN);
+
+        Label label=new Label();
+
+        label.setX(20);
+        label.setY(200);
+        label.setText("呵呵");
 
         Pager pager = new Pager();
 
         pager.setName("test");
-        pager.setPrintObjects(Arrays.asList(line));
+        pager.setPrintObjects(Arrays.asList(line,label));
+
+
+        Label label2=new Label();
+
+        label2.setX(20);
+        label2.setY(200);
+        label2.setText("呵呵");
+        label2.setColor(new Color(254,123,111));
+        Pager pager2 = new Pager();
+
+        pager2.setName("test2");
+        pager2.setPrintObjects(Arrays.asList(line,label2));
 
         PrintCommand command = new PrintCommand();
-        command.setPagers(Arrays.asList(pager));
+        command.setPagers(Arrays.asList(pager,pager2));
 
         DefaultPrintable defaultPrintable = new DefaultPrintable(command, graphicsService);
-        PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
 
+        PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
 
         //获取打印服务对象
         PrinterJob job = PrinterJob.getPrinterJob();
