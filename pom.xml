@@ -68,19 +68,9 @@
             <version>1.16.18</version>
         </dependency>
         <dependency>
-            <groupId>de.codecentric.centerdevice</groupId>
-            <artifactId>javafxsvg</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.8</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>2.3.0</version>
         </dependency>
     </dependencies>
 
