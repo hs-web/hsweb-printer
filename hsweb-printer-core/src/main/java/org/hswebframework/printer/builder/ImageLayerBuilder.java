@@ -20,10 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,6 +51,13 @@ public class ImageLayerBuilder extends AbstractLayerBuilder {
         layer.setY(getInt("y", 100));
 
         return layer;
+    }
+
+    static BufferedImage createBase64(int width, int height, String content) throws Exception {
+        byte[] imageBase64Data = Base64.decodeBase64(content);
+        try (InputStream inputStream = new ByteArrayInputStream(imageBase64Data)) {
+            return ImageIO.read(inputStream);
+        }
     }
 
     static BufferedImage createQrCode(int width, int height, String content) throws Exception {
@@ -96,6 +101,8 @@ public class ImageLayerBuilder extends AbstractLayerBuilder {
                 }
             } else if ("qrCode".equals(type)) {
                 return createQrCode(width, height, imageData);
+            } else if ("base64".equals(type)) {
+                return createBase64(width, height, imageData);
             } else if ("barCode".equals(type)) {
                 return createBarCode(width, height, imageData);
             }
