@@ -14,7 +14,6 @@ import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrintQuality;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -65,6 +64,7 @@ public class PrinterTests {
         //获取打印服务对象
         PrintService printServices[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
         PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
+        //弹出提示,选择打印机
         PrintService printService = ServiceUI.printDialog(null, 200, 200, printServices,
                 defaultService, flavor, pras);
         if (printService == null) return;
