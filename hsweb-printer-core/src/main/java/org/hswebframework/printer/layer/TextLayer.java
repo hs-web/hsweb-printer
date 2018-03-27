@@ -44,12 +44,13 @@ public class TextLayer extends AbstractLayer {
                     temp.append(c);
                     String tempStr = temp.toString();
                     if (getTextWidth(temp.toString(), fontMetrics) >= width + 2) {
-                        align.draw(graphics, tempStr, getWidth(), getX(), nowY += height + 2);
+                        align.draw(graphics, tempStr, getWidth(), getX(), nowY );
+                        nowY+= height + 2;
                         temp = new StringBuilder();
                     }
                 }
                 if (temp.length() > 0) {
-                    align.draw(graphics, temp.toString(), getWidth(), getX(), nowY + height + 2);
+                    align.draw(graphics, temp.toString(), getWidth(), getX(),  nowY );
                 }
                 nowY += height + 2;
             }
