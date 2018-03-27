@@ -1,6 +1,5 @@
-# hsweb-printer
+# 模版打印组件
 支持打印,支持输出为svg,pdf,image.
-
 ```json
 [
     {
@@ -19,10 +18,9 @@
 
 ```
 图层列表:
-
-| 图层类型       | type           |  属性列表  |
+|   图层类型    |   type  |     属性列表   |
 | -------------: |:-------------:| :--------------:|
-| 文字        | text | x,y,fontFamily,fontSize,color |
+| 文字        | text | x,y,fontFamily,fontSize,color,width,height,align |
 | 线       | line    |  x1,y1,x2,y2,color |
 | 矩形       | rect    |  x,y,width,height,color    |
 | 图片       | img    |  x,y,width,height,imgType,imgData |
