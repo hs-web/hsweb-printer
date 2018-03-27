@@ -34,28 +34,40 @@ public class TextLayer extends AbstractLayer {
         }
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
+        List<java.util.function.Consumer<Integer>> runnables = new ArrayList<>();
+        int textHeight = fontMetrics.getHeight();
         //字体宽度大于总宽度,需要换行
         if (text.contains("\n") || (width > 0 && getTextWidth(text, fontMetrics) > width)) {
-            int height = fontMetrics.getHeight();
-            int nowY = getY();
+            int totalHeight = 0;
+
+            int nowY = 0;//getY();
             for (String line : text.split("[\n]")) {
                 StringBuilder temp = new StringBuilder();
                 for (char c : line.toCharArray()) {
                     temp.append(c);
                     String tempStr = temp.toString();
                     if (getTextWidth(temp.toString(), fontMetrics) >= width + 2) {
-                        align.draw(graphics, tempStr, getWidth(), getX(), nowY );
-                        nowY+= height + 2;
+                        int finalY = nowY;
+                        runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
+                        nowY += textHeight + 2;
+                        totalHeight += textHeight;
                         temp = new StringBuilder();
                     }
                 }
                 if (temp.length() > 0) {
-                    align.draw(graphics, temp.toString(), getWidth(), getX(),  nowY );
+                    int finalY = nowY;
+                    String tempStr = temp.toString();
+                    runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
+
                 }
-                nowY += height + 2;
+                nowY += textHeight + 2;
+                totalHeight += textHeight;
             }
+            int bodyHeight = totalHeight;
+            runnables.forEach(run -> run.accept(getVerticalAlign().compute(getY(), getHeight(), bodyHeight)));
         } else {
-            align.draw(graphics, text, getWidth(), getX(), getY());
+
+            align.draw(graphics, text, getWidth(), getX(), getVerticalAlign().compute(getY(), getHeight(), textHeight));
         }
     }
 
@@ -111,7 +123,7 @@ public class TextLayer extends AbstractLayer {
             @Override
             public void draw(Graphics2D graphics, String text, int width, int x, int y) {
                 int textWidth = getTextWidth(text, graphics.getFontMetrics());
-                x = x + (width - textWidth / 2);
+                x = x + (width - textWidth) / 2;
                 doDrawString(graphics, text, x, y);
             }
         },
@@ -134,8 +146,8 @@ public class TextLayer extends AbstractLayer {
             public void draw(Graphics2D graphics, String text, int width, int x, int y) {
                 doDrawString(graphics, text, x, y);
             }
-        }
-        ;
+        };
+
         public static Align from(String align) {
             if (align == null) {
                 return null;
@@ -144,8 +156,31 @@ public class TextLayer extends AbstractLayer {
         }
     }
 
-    public enum VerticalAlign {
-        top, center, bottom;
+    public enum VerticalAlign implements VerticalAlignComputer {
+        top {
+            @Override
+            public int compute(int y, int height, int bodyHeight) {
+                return y;
+            }
+        }, center {
+            @Override
+            public int compute(int y, int height, int bodyHeight) {
+                if (height < bodyHeight) {
+                    return y;
+                }
+                return y + (height - bodyHeight) / 2;
+            }
+        }, bottom {
+            @Override
+            public int compute(int y, int height, int bodyHeight) {
+                if (height < bodyHeight) {
+                    return y;
+                }
+                return y + (height - bodyHeight);
+            }
+        };
+
+
         public static VerticalAlign from(String align) {
             if (align == null) {
                 return null;
@@ -156,6 +191,10 @@ public class TextLayer extends AbstractLayer {
 
     interface TextAlignPainter {
         void draw(Graphics2D graphics, String text, int width, int x, int y);
+    }
+
+    interface VerticalAlignComputer {
+        int compute(int y, int height, int bodyHeight);
     }
 
 

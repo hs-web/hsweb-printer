@@ -49,6 +49,8 @@ public class PrinterTests {
         layer1.setY(200);
         layer1.setColor(Color.BLUE);
         layer1.setWidth(100);
+        layer1.setHeight(200);
+        layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
         layer1.setText("居左\n居左吧\n居左居左\n居左居左吧\n居中分散居中对齐");
         layer1.setAlign(TextLayer.Align.left);
 
@@ -57,6 +59,8 @@ public class PrinterTests {
         layer2.setX(240);
         layer2.setY(200);
         layer2.setColor(Color.BLACK);
+        layer2.setHeight(200);
+        layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
         layer2.setWidth(100);
         layer2.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
         layer2.setAlign(TextLayer.Align.right);
@@ -64,6 +68,8 @@ public class PrinterTests {
         TextLayer layer3=new TextLayer();
         layer3.setX(360);
         layer3.setY(200);
+        layer3.setHeight(200);
+        layer3.setVerticalAlign(TextLayer.VerticalAlign.bottom);
         layer3.setColor(Color.GREEN);
         layer3.setWidth(100);
         layer3.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
