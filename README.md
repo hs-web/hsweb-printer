@@ -16,8 +16,8 @@
  
 ```
 
-```
 图层列表:
+
 |   图层类型    |   type  |     属性列表   |
 | -------------: |:-------------:| :--------------:|
 | 文字        | text | x,y,fontFamily,fontSize,color,width,height,align |
