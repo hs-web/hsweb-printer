@@ -17,7 +17,7 @@ import java.awt.*;
 public abstract class AbstractLayer implements Layer {
     private Color color = Color.BLACK;
 
-    private Font font;
+    private Font font=defaultFont;
 
     private int x;
 

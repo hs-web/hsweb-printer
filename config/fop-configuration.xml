@@ -32,16 +32,21 @@
         </font>
         <font kerning="yes" embed-url="config/font/FZLTCXHJW.TTF">
             <font-triplet name="FZLanTingHeiS" style="normal" weight="normal"/>
+            <font-triplet name="方正兰亭超细黑简体" style="normal" weight="normal"/>
         </font>
         <font kerning="yes" embed-url="config/font/simfang.ttf">
             <font-triplet name="宋体" style="normal" weight="normal"/>
             <font-triplet name="仿宋" style="normal" weight="normal"/>
+            <font-triplet name="仿宋_GB2312" style="normal" weight="normal"/>
+
         </font>
         <font kerning="yes" embed-url="config/font/simhei.ttf">
             <font-triplet name="黑体" style="normal" weight="normal"/>
         </font>
         <font kerning="yes" embed-url="config/font/simkai.ttf">
             <font-triplet name="楷体" style="normal" weight="normal"/>
+            <font-triplet name="楷体_GB2312" style="normal" weight="normal"/>
+
         </font>
     </fonts>
 </fop>

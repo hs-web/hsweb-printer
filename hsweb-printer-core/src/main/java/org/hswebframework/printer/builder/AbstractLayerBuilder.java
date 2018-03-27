@@ -1,7 +1,9 @@
 package org.hswebframework.printer.builder;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hswebframework.printer.Layer;
+import org.hswebframework.utils.StringUtils;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -11,6 +13,7 @@ import java.util.Map;
  * @author zhouhao
  * @since 1.0
  */
+@Slf4j
 public abstract class AbstractLayerBuilder implements LayerBuilder {
 
     private String type;
@@ -44,7 +47,12 @@ public abstract class AbstractLayerBuilder implements LayerBuilder {
     }
 
     protected int getInt(String config, int def) {
-        return Math.round(new BigDecimal(getString(config, String.valueOf(def))).floatValue());
+        String stringValue = getString(config, String.valueOf(def));
+        if (!StringUtils.isNumber(stringValue)) {
+            log.warn("参数{}={}不是数字格式!", config, stringValue);
+            return def;
+        }
+        return Math.round(new BigDecimal(stringValue).floatValue());
     }
 
     protected boolean getBoolean(String config, boolean def) {
