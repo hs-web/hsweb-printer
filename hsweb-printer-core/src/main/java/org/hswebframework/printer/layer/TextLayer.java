@@ -42,14 +42,17 @@ public class TextLayer extends AbstractLayer {
 
             int nowY = 0;//getY();
             for (String line : text.split("[\n]")) {
+                if(line.trim().length()==0){
+                    continue;
+                }
                 StringBuilder temp = new StringBuilder();
                 for (char c : line.toCharArray()) {
                     temp.append(c);
                     String tempStr = temp.toString();
-                    if (getTextWidth(temp.toString(), fontMetrics) >= width + 2) {
+                    if (getTextWidth(temp.toString(), fontMetrics) >= width ) {
                         int finalY = nowY;
                         runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
-                        nowY += textHeight + 2;
+                        nowY += textHeight ;
                         totalHeight += textHeight;
                         temp = new StringBuilder();
                     }
@@ -58,10 +61,10 @@ public class TextLayer extends AbstractLayer {
                     int finalY = nowY;
                     String tempStr = temp.toString();
                     runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
-
+                    nowY += textHeight ;
+                    totalHeight += textHeight;
                 }
-                nowY += textHeight + 2;
-                totalHeight += textHeight;
+
             }
             int bodyHeight = totalHeight;
             runnables.forEach(run -> run.accept(getVerticalAlign().compute(getY(), getHeight(), bodyHeight)));
@@ -92,6 +95,10 @@ public class TextLayer extends AbstractLayer {
         both {
             @Override
             public void draw(Graphics2D graphics, String text, int width, int x, int y) {
+                if (text.length() == 1) {
+                    doDrawString(graphics, text, x, y);
+                    return;
+                }
                 int everyWidth = width / text.length();
 
                 char[] chars = text.toCharArray();
@@ -102,7 +109,7 @@ public class TextLayer extends AbstractLayer {
                     int textWidth = getTextWidth(singleChar, graphics.getFontMetrics());
                     int t = xTemp;
                     if (i == chars.length - 1) {//最后一个字符串
-                        t += everyWidth;
+                        t = width - 2;
                     } else if (i != 0) { //中间的字符
                         if (lstWidth > textWidth) {
                             t += lstWidth - textWidth;

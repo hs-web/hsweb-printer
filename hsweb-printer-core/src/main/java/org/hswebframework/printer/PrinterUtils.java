@@ -1,5 +1,6 @@
 package org.hswebframework.printer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -15,12 +16,14 @@ import org.apache.fop.svg.PDFTranscoder;
 import org.apache.xmlgraphics.java2d.GraphicContext;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import sun.font.FontManagerFactory;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +35,31 @@ import static org.apache.fop.svg.AbstractFOPTranscoder.KEY_AUTO_FONTS;
  * @author zhouhao
  * @since 1.0
  */
+@Slf4j
 public class PrinterUtils {
     public static void draw(List<Layer> layers, Graphics2D g2) {
         initGraphics2D(g2);
         layers.forEach(layer -> layer.draw(g2));
+    }
+
+    static {
+        log.info("加载字体...");
+        File fontDir = new File("./config/font");
+        if (fontDir.exists()) {
+            File[] fonts = fontDir.listFiles((dir, name) -> name.endsWith("ttf") || name.endsWith("TTF"));
+            if (null != fonts) {
+                for (File file : fonts) {
+                    try {
+                        Font font = Font.createFont(Font.TRUETYPE_FONT, file);
+                        FontManagerFactory.getInstance().registerFont(font);
+                        log.info("load font {} success",font);
+                    } catch (Exception e) {
+                        log.warn("load font error", e);
+                    }
+                }
+            }
+
+        }
     }
 
     public static void initGraphics2D(Graphics2D g2) {
