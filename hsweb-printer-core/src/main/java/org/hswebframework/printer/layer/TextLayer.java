@@ -24,6 +24,8 @@ public class TextLayer extends AbstractLayer {
 
     private Align align = Align.left;
 
+    private VerticalAlign verticalAlign = VerticalAlign.top;
+
     @Override
     protected void doDraw(Graphics2D graphics) {
         String text = getText();
@@ -41,7 +43,7 @@ public class TextLayer extends AbstractLayer {
                 for (char c : line.toCharArray()) {
                     temp.append(c);
                     String tempStr = temp.toString();
-                    if (getTextWidth(temp.toString(), fontMetrics) >= width+2) {
+                    if (getTextWidth(temp.toString(), fontMetrics) >= width + 2) {
                         align.draw(graphics, tempStr, getWidth(), getX(), nowY += height + 2);
                         temp = new StringBuilder();
                     }
@@ -132,9 +134,28 @@ public class TextLayer extends AbstractLayer {
                 doDrawString(graphics, text, x, y);
             }
         }
+        ;
+        public static Align from(String align) {
+            if (align == null) {
+                return null;
+            }
+            return Align.valueOf(align.toLowerCase());
+        }
+    }
+
+    public enum VerticalAlign {
+        top, center, bottom;
+        public static VerticalAlign from(String align) {
+            if (align == null) {
+                return null;
+            }
+            return VerticalAlign.valueOf(align.toLowerCase());
+        }
     }
 
     interface TextAlignPainter {
         void draw(Graphics2D graphics, String text, int width, int x, int y);
     }
+
+
 }
