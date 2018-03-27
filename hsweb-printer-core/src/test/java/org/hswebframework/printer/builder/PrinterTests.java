@@ -6,6 +6,7 @@ import org.hswebframework.printer.*;
 import org.hswebframework.printer.executor.DefaultPrintable;
 import org.hswebframework.printer.layer.TextLayer;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -35,6 +36,10 @@ public class PrinterTests {
     static JsonPageBuilder builder = new JsonPageBuilder();
 
 
+    @Before
+    public void init(){
+        new File("target").mkdir();
+    }
     @Test
     public void testAutoNewLine() throws Exception {
         Pager pager=new Pager();
@@ -78,7 +83,7 @@ public class PrinterTests {
         layer3.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
         layer3.setAlign(TextLayer.Align.center);
 
-        layer3.setFont(new Font("YaHei Consolas Hybrid",Font.PLAIN,20));
+        layer3.setFont(new Font("宋体",Font.PLAIN,20));
 
         pager.setLayers(Arrays.asList(layer,layer1,layer2,layer3));
         pager.setOrientation(0);
@@ -86,11 +91,11 @@ public class PrinterTests {
 
         System.out.println(svgs.get(0));
 
-//        PrinterUtils
-//                .printToPdf(Arrays.asList(pager)
-//                        , new PixelPaper(72, Paper.A4)
-//                        , new FileOutputStream("./target/test.pdf")
-//                        , new DefaultConfigurationBuilder().build("./config/fop-configuration.xml"));
+        PrinterUtils
+                .printToPdf(Arrays.asList(pager)
+                        , new PixelPaper(72, Paper.A4)
+                        , new FileOutputStream("./target/test.pdf")
+                        , new DefaultConfigurationBuilder().build("./config/fop-configuration.xml"));
 
 
     }
