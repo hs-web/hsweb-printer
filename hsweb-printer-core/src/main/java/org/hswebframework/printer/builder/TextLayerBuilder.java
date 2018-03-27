@@ -21,6 +21,9 @@ public class TextLayerBuilder extends AbstractLayerBuilder {
         textLayer.setText(getString("text", ""));
         textLayer.setX(getInt("x", 0));
         textLayer.setY(getInt("y", 0));
+        textLayer.setWidth(getInt("width",-1));
+        textLayer.setHeight(getInt("height",-1));
+
         textLayer.setFont(getFont(null));
         textLayer.setColor(getColor(Color.BLACK));
         return textLayer;
