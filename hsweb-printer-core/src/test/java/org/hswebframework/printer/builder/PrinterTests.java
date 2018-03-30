@@ -48,7 +48,7 @@ public class PrinterTests {
         layer.setY(200);
         layer.setColor(Color.RED);
         layer.setWidth(100);
-        layer.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
+        layer.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中1a2B3c4D★☆分散居中");
         layer.setAlign(TextLayer.Align.both);
 
 
