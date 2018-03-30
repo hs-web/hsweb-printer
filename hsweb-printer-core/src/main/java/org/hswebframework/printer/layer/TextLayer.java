@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,23 +37,30 @@ public class TextLayer extends AbstractLayer {
 
         List<java.util.function.Consumer<Integer>> runnables = new ArrayList<>();
         int textHeight = fontMetrics.getHeight();
+        int fontSize = fontMetrics.getFont().getSize();
         //字体宽度大于总宽度,需要换行
-        if (text.contains("\n") || (width > 0 && getTextWidth(text, fontMetrics) > width)) {
+        if (text.contains("\n") || (width > 0 && fontSize * textHeight > width)) {
             int totalHeight = 0;
 
-            int nowY = 0;//getY();
+            int nowY = 0;
             for (String line : text.split("[\n]")) {
-                if(line.trim().length()==0){
+                if (line.trim().length() == 0) {
                     continue;
                 }
                 StringBuilder temp = new StringBuilder();
                 for (char c : line.toCharArray()) {
                     temp.append(c);
                     String tempStr = temp.toString();
-                    if (getTextWidth(temp.toString(), fontMetrics) >= width ) {
+                    boolean shouldNewLine;
+                    if (align == Align.both) {
+                        shouldNewLine = temp.length() * fontSize >= width;
+                    } else {
+                        shouldNewLine = getTextWidth(tempStr, fontMetrics) >= width;
+                    }
+                    if (shouldNewLine) {
                         int finalY = nowY;
                         runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
-                        nowY += textHeight ;
+                        nowY += textHeight;
                         totalHeight += textHeight;
                         temp = new StringBuilder();
                     }
@@ -61,7 +69,7 @@ public class TextLayer extends AbstractLayer {
                     int finalY = nowY;
                     String tempStr = temp.toString();
                     runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
-                    nowY += textHeight ;
+                    nowY += textHeight;
                     totalHeight += textHeight;
                 }
 
@@ -74,7 +82,7 @@ public class TextLayer extends AbstractLayer {
         }
     }
 
-    private static void doDrawString(Graphics2D graphics, String text, int x, int y) {
+    private static void doDrawString(Graphics2D graphics, String text, float x, float y) {
         graphics.drawString(text, x, y + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getLeading());
     }
 
@@ -99,27 +107,36 @@ public class TextLayer extends AbstractLayer {
                     doDrawString(graphics, text, x, y);
                     return;
                 }
-                int everyWidth = width / text.length();
-
+                FontMetrics metrics = graphics.getFontMetrics();
                 char[] chars = text.toCharArray();
-                int xTemp = x;
-                int lstWidth = 0;
-                for (int i = 0; i < chars.length; i++) {
-                    String singleChar = String.valueOf(chars[i]);
-                    int textWidth = getTextWidth(singleChar, graphics.getFontMetrics());
-                    int t = xTemp;
-                    if (i == chars.length - 1) {//最后一个字符串
-                        t = width - 2;
-                    } else if (i != 0) { //中间的字符
-                        if (lstWidth > textWidth) {
-                            t += lstWidth - textWidth;
-                        }
-                        t += everyWidth / ((text.length() - 1)) * i;
+                int textLength = chars.length;
 
+                float margin = (float) width / (textLength - 1);
+                if (margin < 0) {
+                    margin = 0;
+                }
+                int xTemp = x;
+                for (int i = 0; i < textLength; i++) {
+                    String singleString = String.valueOf(chars[i]);
+                    int fontWidth = metrics.charWidth(chars[i]);
+                    int fontSize = metrics.getFont().getSize();
+                    float newX;
+                    if (i == 0) {
+                        newX = x;
+                        xTemp += margin;
+                    } else if (i == textLength - 1) {
+                        newX = width;
+                        if (fontWidth < fontSize) {
+                            newX += (fontSize - fontWidth) / 2F;
+                        }
+                    } else {
+                        newX = xTemp;
+                        if (fontWidth < fontSize) {
+                            newX += (fontSize - fontWidth) / 2F;
+                        }
+                        xTemp += margin;
                     }
-                    doDrawString(graphics, singleChar, t, y);
-                    xTemp += everyWidth;
-                    lstWidth = textWidth;
+                    doDrawString(graphics, singleString, newX, y);
                 }
             }
         },
