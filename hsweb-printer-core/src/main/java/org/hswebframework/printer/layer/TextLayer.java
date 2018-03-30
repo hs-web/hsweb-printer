@@ -51,7 +51,13 @@ public class TextLayer extends AbstractLayer {
                 for (char c : line.toCharArray()) {
                     temp.append(c);
                     String tempStr = temp.toString();
-                    if (temp.length() * fontSize >= width) {
+                    boolean shouldNewLine;
+                    if (align == Align.both) {
+                        shouldNewLine = temp.length() * fontSize >= width;
+                    } else {
+                        shouldNewLine = getTextWidth(tempStr, fontMetrics) >= width;
+                    }
+                    if (shouldNewLine) {
                         int finalY = nowY;
                         runnables.add(y -> align.draw(graphics, tempStr, getWidth(), getX(), y + finalY));
                         nowY += textHeight;
@@ -131,64 +137,6 @@ public class TextLayer extends AbstractLayer {
                         xTemp += margin;
                     }
                     doDrawString(graphics, singleString, newX, y);
-                }
-            }
-        },
-        both2 {
-            @Override
-            public void draw(Graphics2D graphics, String text, int width, int x, int y) {
-                if (text.length() == 1) {
-                    doDrawString(graphics, text, x, y);
-                    return;
-                }
-                FontMetrics metrics = graphics.getFontMetrics();
-
-                char[] chars = text.toCharArray();
-                int textLength = chars.length;
-                int everyWidth = width / textLength;
-
-                int xTemp = x;
-                int lstWidth = 0;
-
-                int fistTextWidth = getTextWidth(String.valueOf(chars[0]), metrics);
-                int lastTextWidth = getTextWidth(String.valueOf(chars[textLength - 1]), metrics);
-
-                char[] centers = Arrays.copyOfRange(chars, 1, chars.length - 1);
-
-                //中间字符占用的总宽度
-                int center = getTextWidth(String.valueOf(centers), metrics);
-
-                //中间剩余的总宽度
-                int centerTextWidth = width - fistTextWidth - lastTextWidth;
-                //中间每个字符的总宽度
-                int centerEveryTextWidth = textLength > 2 ? centerTextWidth / (textLength - 2) : everyWidth;
-
-                //每个字的间距
-                int spliter = centers.length == 0
-                        ? centerTextWidth / 2 :
-                        (int) Math.round(((double) centerTextWidth - center) / centers.length);
-
-                for (int i = 0; i < textLength; i++) {
-                    String singleChar = String.valueOf(chars[i]);
-                    int textWidth = getTextWidth(singleChar, metrics);
-                    int t = xTemp;
-                    //最后一个字符串
-                    if (i == textLength - 1) {
-                        t = width;
-                    }
-                    //中间的字符
-                    else if (i != 0) {
-
-                        if (lstWidth > textWidth) {
-                            t += lstWidth - textWidth;
-                        }
-                        t += (spliter + textLength / 2) * i;
-                        Align.center.draw(graphics, singleChar, centerEveryTextWidth, t, y);
-
-                    }
-                    doDrawString(graphics, singleChar, t, y);
-                    xTemp += textWidth;
-                    lstWidth = textWidth;
                 }
             }
         },

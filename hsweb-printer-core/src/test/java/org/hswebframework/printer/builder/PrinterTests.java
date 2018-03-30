@@ -48,7 +48,7 @@ public class PrinterTests {
         layer.setY(200);
         layer.setColor(Color.RED);
         layer.setWidth(100);
-        layer.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中1a2B3c4D★☆分散居中");
+        layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
         layer.setAlign(TextLayer.Align.both);
 
 
@@ -59,7 +59,7 @@ public class PrinterTests {
         layer1.setWidth(100);
         layer1.setHeight(200);
         layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
-        layer1.setText("居左\n居左吧\n居左居左\n居左居左吧\n居中分散居中对齐");
+        layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
         layer1.setAlign(TextLayer.Align.left);
 
 
@@ -70,7 +70,7 @@ public class PrinterTests {
         layer2.setHeight(200);
         layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
         layer2.setWidth(100);
-        layer2.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
+        layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
         layer2.setAlign(TextLayer.Align.right);
 
         TextLayer layer3=new TextLayer();
@@ -80,7 +80,7 @@ public class PrinterTests {
         layer3.setVerticalAlign(TextLayer.VerticalAlign.bottom);
         layer3.setColor(Color.GREEN);
         layer3.setWidth(100);
-        layer3.setText("居中\n居中吧\n分散居中\n分散居中吧\n居中分散居中对齐");
+        layer3.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
         layer3.setAlign(TextLayer.Align.center);
 
         layer3.setFont(new Font("宋体",Font.PLAIN,20));
