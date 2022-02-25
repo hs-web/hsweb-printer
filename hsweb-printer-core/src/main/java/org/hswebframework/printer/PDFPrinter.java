@@ -1,6 +1,5 @@
 package org.hswebframework.printer;
 
-import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.batik.bridge.UnitProcessor;
 import org.apache.batik.ext.awt.RenderingHintsKeyExt;
 import org.apache.batik.transcoder.TranscoderException;
@@ -8,6 +7,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.fop.Version;
+import org.apache.fop.configuration.Configuration;
 import org.apache.fop.svg.PDFDocumentGraphics2D;
 import org.apache.fop.svg.PDFDocumentGraphics2DConfigurator;
 import org.apache.fop.svg.PDFTranscoder;

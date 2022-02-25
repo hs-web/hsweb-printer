@@ -17,7 +17,7 @@ import java.awt.*;
 public abstract class AbstractLayer implements Layer {
     private Color color = Color.BLACK;
 
-    private Font font=defaultFont;
+    private Font font = defaultFont;
 
     private int x;
 
@@ -38,7 +38,7 @@ public abstract class AbstractLayer implements Layer {
         try {
             doDraw(graphics);
         } catch (Exception e) {
-            log.error("绘制打印内容失败", this, e);
+            log.error("绘制打印内容失败:{}", this, e);
         }
         graphics.setColor(oldColor);
         graphics.setFont(oldFont);

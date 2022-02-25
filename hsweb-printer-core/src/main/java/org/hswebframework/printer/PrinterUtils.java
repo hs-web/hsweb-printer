@@ -1,8 +1,6 @@
 package org.hswebframework.printer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.ext.awt.RenderingHintsKeyExt;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -10,6 +8,8 @@ import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.XMLAbstractTranscoder;
 import org.apache.batik.transcoder.image.ImageTranscoder;
+import org.apache.fop.configuration.Configuration;
+import org.apache.fop.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.svg.PDFDocumentGraphics2D;
 import org.apache.fop.svg.PDFDocumentGraphics2DConfigurator;
 import org.apache.fop.svg.PDFTranscoder;
@@ -46,7 +46,7 @@ public class PrinterUtils {
         log.info("加载字体...");
         File fontDir = new File("./config/font");
         if (fontDir.exists()) {
-            File[] fonts = fontDir.listFiles((dir, name) -> name.endsWith("ttf") || name.endsWith("TTF"));
+            File[] fonts = fontDir.listFiles((dir, name) -> name.equalsIgnoreCase("ttf")  );
             if (null != fonts) {
                 for (File file : fonts) {
                     try {
@@ -84,7 +84,8 @@ public class PrinterUtils {
     }
 
     public static void printToPdf(List<Pager> pagers, PixelPaper pixelPaper, OutputStream outputStream) throws Exception {
-        printToPdf(pagers, pixelPaper, outputStream, new DefaultConfigurationBuilder().build("./config/fop-configuration.xml"));
+        printToPdf(pagers, pixelPaper, outputStream,
+                   new DefaultConfigurationBuilder().build(new FileInputStream("./config/fop-configuration.xml")));
     }
 
     public static void printToPdf(List<Pager> pagers, PixelPaper pixelPaper, OutputStream outputStream, Configuration configuration) throws Exception {
@@ -108,8 +109,9 @@ public class PrinterUtils {
                 affineTransform.rotate(pager.getOrientation() * (Math.PI / 2), pixelPaper.getWidth() / 2D, pixelPaper.getHeight() / 2D);
                 graphics2D.setTransform(affineTransform);
             }
+            Graphics2D graphics = (Graphics2D) graphics2D.create();
             for (Layer layer : pager.getLayers()) {
-                layer.draw((Graphics2D) graphics2D.create());
+                layer.draw(graphics);
             }
             graphics2D.nextPage(pixelPaper.getWidth(), pixelPaper.getHeight());
         }

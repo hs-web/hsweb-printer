@@ -1,17 +1,14 @@
 package org.hswebframework.printer.builder;
 
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+import org.apache.fop.configuration.DefaultConfigurationBuilder;
 import org.hswebframework.printer.*;
 import org.hswebframework.printer.executor.DefaultPrintable;
 import org.hswebframework.printer.layer.TextLayer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import javax.print.*;
-import javax.print.attribute.HashAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSizeName;
@@ -19,8 +16,9 @@ import javax.print.attribute.standard.PrintQuality;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,65 +35,67 @@ public class PrinterTests {
 
 
     @Before
-    public void init(){
+    public void init() {
         new File("target").mkdir();
     }
+
     @Test
     public void testAutoNewLine() throws Exception {
-        Pager pager=new Pager();
-        TextLayer layer=new TextLayer();
-        layer.setX(0);
-        layer.setY(200);
-        layer.setColor(Color.RED);
-        layer.setWidth(100);
-        layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
-        layer.setAlign(TextLayer.Align.both);
+        List<Pager> pagers = new ArrayList<>();
+
+        {
+            Pager pager = new Pager();
+            TextLayer layer = new TextLayer();
+            layer.setX(0);
+            layer.setY(200);
+            layer.setColor(Color.RED);
+            layer.setWidth(100);
+            layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer.setAlign(TextLayer.Align.both);
 
 
-        TextLayer layer1=new TextLayer();
-        layer1.setX(120);
-        layer1.setY(200);
-        layer1.setColor(Color.BLUE);
-        layer1.setWidth(100);
-        layer1.setHeight(200);
-        layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
-        layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
-        layer1.setAlign(TextLayer.Align.left);
+            TextLayer layer1 = new TextLayer();
+            layer1.setX(120);
+            layer1.setY(200);
+            layer1.setColor(Color.BLUE);
+            layer1.setWidth(100);
+            layer1.setHeight(200);
+            layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
+            layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer1.setAlign(TextLayer.Align.left);
 
+            pager.setLayers(Arrays.asList(layer, layer1));
+            pager.setOrientation(0);
+            pagers.add(pager);
+        }
 
-        TextLayer layer2=new TextLayer();
-        layer2.setX(240);
-        layer2.setY(200);
-        layer2.setColor(Color.BLACK);
-        layer2.setHeight(200);
-        layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
-        layer2.setWidth(100);
-        layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
-        layer2.setAlign(TextLayer.Align.right);
+        {
+            Pager pager = new Pager();
 
-        TextLayer layer3=new TextLayer();
-        layer3.setX(360);
-        layer3.setY(200);
-        layer3.setHeight(200);
-        layer3.setVerticalAlign(TextLayer.VerticalAlign.bottom);
-        layer3.setColor(Color.GREEN);
-        layer3.setWidth(100);
-        layer3.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
-        layer3.setAlign(TextLayer.Align.center);
+            TextLayer layer2 = new TextLayer();
+            layer2.setX(240);
+            layer2.setY(200);
+            layer2.setColor(Color.BLACK);
+            layer2.setHeight(200);
+            layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
+            layer2.setWidth(100);
+            layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer2.setAlign(TextLayer.Align.right);
+            pager.setLayers(Arrays.asList(layer2));
+            pager.setOrientation(0);
+            pagers.add(pager);
 
-        layer3.setFont(new Font("宋体",Font.PLAIN,20));
+        }
 
-        pager.setLayers(Arrays.asList(layer,layer1,layer2,layer3));
-        pager.setOrientation(0);
-        List<String> svgs = PrinterUtils.printToSvg(Arrays.asList(pager));
+        List<String> svgs = PrinterUtils.printToSvg(pagers);
 
         System.out.println(svgs.get(0));
 
         PrinterUtils
-                .printToPdf(Arrays.asList(pager)
+                .printToPdf(pagers
                         , new PixelPaper(72, Paper.A4)
                         , new FileOutputStream("./target/test.pdf")
-                        , new DefaultConfigurationBuilder().build("./config/fop-configuration.xml"));
+                        , new DefaultConfigurationBuilder().build(new FileInputStream("./config/fop-configuration.xml")));
 
 
     }
@@ -120,14 +120,15 @@ public class PrinterTests {
     public void testPrintImage() throws Exception {
         new File("./target").mkdirs();
         List<Pager> pagers = builder.build(json);
-       BufferedImage image= PrinterUtils
+        BufferedImage image = PrinterUtils
                 .printToImage(pagers
                         , new PixelPaper(72, Paper.A4));
-        ImageIO.write(image,"png",new FileOutputStream("./target/test.png"));
+        ImageIO.write(image, "png", new FileOutputStream("./target/test.png"));
 
         assertTrue(new File("./target/test.png").exists());
         assertTrue(new File("./target/test.png").length() > 0);
     }
+
     @Test
     public void testPrintPdf() throws Exception {
         new File("./target").mkdirs();
@@ -136,7 +137,7 @@ public class PrinterTests {
                 .printToPdf(pagers
                         , new PixelPaper(72, Paper.A4)
                         , new FileOutputStream("./target/test.pdf")
-                        , new DefaultConfigurationBuilder().build("./config/fop-configuration.xml"));
+                        , new DefaultConfigurationBuilder().build(new FileInputStream("./config/fop-configuration.xml")));
         assertTrue(new File("./target/test.pdf").exists());
         assertTrue(new File("./target/test.pdf").length() > 0);
     }
@@ -150,7 +151,7 @@ public class PrinterTests {
         PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
         //弹出提示,选择打印机
         PrintService printService = ServiceUI.printDialog(null, 200, 200, printServices,
-                defaultService, flavor, pras);
+                                                          defaultService, flavor, pras);
         if (printService == null) return;
 
         List<Pager> pagers = builder.build(json);
