@@ -14,6 +14,7 @@ import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrintQuality;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +44,27 @@ public class PrinterTests {
     public void testAutoNewLine() throws Exception {
         List<Pager> pagers = new ArrayList<>();
 
+        List<TextLayer> watermarks = new ArrayList<>();
+
+        {
+            for (int i = 0; i < 10; i++) {
+                for (int i1 = 0; i1 < 10; i1++) {
+                    {
+                        TextLayer x = new TextLayer();
+                        x.setX(90*i);
+                        x.setY(100*i1);
+                        x.setColor( new Color(241, 239, 239));
+                        x.setWidth(100);
+                        x.setText("中文水印");
+                        x.setAngdeg(45);
+                        x.setAlign(TextLayer.Align.left);
+                        watermarks.add(x);
+                    }
+                }
+            }
+
+        }
+
         {
             Pager pager = new Pager();
             TextLayer layer = new TextLayer();
@@ -53,7 +75,6 @@ public class PrinterTests {
             layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer.setAlign(TextLayer.Align.both);
 
-
             TextLayer layer1 = new TextLayer();
             layer1.setX(120);
             layer1.setY(200);
@@ -63,8 +84,10 @@ public class PrinterTests {
             layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
             layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer1.setAlign(TextLayer.Align.left);
-
-            pager.setLayers(Arrays.asList(layer, layer1));
+            List<Layer> layers=new ArrayList<>(watermarks);
+            layers.add(layer);
+            layers.add(layer1);
+            pager.setLayers(layers);
             pager.setOrientation(0);
             pagers.add(pager);
         }
@@ -81,15 +104,17 @@ public class PrinterTests {
             layer2.setWidth(100);
             layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer2.setAlign(TextLayer.Align.right);
-            pager.setLayers(Arrays.asList(layer2));
+            List<Layer> layers=new ArrayList<>(watermarks);
+            layers.add(layer2);
+            pager.setLayers(layers);
             pager.setOrientation(0);
             pagers.add(pager);
 
         }
 
-        List<String> svgs = PrinterUtils.printToSvg(pagers);
+//        List<String> svgs = PrinterUtils.printToSvg(pagers);
 
-        System.out.println(svgs.get(0));
+//        System.out.println(svgs.get(0));
 
         PrinterUtils
                 .printToPdf(pagers

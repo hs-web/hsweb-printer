@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +28,20 @@ public class TextLayer extends AbstractLayer {
 
     private VerticalAlign verticalAlign = VerticalAlign.top;
 
+    //倾斜角度
+    private Integer angdeg;
+
     @Override
     protected void doDraw(Graphics2D graphics) {
         String text = getText();
         if (text == null) {
             text = "";
+        }
+        if (angdeg != null) {
+            Font font = graphics.getFont();
+            AffineTransform transform = font.getTransform();
+            transform.rotate(Math.toRadians(angdeg), 0, 0);
+            graphics.setFont(font.deriveFont(transform));
         }
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
@@ -83,7 +93,9 @@ public class TextLayer extends AbstractLayer {
     }
 
     private static void doDrawString(Graphics2D graphics, String text, float x, float y) {
-        graphics.drawString(text, x, y + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getLeading());
+        graphics.drawString(text, x, y + graphics.getFontMetrics().getMaxAscent() - graphics
+                .getFontMetrics()
+                .getLeading());
     }
 
 
