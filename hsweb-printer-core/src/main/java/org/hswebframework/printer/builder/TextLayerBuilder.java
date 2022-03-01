@@ -23,6 +23,7 @@ public class TextLayerBuilder extends AbstractLayerBuilder {
         textLayer.setY(getInt("y", 0));
         textLayer.setWidth(getInt("width", -1));
         textLayer.setHeight(getInt("height", -1));
+        textLayer.setAngdeg(getInt("angdeg", 0));
         textLayer.setAlign(TextLayer.Align.from(getString("align", TextLayer.Align.left.name())));
         textLayer.setVerticalAlign(TextLayer.VerticalAlign.from(getString("vertical-align", TextLayer.VerticalAlign.top.name())));
 

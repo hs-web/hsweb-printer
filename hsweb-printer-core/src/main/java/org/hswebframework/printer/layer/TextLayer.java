@@ -37,7 +37,7 @@ public class TextLayer extends AbstractLayer {
         if (text == null) {
             text = "";
         }
-        if (angdeg != null) {
+        if (angdeg != null && angdeg != 0) {
             Font font = graphics.getFont();
             AffineTransform transform = font.getTransform();
             transform.rotate(Math.toRadians(angdeg), 0, 0);

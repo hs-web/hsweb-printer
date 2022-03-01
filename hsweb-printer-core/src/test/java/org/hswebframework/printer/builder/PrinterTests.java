@@ -53,7 +53,7 @@ public class PrinterTests {
                         TextLayer x = new TextLayer();
                         x.setX(90*i);
                         x.setY(100*i1);
-                        x.setColor( new Color(241, 239, 239));
+                        x.setColor(new Color(241, 239, 239));
                         x.setWidth(100);
                         x.setText("中文水印");
                         x.setAngdeg(45);
