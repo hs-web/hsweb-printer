@@ -3,6 +3,7 @@ package org.hswebframework.printer.builder;
 import org.apache.fop.configuration.DefaultConfigurationBuilder;
 import org.hswebframework.printer.*;
 import org.hswebframework.printer.executor.DefaultPrintable;
+import org.hswebframework.printer.layer.AbstractLayer;
 import org.hswebframework.printer.layer.TextLayer;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,9 +44,7 @@ public class PrinterTests {
     @Test
     public void testAutoNewLine() throws Exception {
         List<Pager> pagers = new ArrayList<>();
-
         List<TextLayer> watermarks = new ArrayList<>();
-
         {
             for (int i = 0; i < 10; i++) {
                 for (int i1 = 0; i1 < 10; i1++) {
@@ -55,7 +54,7 @@ public class PrinterTests {
                         x.setY(100*i1);
                         x.setColor(new Color(241, 239, 239));
                         x.setWidth(100);
-                        x.setText("中文水印");
+                        x.setText("2022年3月15日\n\n中文水印");
                         x.setAngdeg(45);
                         x.setAlign(TextLayer.Align.left);
                         watermarks.add(x);
@@ -67,6 +66,16 @@ public class PrinterTests {
 
         {
             Pager pager = new Pager();
+
+            TextLayer header = new TextLayer();
+            header.setX(120);
+            header.setY(50);
+            header.setColor(Color.RED);
+            header.setWidth(200);
+            header.setText("重庆消防物联网接入管理\n平台测试报告");
+            header.setAlign(TextLayer.Align.center);
+
+
             TextLayer layer = new TextLayer();
             layer.setX(0);
             layer.setY(200);
@@ -85,6 +94,7 @@ public class PrinterTests {
             layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer1.setAlign(TextLayer.Align.left);
             List<Layer> layers=new ArrayList<>(watermarks);
+            layers.add(header);
             layers.add(layer);
             layers.add(layer1);
             pager.setLayers(layers);
@@ -94,17 +104,25 @@ public class PrinterTests {
 
         {
             Pager pager = new Pager();
+            TextLayer layer = new TextLayer();
+            layer.setX(0);
+            layer.setY(200);
+            layer.setColor(Color.RED);
+            layer.setWidth(100);
+            layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer.setAlign(TextLayer.Align.both);
 
             TextLayer layer2 = new TextLayer();
             layer2.setX(240);
             layer2.setY(200);
             layer2.setColor(Color.BLACK);
             layer2.setHeight(200);
-            layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
+//            layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
             layer2.setWidth(100);
             layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
-            layer2.setAlign(TextLayer.Align.right);
+            layer2.setAlign(TextLayer.Align.center);
             List<Layer> layers=new ArrayList<>(watermarks);
+            layers.add(layer);
             layers.add(layer2);
             pager.setLayers(layers);
             pager.setOrientation(0);

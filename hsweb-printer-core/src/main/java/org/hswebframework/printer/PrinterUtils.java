@@ -43,18 +43,22 @@ public class PrinterUtils {
     }
 
     static {
-        log.info("加载字体...");
-        File fontDir = new File("./config/font");
+
+        File fontDir = new File(System.getProperty("printer.font.dir", "./config/font"));
         if (fontDir.exists()) {
-            File[] fonts = fontDir.listFiles((dir, name) -> name.equalsIgnoreCase("ttf")  );
+            log.debug("load font :{}", fontDir.getAbsolutePath());
+            File[] fonts = fontDir.listFiles((dir, name) -> name.endsWith("ttf") || name.endsWith("TTF"));
             if (null != fonts) {
                 for (File file : fonts) {
                     try {
                         Font font = Font.createFont(Font.TRUETYPE_FONT, file);
-                        FontManagerFactory.getInstance().registerFont(font);
-                        log.info("load font {} success",font);
+                        if (FontManagerFactory.getInstance().registerFont(font)) {
+                            log.debug("load font {} success", font);
+                        } else {
+                            log.warn("load font {} error", font);
+                        }
                     } catch (Exception e) {
-                        log.warn("load font error", e);
+                        log.warn("load font {} error", file.getAbsoluteFile(), e);
                     }
                 }
             }
@@ -165,7 +169,7 @@ public class PrinterUtils {
             pager.getLayers().forEach(layer -> layer.draw(graphics2D));
 
             image.getGraphics()
-                    .drawImage(preview, 0, tempY, pixelPaper.getWidth(), pixelPaper.getHeight(), (img, infoflags, x, y, width, height) -> false);
+                 .drawImage(preview, 0, tempY, pixelPaper.getWidth(), pixelPaper.getHeight(), (img, infoflags, x, y, width, height) -> false);
             tempY += pixelPaper.getHeight() + 10;
         }
         return image;

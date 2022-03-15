@@ -2,6 +2,8 @@ package org.hswebframework.printer.layer;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
+import sun.font.FontUtilities;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 public class TextLayer extends AbstractLayer {
 
     private String text;
@@ -48,13 +51,17 @@ public class TextLayer extends AbstractLayer {
         List<java.util.function.Consumer<Integer>> runnables = new ArrayList<>();
         int textHeight = fontMetrics.getHeight();
         int fontSize = fontMetrics.getFont().getSize();
+        double textWidth = getTextWidth(text, fontMetrics);
         //字体宽度大于总宽度,需要换行
-        if (text.contains("\n") || (width > 0 && fontSize * textHeight > width)) {
+        if (text.contains("\n") || (width > 0 && textWidth > width)) {
             int totalHeight = 0;
-
+//            if (log.isDebugEnabled()) {
+//                log.debug("try new line text :{}", text.replace("\n", "\\n"));
+//            }
             int nowY = 0;
             for (String line : text.split("[\n]")) {
                 if (line.trim().length() == 0) {
+                    nowY += textHeight;
                     continue;
                 }
                 StringBuilder temp = new StringBuilder();
@@ -86,8 +93,9 @@ public class TextLayer extends AbstractLayer {
             }
             int bodyHeight = totalHeight;
             runnables.forEach(run -> run.accept(getVerticalAlign().compute(getY(), getHeight(), bodyHeight)));
+//            graphics.drawRect(getX(),getY(),getWidth(),totalHeight);
         } else {
-
+//            graphics.drawRect(getX(),getY(),getWidth(),textHeight);
             align.draw(graphics, text, getWidth(), getX(), getVerticalAlign().compute(getY(), getHeight(), textHeight));
         }
     }
@@ -99,7 +107,7 @@ public class TextLayer extends AbstractLayer {
     }
 
 
-    private static int getTextWidth(String text, FontMetrics metrics) {
+    private static double getTextWidth(String text, FontMetrics metrics) {
         return metrics.stringWidth(text);
     }
 
@@ -158,9 +166,16 @@ public class TextLayer extends AbstractLayer {
         center {
             @Override
             public void draw(Graphics2D graphics, String text, int width, int x, int y) {
-                int textWidth = getTextWidth(text, graphics.getFontMetrics());
-                x = x + (width - textWidth) / 2;
-                doDrawString(graphics, text, x, y);
+                double textWidth = getTextWidth(text, graphics.getFontMetrics());
+                float x_ = (float) (x + (width / 2D - textWidth / 2D));
+//
+//                log.debug("draw align center text :{},width={}/{}, x={},y={}",
+//                          text,
+//                          textWidth,
+//                          width,
+//                          x_,
+//                          y);
+                doDrawString(graphics, text, x_, y);
             }
         },
         /**
@@ -169,9 +184,9 @@ public class TextLayer extends AbstractLayer {
         right {
             @Override
             public void draw(Graphics2D graphics, String text, int width, int x, int y) {
-                int textWidth = getTextWidth(text, graphics.getFontMetrics());
-                x = x + (width - textWidth);
-                doDrawString(graphics, text, x, y);
+                double textWidth = getTextWidth(text, graphics.getFontMetrics());
+                float x_ = (float) (x + (width - textWidth));
+                doDrawString(graphics, text, x_, y);
             }
         },
         /**
@@ -198,7 +213,8 @@ public class TextLayer extends AbstractLayer {
             public int compute(int y, int height, int bodyHeight) {
                 return y;
             }
-        }, center {
+        },
+        center {
             @Override
             public int compute(int y, int height, int bodyHeight) {
                 if (height < bodyHeight) {
@@ -206,7 +222,8 @@ public class TextLayer extends AbstractLayer {
                 }
                 return y + (height - bodyHeight) / 2;
             }
-        }, bottom {
+        },
+        bottom {
             @Override
             public int compute(int y, int height, int bodyHeight) {
                 if (height < bodyHeight) {
