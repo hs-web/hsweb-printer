@@ -72,7 +72,7 @@ public class PrinterTests {
             header.setY(50);
             header.setColor(Color.RED);
             header.setWidth(200);
-            header.setText("重庆消防物联网接入管理\n平台测试报告");
+            header.setText("JetLinks物联网接入管理\n平台打印报告");
             header.setAlign(TextLayer.Align.center);
 
 
