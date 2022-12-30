@@ -69,14 +69,14 @@ public abstract class AbstractLayerBuilder implements LayerBuilder {
         return new Font(fontName, Font.PLAIN, fontSize);
     }
 
-    protected Color getColor(Color def) {
-        int r = def.getRed();
-        int g = def.getGreen();
-        int b = def.getBlue();
-        String config = getString("color", null);
+    protected Color getColor(String key,Color def) {
+        String config = getString(key, null);
         if (null == config) {
             return def;
         }
+        int r;
+        int g;
+        int b;
         if (config.startsWith("#")) {
             config = config.substring(1);
             if (config.length() != 6) {
@@ -86,9 +86,14 @@ public abstract class AbstractLayerBuilder implements LayerBuilder {
             r = Integer.parseInt(rgbhex[0], 16);
             g = Integer.parseInt(rgbhex[1], 16);
             b = Integer.parseInt(rgbhex[2], 16);
+        }else {
+            return def;
         }
 
         return new Color(r, g, b);
+    }
+    protected Color getColor(Color def) {
+        return getColor("color",def);
     }
 
 }

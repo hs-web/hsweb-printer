@@ -93,7 +93,7 @@ public class TextLayer extends AbstractLayer {
             }
             int bodyHeight = totalHeight;
             runnables.forEach(run -> run.accept(getVerticalAlign().compute(getY(), getHeight(), bodyHeight)));
-//            graphics.drawRect(getX(),getY(),getWidth(),totalHeight);
+//            graphics.drawRect(getX(), getY(), getWidth(), totalHeight);
         } else {
 //            graphics.drawRect(getX(),getY(),getWidth(),textHeight);
             align.draw(graphics, text, getWidth(), getX(), getVerticalAlign().compute(getY(), getHeight(), textHeight));
@@ -135,16 +135,19 @@ public class TextLayer extends AbstractLayer {
                 if (margin < 0) {
                     margin = 0;
                 }
-                int xTemp = x;
+                float xTemp = x;
                 for (int i = 0; i < textLength; i++) {
                     String singleString = String.valueOf(chars[i]);
                     int fontWidth = metrics.charWidth(chars[i]);
                     int fontSize = metrics.getFont().getSize();
                     float newX;
+                    //第一个字
                     if (i == 0) {
                         newX = x;
                         xTemp += margin;
-                    } else if (i == textLength - 1) {
+                    }
+                    //最后一个字
+                    else if (i == textLength - 1) {
                         newX = width;
                         if (fontWidth < fontSize) {
                             newX += (fontSize - fontWidth) / 2F;

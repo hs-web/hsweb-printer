@@ -4,6 +4,7 @@ import org.apache.fop.configuration.DefaultConfigurationBuilder;
 import org.hswebframework.printer.*;
 import org.hswebframework.printer.executor.DefaultPrintable;
 import org.hswebframework.printer.layer.AbstractLayer;
+import org.hswebframework.printer.layer.RectLayer;
 import org.hswebframework.printer.layer.TextLayer;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,33 +68,46 @@ public class PrinterTests {
         {
             Pager pager = new Pager();
 
+            RectLayer rectLayer=new RectLayer();
+            rectLayer.setWidth(100);
+            rectLayer.setHeight(20);
+            rectLayer.setStroke(new BasicStroke(2));
+            rectLayer.setBackgroundColor(Color.GREEN);
+            rectLayer.setColor(Color.BLACK);
+            rectLayer.setX(10);
+            rectLayer.setY(20);
+
+
             TextLayer header = new TextLayer();
-            header.setX(120);
+            header.setX(150);
             header.setY(50);
             header.setColor(Color.RED);
             header.setWidth(200);
-            header.setText("重庆消防物联网接入管理\n平台测试报告");
+            header.setText("自动换行2022标题AbC@12\n2022年03月15日");
             header.setAlign(TextLayer.Align.center);
 
 
             TextLayer layer = new TextLayer();
-            layer.setX(0);
+            layer.setX(10);
             layer.setY(200);
             layer.setColor(Color.RED);
             layer.setWidth(100);
-            layer.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer.setText("两侧对齐\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer.setAlign(TextLayer.Align.both);
 
             TextLayer layer1 = new TextLayer();
-            layer1.setX(120);
+            layer1.setX(220);
             layer1.setY(200);
             layer1.setColor(Color.BLUE);
             layer1.setWidth(100);
             layer1.setHeight(200);
             layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
-            layer1.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer1.setText("\n左对齐\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer1.setAlign(TextLayer.Align.left);
             List<Layer> layers=new ArrayList<>(watermarks);
+
+            layers.add(rectLayer);
+
             layers.add(header);
             layers.add(layer);
             layers.add(layer1);
@@ -119,7 +133,7 @@ public class PrinterTests {
             layer2.setHeight(200);
 //            layer2.setVerticalAlign(TextLayer.VerticalAlign.center);
             layer2.setWidth(100);
-            layer2.setText("打印\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
+            layer2.setText("居中对其\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer2.setAlign(TextLayer.Align.center);
             List<Layer> layers=new ArrayList<>(watermarks);
             layers.add(layer);

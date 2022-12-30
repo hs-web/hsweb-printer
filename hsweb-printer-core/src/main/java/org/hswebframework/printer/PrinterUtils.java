@@ -42,6 +42,8 @@ public class PrinterUtils {
         layers.forEach(layer -> layer.draw(g2));
     }
 
+    public static Font defaultFont;
+
     static {
 
         File fontDir = new File(System.getProperty("printer.font.dir", "./config/font"));
@@ -53,6 +55,9 @@ public class PrinterUtils {
                     try {
                         Font font = Font.createFont(Font.TRUETYPE_FONT, file);
                         if (FontManagerFactory.getInstance().registerFont(font)) {
+                            if(defaultFont==null) {
+                                defaultFont = new Font(font.getFontName(), Font.PLAIN, 16);
+                            }
                             log.debug("load font {} success", font);
                         } else {
                             log.warn("load font {} error", font);

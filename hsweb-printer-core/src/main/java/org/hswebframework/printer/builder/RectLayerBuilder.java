@@ -22,6 +22,7 @@ public class RectLayerBuilder extends AbstractLayerBuilder {
         layer.setY(getInt("y", 0));
         layer.setX(getInt("x", 0));
         layer.setColor(getColor(Color.BLACK));
+        layer.setBackgroundColor(getColor("backgroundColor",null));
         return layer;
     }
 }

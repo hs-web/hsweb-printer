@@ -25,28 +25,18 @@
 
     <!-- etc. etc..... -->
     <fonts>
-        <font kerning="yes" embed-url="config/font/YaHei.Consolas.1.12.ttf">
-            <font-triplet name="YaHei Consolas Hybrid" style="normal" weight="normal"/>
-            <font-triplet name="Microsoft YaHei" style="normal" weight="normal"/>
-            <font-triplet name="微软雅黑" style="normal" weight="normal"/>
-        </font>
+
         <font kerning="yes" embed-url="config/font/FZLTCXHJW.TTF">
             <font-triplet name="FZLanTingHeiS" style="normal" weight="normal"/>
             <font-triplet name="方正兰亭超细黑简体" style="normal" weight="normal"/>
         </font>
-        <font kerning="yes" embed-url="config/font/simfang.ttf">
-            <font-triplet name="宋体" style="normal" weight="normal"/>
-            <font-triplet name="仿宋" style="normal" weight="normal"/>
-            <font-triplet name="仿宋_GB2312" style="normal" weight="normal"/>
+        <font kerning="yes" embed-url="config/font/Alibaba-PuHuiTi-Medium.ttf">
+            <font-triplet name="阿里巴巴普惠体 Medium" style="normal" weight="normal"/>
+        </font>
 
+        <font kerning="yes" embed-url="config/font/Alibaba-PuHuiTi-Bold.ttf">
+            <font-triplet name="阿里巴巴普惠体 Bold" style="normal" weight="normal"/>
         </font>
-        <font kerning="yes" embed-url="config/font/simhei.ttf">
-            <font-triplet name="黑体" style="normal" weight="normal"/>
-        </font>
-        <font kerning="yes" embed-url="config/font/simkai.ttf">
-            <font-triplet name="楷体" style="normal" weight="normal"/>
-            <font-triplet name="楷体_GB2312" style="normal" weight="normal"/>
 
-        </font>
     </fonts>
 </fop>
