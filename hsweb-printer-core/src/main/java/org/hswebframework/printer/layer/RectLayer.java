@@ -24,7 +24,7 @@ public class RectLayer extends AbstractLayer {
             Color temp = graphics.getColor();
             graphics.setColor(backgroundColor);
             graphics.fillRect(getX(), getY(), getWidth(), getHeight());
-            graphics.setBackground(temp);
+            graphics.setColor(temp);
         }
     }
 }
