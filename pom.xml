@@ -59,26 +59,18 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>sonatype-releases</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>validated</waitUntil>
+                            <deploymentName>hsweb-framework:${project.version}</deploymentName>
                         </configuration>
                     </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <configuration>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <useReleaseProfile>false</useReleaseProfile>
-                            <releaseProfiles>release</releaseProfiles>
-                            <goals>deploy</goals>
-                        </configuration>
-                    </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -93,6 +85,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -112,15 +105,10 @@
                 </plugins>
             </build>
             <distributionManagement>
-                <repository>
-                    <id>sonatype-releases</id>
-                    <name>sonatype repository</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-                </repository>
                 <snapshotRepository>
-                    <id>sonatype-snapshots</id>
-                    <name>Nexus Snapshot Repository</name>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    <id>central</id>
+                    <name>Central Snapshot Repository</name>
+                    <url>https://central.sonatype.com/repository/maven-snapshots</url>
                 </snapshotRepository>
             </distributionManagement>
         </profile>
@@ -188,35 +176,47 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.79</version>
+            <version>1.2.83</version>
         </dependency>
     </dependencies>
+
     <repositories>
         <repository>
-            <id>hsweb-nexus</id>
+            <id>jetlinks</id>
             <name>Nexus Release Repository</name>
-            <url>https://nexus.hsweb.me/content/groups/public/</url>
+            <url>https://nexus.jetlinks.cn/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
+
         <repository>
             <id>aliyun-nexus</id>
             <name>aliyun</name>
             <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
+
     <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>Nexus Release Repository</name>
-            <url>https://nexus.hsweb.me/content/repositories/releases/</url>
-        </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>https://nexus.hsweb.me/content/repositories/snapshots/</url>
+            <url>https://nexus.jetlinks.cn/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-nexus</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
