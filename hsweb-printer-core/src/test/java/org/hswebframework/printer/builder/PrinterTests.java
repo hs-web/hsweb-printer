@@ -21,6 +21,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,8 +53,8 @@ public class PrinterTests {
                 for (int i1 = 0; i1 < 10; i1++) {
                     {
                         TextLayer x = new TextLayer();
-                        x.setX(90*i);
-                        x.setY(100*i1);
+                        x.setX(90 * i);
+                        x.setY(100 * i1);
                         x.setColor(new Color(241, 239, 239));
                         x.setWidth(100);
                         x.setText("2022年3月15日\n\n中文水印");
@@ -68,7 +70,7 @@ public class PrinterTests {
         {
             Pager pager = new Pager();
 
-            RectLayer rectLayer=new RectLayer();
+            RectLayer rectLayer = new RectLayer();
             rectLayer.setWidth(100);
             rectLayer.setHeight(20);
             rectLayer.setStroke(new BasicStroke(2));
@@ -104,7 +106,7 @@ public class PrinterTests {
             layer1.setVerticalAlign(TextLayer.VerticalAlign.top);
             layer1.setText("\n左对齐\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer1.setAlign(TextLayer.Align.left);
-            List<Layer> layers=new ArrayList<>(watermarks);
+            List<Layer> layers = new ArrayList<>(watermarks);
 
             layers.add(rectLayer);
 
@@ -135,7 +137,7 @@ public class PrinterTests {
             layer2.setWidth(100);
             layer2.setText("居中对其\n打印吧\n打印文字\n打印文字吧\n打印1a2B3c4D★☆符号打印");
             layer2.setAlign(TextLayer.Align.center);
-            List<Layer> layers=new ArrayList<>(watermarks);
+            List<Layer> layers = new ArrayList<>(watermarks);
             layers.add(layer);
             layers.add(layer2);
             pager.setLayers(layers);
@@ -148,12 +150,14 @@ public class PrinterTests {
 
 //        System.out.println(svgs.get(0));
 
+        FileOutputStream out = new FileOutputStream("./target/test.pdf");
         PrinterUtils
                 .printToPdf(pagers
                         , new PixelPaper(72, Paper.A4)
-                        , new FileOutputStream("./target/test.pdf")
+                        , out
                         , new DefaultConfigurationBuilder().build(new FileInputStream("./config/fop-configuration.xml")));
-
+        out.flush();
+        out.close();
 
     }
 
@@ -193,8 +197,8 @@ public class PrinterTests {
         PrinterUtils
                 .printToPdf(pagers
                         , new PixelPaper(72, Paper.A4)
-                        , new FileOutputStream("./target/test.pdf")
-                        , new DefaultConfigurationBuilder().build(new FileInputStream("./config/fop-configuration.xml")));
+                        , Files.newOutputStream(Paths.get("./target/test.pdf"))
+                        , new DefaultConfigurationBuilder().build(Files.newInputStream(Paths.get("./config/fop-configuration.xml"))));
         assertTrue(new File("./target/test.pdf").exists());
         assertTrue(new File("./target/test.pdf").length() > 0);
     }

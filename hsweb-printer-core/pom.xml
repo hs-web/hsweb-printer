@@ -5,11 +5,15 @@
     <parent>
         <artifactId>hsweb-printer</artifactId>
         <groupId>org.hswebframework</groupId>
-        <version>2.1.0</version>
+        <version>2.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hsweb-printer-core</artifactId>
+    <properties>
+        <batik.version>1.19</batik.version>
+        <fop.version>2.11</fop.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -17,37 +21,37 @@
             <artifactId>hsweb-expands-request</artifactId>
             <version>${hsweb.expands.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
-            <version>3.4.1</version>
+            <version>3.5.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.hswebframework</groupId>
-            <artifactId>hsweb-expands-shell</artifactId>
-            <version>${hsweb.expands.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-svggen</artifactId>
-            <version>1.14</version>
+            <version>${batik.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-ext -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-ext</artifactId>
-            <version>1.14</version>
+            <version>${batik.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-codec</artifactId>
-            <version>1.14</version>
+            <version>${batik.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-transcoder</artifactId>
-            <version>1.14</version>
+            <version>${batik.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop -->
@@ -60,23 +64,25 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop-util</artifactId>
-            <version>2.7</version>
+            <version>${fop.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop-events</artifactId>
-            <version>2.7</version>
+            <version>${fop.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop-core</artifactId>
-            <version>2.7</version>
+            <version>${fop.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.10</version>
+            <version>1.2.13</version>
             <scope>test</scope>
         </dependency>
 
